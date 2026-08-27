@@ -1,10 +1,13 @@
 # scripts
 
-评测与验证脚本目录。最终提交前将同步真实脚本，包括 CIE v3 判别力验证、完整评测、一致性测试与对抗性测试入口。
+评测和验证脚本放在这里。
 
-计划入口：
+计划整理的入口包括：
 
-- `cie_v3_validation.py`
-- `run_evaluation.py`
-- `consistency_test.py`
-- adversarial evaluation scripts
+- CIE 早期三案例测试；
+- 完整 benchmark runner；
+- repeated scoring；
+- evidence-only；
+- adversarial validation。
+
+本地脚本还在向公开仓库同步，文件名会以最终整理后的版本为准。
