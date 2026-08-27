@@ -1,3 +1,10 @@
 # examples
 
-典型案例与 demo 输出目录。最终提交前将补充代表性的 Low / Partial / High-value Innovation 案例、结构化 Innovation Trace、CIE 评分输出与 demo 所需素材。
+这里会放适合直接查看的示例，包括：
+
+- Low / Partial / High-value Innovation 案例；
+- 对应的 Innovation Trace；
+- CIE 评分结果；
+- 最终 demo 会用到的输出示例。
+
+当前示例还在整理中。
