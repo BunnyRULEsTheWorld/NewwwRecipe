@@ -1,10 +1,10 @@
 # results
 
-本目录用于保存 CIE-Culinary-Bench 的正式评测结果、重复评分一致性实验、对抗性验证以及必要的统计摘要。
+这里保存 benchmark 的评测结果和后续验证实验。
 
-截至 2026-08-27，当前主结果已经从早期三案例 smoke test 推进到 **anonymous trace-conditioned canonical run**：
+截至 2026-08-27，当前主实验是一次 anonymous trace-conditioned run：
 
-- benchmark core：30 frozen cases；
+- benchmark：30 frozen cases；
 - runner records：33 / 33 成功；
 - Parse / API success：100%；
 - Accuracy：73.3%；
@@ -13,6 +13,13 @@
 - MAE：0.661；
 - Ranking pairwise accuracy：86.7%。
 
-历史 run2 partial 仅完成 16 / 33，另有 17 个 `APIConnectionError`，已迁入 `deprecated_partial_run2/`，只保留 provenance / migration history，**不属于有效 benchmark 结果**。
+之前有一次 run2 只成功了 16 / 33 条，另外 17 条是 `APIConnectionError`。这批结果已经单独归档，只保留作运行记录，不计入正式 benchmark 指标。
 
-当前 canonical 轨道为 trace-conditioned；后续仍需独立补齐 evidence-only、repeated scoring、human agreement 与 adversarial validation，禁止把不同信息条件下的结果混报为同一结论。
+接下来会继续补：
+
+- evidence-only；
+- repeated scoring；
+- human agreement；
+- adversarial validation。
+
+不同实验设置的结果会分开保存，不混在同一组指标里。
