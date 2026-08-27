@@ -1,232 +1,212 @@
-# Creative Recipe AI × CIE-Bench 项目方案
+# NewwwRecipe 项目方案
 
 > 2026 腾讯犀牛鸟开源人才培养计划 · 混元大语言模型实战任务  
 > 任务方向：开放式场景——AI 应用与评判标准设计  
 > 项目性质：个人 / 活动作品，非腾讯官方发布项目
 
----
+## 1. 项目简介
 
-## 1. 项目概述
+NewwwRecipe 是一个基于 Hy3 的创意菜谱生成与评估项目。
 
-本项目基于 Hy3 构建一个面向真实用户的**创意料理生成与筛选应用 Creative Recipe AI**，并围绕该应用设计一套开放式创新能力评价框架 **CIE-Bench（Culinary Innovation Evaluation Benchmark）**。
+最开始的想法是做一个“冰箱里有什么就做什么”的菜谱应用：用户输入现有食材，模型给出一些不那么常规、但确实值得尝试的新做法。实际开发过程中，我很快发现生成菜谱本身不是最难的部分。更麻烦的是，开放式生成没有唯一答案，很难判断一个结果到底是真的有创意，还是只是把少见食材、复杂技法和专业术语堆在一起。
 
-项目核心并不是“让模型生成更奇怪的菜谱”，而是回答：
+因此项目现在分成三部分：
 
-> 如何判断大语言模型是否真正产生了**有知识依据、有创新增量、有实际价值**的创新，而不是仅仅生成新奇、流畅、看起来专业的文本？
+1. **NewwwRecipe 应用**：根据食材、口味和简单约束生成多个候选料理；
+2. **CIE（Culinary Innovation Evaluation）**：对候选进行结构化评价和排序；
+3. **CIE-Culinary-Bench**：用来开发和验证 CIE 的评测数据集。
 
-因此，本项目把创意料理作为一个可观察、可解释、可构造难例和反例的开放式任务场景，并将评价对象从单纯的最终 Recipe 扩展为：
+目前项目进度主要集中在 CIE 和 benchmark。应用侧会在评测流程稳定后继续接入生成、筛选和 UI。
 
-```text
-Recipe Concept
-+
-Culinary Innovation Reasoning Trace
-```
+## 2. 使用场景和目标用户
 
-核心命题为：
+### 2.1 使用场景
 
-```text
-Innovation = Novel Change + Grounding + Value
-Novelty ≠ Innovation
-```
+用户面对家中已有食材时，经常会遇到两种情况：一是只会按照熟悉的方式做，二是让大模型随便生成后，得到的结果虽然新奇，但不一定靠谱。
 
-当前项目已经从最初的框架设计与三案例概念验证，推进到 **30-case frozen benchmark + 可复现 runner + 33/33 canonical Hy3 主评测** 阶段。
+NewwwRecipe 希望在这两者之间做一个筛选：先生成多个候选，再检查它们的料理依据、具体变化、可执行性和风险，最后再展示给用户。
 
----
+### 2.2 目标用户
 
-## 2. 目标用户与真实问题
+- 希望利用家中现有食材尝试新做法的普通用户；
+- 喜欢跨菜系、风味实验和创意料理的烹饪爱好者；
+- 对开放式生成评价、LLM-as-judge 或 benchmark 感兴趣的开发者。
 
-### 2.1 目标用户
+## 3. 为什么需要单独做评价
 
-1. 希望利用家中已有食材获得新做法的普通用户；
-2. 对创意料理、跨菜系搭配、风味实验感兴趣的烹饪爱好者；
-3. 希望研究或评测大语言模型开放式创新能力的开发者与研究者。
+创意料理没有标准答案，不能像选择题一样直接判断对错。
 
-### 2.2 用户痛点
+如果只看最终菜谱，容易出现几类问题：
 
-现有菜谱生成类 LLM 应用通常存在以下问题：
+- 少见组合被误认为有创意；
+- 解释听起来专业，但实际没有可靠的料理知识支撑；
+- 模型没有说明自己和已有做法相比到底改了什么；
+- 结果看起来有趣，但实际难以执行；
+- 同一个输入一次能生成很多方案，但缺少可靠的筛选依据。
 
-- 容易把“罕见组合”误认为“创新”；
-- 能生成看似专业的解释，但缺乏可靠料理知识或机制支撑；
-- 无法明确说明与已有菜品相比究竟改变了什么；
-- 缺少对失败风险、可执行性和实际价值的审查；
-- 一次生成很多结果，却缺少可靠的自动筛选机制。
+所以 NewwwRecipe 没有把“生成”和“展示”直接连在一起，而是在中间加入 CIE 评价。
 
-### 2.3 引入大模型的必要性
+## 4. 系统设计
 
-创意料理不存在唯一标准答案，食材、偏好、烹饪条件和创新方向高度组合化，传统规则系统难以覆盖。
-
-Hy3 在项目中承担两类角色：
-
-- **生成端**：根据用户输入生成 Recipe Concept 与结构化 Innovation Trace；
-- **评估端**：在固定 Rubric 与规则约束下执行 LLM-as-judge，对候选进行结构化评分和归因。
-
-在 benchmark 有效性验证中，生成与评价尽量解耦，以减少“模型自己生成、自己认可”的偏差。
-
----
-
-## 3. 总体设计思路与系统架构
-
-项目采用“**生成 → 显式创新过程 → 评价 → 筛选 → 解释反馈**”闭环。
+目前的应用流程设计如下：
 
 ```text
-用户输入食材 / 偏好 / 状态
-          │
-          ▼
-   Hy3 Creative Generator
-          │
-          ├── Recipe Concept
-          └── Innovation Trace
-                  │
-                  ▼
-             CIE Evaluator
-                  │
-       ┌──────────┼──────────┐
-       ▼          ▼          ▼
-   Rubric评分   规则约束   Evidence / Risk Check
-       └──────────┼──────────┘
-                  ▼
-        候选排序 / 筛选 / 归因
-                  │
-                  ▼
-        用户可读的创意料理结果
+用户输入食材 / 偏好 / 简单约束
+                ↓
+              Hy3
+                ↓
+      生成多个候选 Recipe
+                ↓
+ Recipe Concept + Innovation Trace
+                ↓
+              CIE
+                ↓
+      六维评分 + 规则检查
+                ↓
+            排序 / 筛选
+                ↓
+ 菜谱 + 做法 + 创意解释 + 风险提示
 ```
 
-评价不只问“这道菜有没有创意”，而是审查：
+应用最终不会直接返回第一次采样的结果，而是先生成多个候选，再进行评价和排序。
 
-1. 模型理解了哪些已有料理知识；
-2. 最接近的 precedent 是什么；
-3. 相比已有方案到底改变了什么；
-4. 为什么这种变化在机制上可能成立；
-5. 这种变化创造了什么新价值；
-6. 它可能在哪里失败。
+## 5. Innovation Trace
 
----
+为了避免只看最终文字，我给每个候选增加了一份结构化 Innovation Trace。
 
-## 4. Innovation Trace：让创新过程可审查
+Trace 目前包含六部分：
 
-CIE v3 将创新过程显式拆成六阶段：
+### 5.1 Existing Culinary Context
 
-### Stage 1 — Existing Culinary Context
-定位最接近的已有料理、技法或食材用途，避免使用“世界上从未存在”等未经验证的叙述制造创新感。
+记录最接近的已有料理、类似技法和类似食材用法。主要作用是给“创新”找一个参照，避免模型直接声称某个组合从未出现过。
 
-### Stage 2 — Ingredient & Technique Knowledge
-分析风味、香气、质地、脂肪相互作用、烹饪机制等真实知识基础。
+### 5.2 Ingredient & Technique Knowledge
 
-### Stage 3 — Innovation Delta
-回答“与已有方案相比，真正发生了什么变化”。重点识别 Ingredient Role Shift、Technique Innovation、Flavor Architecture Innovation、Texture Innovation、Presentation / Experience Innovation 等。
+记录当前方案涉及的食材和技法知识，包括风味、香气、质地、脂肪相互作用和烹饪机制等。
 
-### Stage 4 — Mechanistic Justification
-要求给出可辩护的烹饪科学、风味交互、厨艺经验或先例依据，而不是“因为很搭”“因为少见”等空洞理由。
+### 5.3 Innovation Delta
 
-### Stage 5 — Creative Hypothesis
-明确该变化试图创造什么新的风味、口感、食用体验或食材利用价值。
+说明相较于已有做法到底改了什么。目前主要区分：
 
-### Stage 6 — Risk & Constraint
-要求主动说明比例风险、技术边界、失败模式与实现限制。
+- Ingredient Role Shift；
+- Technique Innovation；
+- Flavor Architecture Innovation；
+- Texture Innovation；
+- Presentation / Experience Innovation。
 
----
+这里不会把“变化越大”直接当成“越创新”。如果只是随机替换很多食材，但没有合理依据，分数不应该自动变高。
 
-## 5. CIE 六维评估方法
+### 5.4 Mechanistic Justification
 
-| 维度 | 权重 | 核心问题 |
+要求给出可以检查的理由，例如烹饪科学、风味交互、化学机制、已有经验或 precedent。
+
+### 5.5 Creative Hypothesis
+
+说明这次变化希望得到什么新的风味、口感、食用体验或食材利用方式。
+
+### 5.6 Risk & Constraint
+
+记录比例、技法、原料和执行上的风险，以及方案可能失败的地方。
+
+## 6. CIE 评分方法
+
+CIE 当前使用六个维度：
+
+| 维度 | 权重 | 主要看什么 |
 | --- | ---: | --- |
-| Culinary Knowledge Grounding | 15% | 是否真正理解料理知识 |
-| Existing Culinary Precedent Analysis | 15% | 是否能定位并比较已有料理空间 |
-| Innovation Delta Quality & Magnitude | 25% | 是否存在真实、有效的创新增量 |
-| Mechanistic Plausibility | 20% | 创新是否具有可靠机制或经验依据 |
-| Innovation Value / Exploration | 15% | 改变是否创造新的实际价值 |
-| Realization Quality | 10% | 是否合理、可执行且表达清楚 |
+| Culinary Knowledge Grounding | 15% | 食材和料理知识是否可靠 |
+| Existing Culinary Precedent Analysis | 15% | 是否能找到并正确比较已有做法 |
+| Innovation Delta Quality & Magnitude | 25% | 是否真的有明确且有效的变化 |
+| Mechanistic Plausibility | 20% | 这些变化是否有机制或经验依据 |
+| Innovation Value / Exploration | 15% | 是否带来新的风味、口感、体验或利用价值 |
+| Realization Quality | 10% | 是否合理、可执行并表达清楚 |
 
-```text
-CIE Score = Σ(score_d × weight_d)
-```
+总分按六个维度加权得到。
 
-### 5.1 Anti-gaming / Anti-hallucination 机制
+除了 LLM-as-judge 打分，还加了几条硬约束：
 
-- Precedent 强制：创新主张必须先定位已有料理空间；
-- Grounding Ceiling：若 Grounding 低于阈值，Innovation Delta 不允许进入高分档；
-- Mechanistic Justification 禁止使用“少见所以创新”等空洞解释；
-- Innovation Magnitude 不采用“变化越大分越高”的单调奖励；
-- Risk & Constraint 强制暴露潜在失败边界；
-- Benchmark 中加入难例、反例与后续 adversarial 样本，检验评价器是否会被篇幅、术语和伪造依据骗分。
+- 无法合理说明 precedent 时，相关维度不能直接进入高分档；
+- 基础料理知识本身不可靠时，Innovation Delta 的分数上限会被限制；
+- “很少见”“很特别”“很搭”不能单独作为机制解释；
+- 变化幅度大并不自动加分；
+- 高分方案需要明确说明风险和限制。
 
----
+这些规则主要是为了减少几种常见的假高分情况。
 
-## 6. 重点技术
+## 7. 重点技术
 
-### 6.1 Hy3 OpenAI-Compatible 调用
+### 7.1 Hy3 调用
 
-通过 Hy3 的 OpenAI-compatible 接口调用模型，API Key 通过环境变量 / `.env` 注入，不写入源码或公开仓库。
+项目通过 Hy3 的 OpenAI-compatible 接口调用模型。API Key 使用环境变量或 `.env` 传入，不写入源码或公开仓库。
 
-### 6.2 Structured Output
+### 7.2 Structured Output
 
-Recipe Concept、Innovation Trace、六维评分、理由、错误信息均采用结构化字段，便于自动解析、统计、复现和 case-level 归因。
+Recipe Concept、Innovation Trace、六维评分、理由和错误信息都使用结构化字段，方便脚本解析、保存和统计。
 
-### 6.3 LLM-as-Judge + Rule Constraints
+### 7.3 LLM-as-Judge + 规则约束
 
-评估流程不是单次自由文本打分，而是固定 Rubric、结构化 judge 输出、规则约束、结果持久化和人工抽检共同组成。
+CIE 不是单纯让模型自由评价“这道菜有多创新”，而是给定固定 rubric，再配合规则限制和结果记录。
 
-### 6.4 Anonymous / Trace-conditioned Evaluation
+### 7.4 Benchmark Runner
 
-当前 canonical 主评测采用 **anonymous trace-conditioned** 轨道：隐藏 case 身份信息，但允许评价器访问为该案例准备的结构化 trace，以重点检验“给定创新过程信息后，CIE 是否能够做出稳定、区分性的评价”。
+目前的 runner 会保存每条样本的输入、输出、解析状态、评分和 provenance，并区分：
 
-### 6.5 可审计 Benchmark Runner
-
-Runner 保存 prompt、输出、解析状态、评分和 provenance，并区分：
-
-- canonical 完整结果；
+- 完整正式 run；
 - partial / failed run；
-- deprecated baseline；
-- 后续 evidence-only / repeat / adversarial 等独立轨道。
+- 已废弃 baseline；
+- 后续的 evidence-only、repeat、adversarial 等不同实验设置。
 
-这样可以避免将 API 失败、旧 baseline 或不同信息条件下的结果混为同一个 benchmark 结论。
+这样可以避免因为 API 失败或实验设置不同，把不能比较的结果混在一起。
 
----
+### 7.5 匿名评测
 
-## 7. CIE-Culinary-Bench 数据设计
+当前主实验隐藏了显式 case ID，减少模型直接利用样本编号等信息的可能性。
 
-当前核心 benchmark 为 **30-case frozen dataset**，其设计目标不是追求样本数量，而是先建立一个可追溯、可审计、覆盖多种创新质量和失败模式的 v1 核心集。
+## 8. CIE-Culinary-Bench
 
-数据治理包括：
+当前 benchmark 的核心数据集包含 30 个冻结 case。
 
-- dataset / schema / gold / rubric 分离；
-- case provenance；
+与数据集配套的内容包括：
+
+- schema；
+- gold annotation；
+- rubric；
+- provenance；
 - source registry；
 - fabrication disclosure；
 - annotation guideline；
-- quality report；
-- 难例与反例覆盖；
-- benchmark 冻结后避免为追逐结果而修改 gold/rubric。
+- quality report。
 
-数据覆盖低创新、部分创新、高价值创新以及不同类型的 grounding / mechanism / feasibility 问题。
+目前先控制样本规模，优先保证每个 case 的来源、标注和设计目的能够说明清楚。数据集中包含低创新、部分创新、高创新以及 grounding、mechanism、feasibility 等不同问题类型。
 
----
+benchmark 冻结后，不会为了让某一次实验结果更好而修改 gold 或 rubric。
 
-## 8. 当前已经完成的评测与验证
+## 9. 当前实验结果
 
-### 8.1 早期三案例 smoke test
+### 9.1 三案例早期测试
 
-最初使用 Low / Partial / High-value 三个固定案例验证框架是否至少具备基础排序能力：
+CIE v3 开发早期先用三个差异明显的案例做过一次小测试：
 
-```text
-EXPECTED: High > Partial > Low
-ACTUAL:   8.50 > 6.60 > 4.20
-RESULT:   PASS
-```
+| Case | 预期水平 | CIE 分数 |
+| --- | --- | ---: |
+| A | Low Innovation | 4.20 |
+| B | Partial Innovation | 6.60 |
+| C | High-value Innovation | 8.50 |
 
-该实验现在仅作为**早期 smoke test**，不再作为 benchmark 的主要有效性证据。
+得到的顺序是 `C > B > A`，和预期一致。
 
-### 8.2 Canonical 30-case Benchmark Run
+这个测试现在只作为开发早期的 smoke test 保存，不作为主要实验结果。
 
-当前主实验已完成真实 Hy3 的 anonymous trace-conditioned canonical run。
+### 9.2 当前主实验
+
+目前已经完成一次真实 Hy3 的 anonymous trace-conditioned run。
 
 - frozen benchmark：30 cases；
-- runner 实际评测记录：33 / 33 成功；
-- Parse / API success：100%；
-- 未将中途失败的 partial run 作为有效结果；
-- 带显式 case ID 的旧 baseline 已 deprecated。
+- runner 记录：33 条；
+- 33 / 33 成功完成并解析；
+- Parse / API success：100%。
 
-当前主指标：
+结果如下：
 
 | Metric | Result |
 | --- | ---: |
@@ -237,213 +217,161 @@ RESULT:   PASS
 | Ranking pairwise accuracy | 86.7% |
 | Parse / API success | 100% |
 
-这组结果说明：在 trace-conditioned 条件下，CIE 已表现出一定的类别判别、相对排序和连续评分能力，但尚不能据此宣称“评价框架已经被充分验证”。
+这组结果是当前 benchmark 的主要运行结果，但它还有一个明显限制：evaluator 可以看到完整 Innovation Trace，因此输入本身可能给了较强提示。
 
-### 8.3 Partial Run 处理
+### 9.3 Partial run 的处理
 
-曾出现一次 run2 partial：
+此前有一次 run2 只成功了 16 / 33 条，另外 17 条是 `APIConnectionError`。
 
-```text
-16 / 33 succeeded
-17 / 33 APIConnectionError
-```
+这批结果已经单独归档，只保留作运行记录，不算正式 benchmark 结果。迁移到后续完整 run 时，对可复用记录进行了 prompt hash 校验，没有把失败 run 和完整结果混在一起。
 
-该批结果已迁入 `results/deprecated_partial_run2/`，仅用于 provenance / migration history，**不作为 benchmark 有效结果**。其中成功的 16 条在迁移到 canonical run 时按 prompt hash 校验复用，没有重复调用 API。
+## 10. 接下来需要补的验证
 
----
+官方任务要求至少做判别力验证和一致性验证，并鼓励对抗性验证。当前还需要补以下几组实验。
 
-## 9. 仍需完成的有效性验证
+### 10.1 Evidence-only
 
-官方任务要求至少完成判别力验证与一致性验证，并鼓励对抗性验证。当前后续重点如下：
+去掉完整 Innovation Trace，只给 evaluator 更受限的 recipe / evidence 信息，再重新评测。
 
-### 9.1 Evidence-only Track
+这个实验主要用来判断：当前 trace-conditioned 设置里的表现，有多少来自 evaluator 本身，有多少来自 trace 提供的提示。
 
-移除人工整理的完整 Innovation Trace，只给更受限的 evidence / recipe 信息，观察模型表现下降幅度。
+### 10.2 重复评分
 
-目的：回答当前较好的 trace-conditioned 表现中，有多少来自 CIE rubric 本身，有多少来自输入 trace 提供了较强信息。
-
-### 9.2 重复评分一致性
-
-对同一输出进行至少 3 次独立评测，统计：
+对同一样本至少重复评测 3 次，统计：
 
 - 总分标准差；
 - 维度分数波动；
 - class label agreement；
 - ranking stability。
 
-### 9.3 与人工标注一致性
+### 10.3 人工一致性
 
-由人工依据同一 rubric 对样本进行盲评，与 Hy3 judge 结果比较，计算准确率 / F1、Spearman 或其他一致性统计。
+由人工按照同一 rubric 对样本盲评，再和 Hy3 judge 结果比较。
 
-### 9.4 系统化判别力验证
+### 10.4 系统化判别力实验
 
-将 Good / Medium / Bad 或 High / Partial / Low 设计为成组样本，统计 evaluator 是否能够稳定满足预期排序，而不是只展示少数成功案例。
+不再只展示三个成功案例，而是构造多组 High / Partial / Low 或 Good / Medium / Bad 样本，统计是否能够稳定保持预期排序。
 
-### 9.5 Adversarial Validation
+### 10.5 Adversarial cases
 
-构造可能骗分的输出，例如：
+会重点测试几类可能骗分的做法：
 
 - 增加篇幅；
 - 堆砌专业术语；
-- 伪造历史 precedent；
-- 随机加入陌生食材；
-- 提供漂亮但错误的机制解释；
-- 在可执行性很差的情况下强化“创新叙事”。
+- 编造 precedent；
+- 随机加入陌生或稀有食材；
+- 给出听起来漂亮但实际错误的机制解释；
+- 明显不可执行，但强化“创新”叙述。
 
-检验 CIE 的 anti-gaming 规则能否有效降低其分数。
+## 11. NewwwRecipe 界面设计
 
----
+首页暂定标题为 **What do we have?**。
 
-## 10. 应用侧交互设计
+用户可以：
 
-应用主界面围绕真实“冰箱里有什么”的使用场景设计。
+- 从冰箱式分类界面选择蔬菜、肉类等食材；
+- 直接输入已有食材；
+- 补充口味偏好和简单状态约束。
 
-### 首页
-
-标题：**What do we have?**
-
-用户可以从冰箱式分类界面选择蔬菜、肉类等食材，也可以直接文本输入，并补充口味偏好或简单状态约束。
-
-### 生成与筛选
-
-系统不是直接返回第一次采样，而是生成多个候选，并由 CIE 进行评价、筛选和解释。
-
-### 结果页
-
-展示：
+系统生成多个候选并经过 CIE 筛选后，在结果页展示：
 
 - 菜品名称；
-- 食材与调料；
+- 食材和调料；
 - 制作步骤；
 - 食材特点；
-- 搭配 / 机制解释；
+- 搭配和机制解释；
 - 最接近的已有料理及差异；
-- 创新亮点；
-- 尝试成本与失败风险；
-- CIE 六维评分与解释。
+- 创意点；
+- 尝试成本和失败风险；
+- CIE 六维评分和解释。
 
-用户可选择重新生成或收藏 / 下一步。
+用户可以选择重新生成，或者收藏 / 进入下一步。
 
----
+## 12. 预期效果
 
-## 11. 预期效果
+最终希望做到以下几件事：
 
-项目最终希望实现三层效果：
+1. NewwwRecipe 可以根据现有食材生成多个候选，并经过 CIE 排序后再展示；
+2. CIE 的评分过程能够被脚本记录和复现，而不是只展示一次模型输出；
+3. benchmark 中包含普通样本、难例、反例和对抗性样本；
+4. 最终报告能够说明哪些类型的创新容易判断、哪些容易出错，以及 Hy3 在这些 case 上的表现边界；
+5. GitHub 仓库包含运行说明、环境配置、评测脚本、数据、结果和 demo。
 
-### 应用层
+## 13. 时间规划
 
-用户输入已有食材后，可以获得不仅“新奇”，而且经过 CIE 筛选、具有解释和风险提示的创意方案。
+### 8 月 27 日
 
-### 工程层
+- 完成并提交项目方案；
+- 整理 CIE 设计说明；
+- 整理 30-case frozen benchmark；
+- 完成当前 trace-conditioned 主实验；
+- 建立公开 GitHub 仓库基础结构。
 
-形成可运行、可复现、可审计的 Hy3 应用与 benchmark pipeline，API 失败、解析失败和历史结果都有明确 provenance。
+### 8 月 28 日—8 月 31 日
 
-### 研究层
-
-形成一个针对开放式创新能力的可操作研究原型，回答：
-
-- Novelty 与 Innovation 如何区分；
-- 如何让创新过程可观察；
-- LLM-as-judge 在不同信息条件下是否可靠；
-- evaluator 会被哪些 anti-pattern 欺骗；
-- Hy3 的创新评价能力边界在哪里。
-
----
-
-## 12. 时间规划
-
-### 8 月 27 日：方案与 benchmark MVP 收口
-
-已完成 / 当日提交：
-
-- 项目方案文档；
-- CIE 框架说明；
-- 30-case frozen benchmark 核心设计；
-- canonical trace-conditioned run；
-- GitHub 公开仓库基础结构与安全配置；
-- 当前实验结果与边界说明。
-
-### 8 月 28 日—8 月 31 日：有效性验证补强
-
-- 完成 evidence-only track；
-- 完成 repeated scoring；
+- 跑 evidence-only；
+- 跑 repeated scoring；
 - 完成人工一致性抽检；
-- 完成 Good / Medium / Bad 系统化判别力实验；
+- 完成多组 High / Partial / Low 判别力实验；
 - 构造并运行 adversarial cases。
 
-### 9 月 1 日—9 月 4 日：应用侧整合
+### 9 月 1 日—9 月 4 日
 
-- Creative Recipe Generator；
-- CIE evaluator 接入候选排序；
-- 结果页解释字段；
-- 基本 UI 流程打通。
+- 接通 NewwwRecipe generator；
+- 把 CIE 接入候选排序；
+- 完成结果页主要字段；
+- 打通基础 UI 流程。
 
-### 9 月 5 日—9 月 7 日：完整评测与分析
+### 9 月 5 日—9 月 7 日
 
-- 在 frozen benchmark 上跑最终版本；
+- 跑最终 benchmark；
 - 输出完整结果表；
-- failure taxonomy；
-- 典型 case 分析；
-- 模型能力边界总结。
+- 整理失败类型；
+- 选取典型 case；
+- 完成主要分析。
 
-### 9 月 8 日—9 月 9 日：公开仓库与 Demo
+### 9 月 8 日—9 月 9 日
 
-- README / 环境 / 一键运行命令复核；
-- 同步 benchmark / scripts / results；
-- 清理私密信息和开发残留；
+- 检查 README、环境和运行命令；
+- 同步完整 benchmark、scripts 和 results；
+- 清理密钥和开发残留；
 - 录制 2 分钟以内 demo 视频或 GIF。
 
-### 9 月 10 日：最终提交
+### 9 月 10 日
 
-- 最终 GitHub 仓库；
-- 完整评测材料；
-- 有效性验证结果；
-- 分析报告；
-- Demo。
+完成最终提交。
 
----
+## 14. 主要风险
 
-## 13. 当前风险与应对
+### Trace 提供的信息过强
 
-### 风险 1：Trace-conditioned 可能高估 evaluator 能力
+处理方式：单独跑 evidence-only，并把两种实验设置分开报告。
 
-应对：将 evidence-only 作为独立轨道，明确不同信息条件，禁止混报结果。
+### LLM-as-judge 有随机波动
 
-### 风险 2：LLM-as-judge 存在随机波动
+处理方式：重复评测，并和人工标注比较。
 
-应对：重复评测 + 人工一致性验证。
+### benchmark 规模较小
 
-### 风险 3：小 benchmark 可能过拟合规则
+处理方式：冻结 gold / rubric，不围绕单次结果反复修改数据；另外加入 challenge / adversarial cases。
 
-应对：冻结 gold/rubric；加入 adversarial / challenge set；不因单次结果反复调整 benchmark。
+### API 连接失败影响结果
 
-### 风险 4：API 连接失败污染结果
+处理方式：保存 per-case 状态和运行记录，partial run 不计入正式指标。
 
-应对：保存 per-case 状态、prompt hash 与 migration provenance；partial run 不作为正式 benchmark 结果。
+### UI 占用过多时间
 
-### 风险 5：应用展示挤占研究验证时间
+处理方式：先完成 benchmark 和验证，再做界面细节。
 
-应对：优先保证 benchmark、验证、结果分析完整，再完成 UI polish。
+## 15. 最终提交内容
 
----
+最终计划提交：
 
-## 14. 最终产出
-
-1. **开源项目仓库**：Creative Recipe AI、CIE evaluator、环境配置与运行说明；
-2. **评测材料**：CIE-Culinary-Bench、schema / gold / rubric、评测脚本；
-3. **有效性验证**：判别力、一致性、evidence-only 与 adversarial 实验；
-4. **完整结果**：表格、指标、case-level 输出和错误分析；
-5. **分析报告**：设计依据、失败模式、能力边界与典型规律；
-6. **Demo**：2 分钟以内的视频或 GIF。
-
----
-
-## 15. 项目当前结论
-
-截至 2026 年 8 月 27 日，本项目已完成从“创新评价概念”到“**可运行 benchmark MVP**”的关键跨越：已有 frozen dataset、可复现 runner、真实 Hy3 canonical run 以及基础判别 / 排序指标。
-
-当前最需要继续验证的不是“系统能不能跑”，而是：
-
-> **这个 evaluator 在信息更受限、重复采样、人工对照和对抗攻击下，是否仍然可靠。**
-
-这将是最终提交前的核心实验主线。
+1. NewwwRecipe 应用源码；
+2. CIE evaluator；
+3. CIE-Culinary-Bench 及其说明文件；
+4. benchmark / validation 脚本；
+5. 判别力、一致性、evidence-only 和 adversarial 实验结果；
+6. 完整结果表、典型案例和错误分析；
+7. README、环境配置和运行说明；
+8. 2 分钟以内 demo 视频或 GIF。
