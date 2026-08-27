@@ -1,12 +1,16 @@
 # data
 
-CIE-Culinary-Bench 数据目录。
+这里放 CIE-Culinary-Bench 的数据和配套说明。
 
-截至 2026-08-27，项目核心 benchmark 已推进为 **30-case frozen dataset**。本地正式 benchmark 包已包含 data、schema、gold / rubric、annotation guideline、dataset card、quality report、source registry 与 fabrication disclosure 等治理材料。
+截至 2026-08-27，本地版本已经整理出 30 个冻结 case，并配有：
 
-公开仓库当前仍在同步这些正式 artifact，因此本目录暂以状态说明为主；最终提交前将上传冻结版本，并保证：
+- schema；
+- gold annotation；
+- rubric；
+- annotation guideline；
+- dataset card；
+- quality report；
+- source registry；
+- fabrication disclosure。
 
-- benchmark case 不因单次模型结果而临时改写；
-- schema / gold / rubric 与运行代码版本对应；
-- source / fabrication provenance 可追溯；
-- challenge / adversarial 样本与主集区分管理。
+公开仓库中的完整文件还在继续同步。冻结后的 case、gold 和 rubric 不会因为某一次模型结果不好看就临时修改；后续 challenge / adversarial 样本也会和主集分开保存。
