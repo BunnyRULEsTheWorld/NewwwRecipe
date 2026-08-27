@@ -1,0 +1,7 @@
+openai
+pydantic
+python-dotenv
+typer<0.13
+click<8.2
+rich
+pytest
