@@ -1,5 +1,12 @@
 # src
 
-正式应用源码目录。最终提交前将同步本地 `creative_recipe` 实现，包括 Hy3 generator、CIE evaluator、pipeline 与 UI。
+NewwwRecipe 的源码目录。
 
-当前方案阶段不以占位代码冒充已完成实现；代码同步完成后删除本说明或保留为模块索引。
+后续会把本地已经完成的 `creative_recipe` 代码同步到这里，主要包括：
+
+- Hy3 generator；
+- CIE evaluator；
+- 生成与筛选 pipeline；
+- UI 相关代码。
+
+当前公开仓库还在整理中，所以这里暂时只保留目录说明。
