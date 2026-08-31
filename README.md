@@ -13,6 +13,8 @@ NewwwRecipe 是一个基于 Hy3 的创意菜谱生成与评估项目。
 - **CIE（Culinary Innovation Evaluation）**：给候选料理做结构化评价和排序；
 - **CIE-Culinary-Bench**：用来开发和验证 CIE 的评测数据集。
 
+> 项目当前唯一正式状态见 [`PROJECT_STATE.md`](PROJECT_STATE.md)。版本同步与 WorkBuddy 更新流程见 [`docs/versioning.md`](docs/versioning.md)。
+
 目前工作量主要集中在 CIE 和 benchmark 上，应用侧会在评测流程稳定后接上。
 
 ## CIE 怎么评
@@ -45,7 +47,7 @@ CIE 再从六个维度打分：
 
 ## 现在做到哪了
 
-截至 2026-08-27，已经完成一个可以实际运行的 benchmark MVP。
+截至 2026-08-31，已经完成一个可以实际运行的 benchmark MVP，并完成一次仓库状态重新整理。
 
 目前有：
 
@@ -106,18 +108,20 @@ CIE 再从六个维度打分：
 ```text
 .
 ├── README.md
+├── PROJECT_STATE.md          # 当前唯一正式项目基线
+├── AGENTS.md                 # WorkBuddy / 自动化修改规则
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
-├── docs/                    # 项目方案、CIE 设计和实验记录
-├── src/                     # NewwwRecipe 与 CIE 实现
-├── data/                    # CIE-Culinary-Bench
-├── scripts/                 # benchmark / validation 脚本
-├── results/                 # 实验结果
-└── examples/                # 典型 case 和 demo 输出
+├── docs/                     # 项目方案、CIE、版本管理与实验记录
+├── src/                      # NewwwRecipe 与 CIE 实现
+├── data/                     # CIE-Culinary-Bench
+├── scripts/                  # benchmark / validation 脚本
+├── results/                  # 实验结果
+└── examples/                 # 典型 case 和 demo 输出
 ```
 
-当前公开仓库还在从本地开发目录同步，部分已经完成的代码和数据文件尚未全部上传。
+当前公开仓库仍在从本地开发目录同步：`src/`、`data/`、`scripts/`、`results/`、`examples/` 中部分真实实现和实验文件尚未完整进入 GitHub。缺失文件必须从实际产生实验结果的工作副本导入，不应凭记忆重新生成。
 
 ## 环境
 
@@ -137,6 +141,8 @@ copy .env.example .env
 
 ## 文档
 
+- [当前项目状态](PROJECT_STATE.md)
+- [版本管理与同步流程](docs/versioning.md)
 - [项目方案](docs/submission_proposal.md)
 - [CIE v3 设计说明](docs/cie_framework_v3.md)
 - [早期三案例测试记录](docs/cie_validation_report.md)
