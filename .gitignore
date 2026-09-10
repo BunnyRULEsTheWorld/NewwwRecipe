@@ -9,3 +9,15 @@ __pycache__/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Frontend build / dependency caches
+node_modules/
+dist/
+.output/
+coverage/
+*.log
+.web-showcase-cache/
+
+# Vite config transient artifacts
+vite.config.ts.timestamp-*.mjs
+

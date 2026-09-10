@@ -100,3 +100,20 @@ All future updates must follow `docs/versioning.md` and the instructions in `AGE
 ## 6. Next milestone
 
 The next repository milestone is to replace placeholder directories with the actual local implementation / benchmark artifacts, verify the commands from a clean checkout, then tag the repository baseline before continuing application UI and additional validation experiments.
+
+- [x] 接通 NewwwRecipe 应用 UI；
+- [ ] 把完整 benchmark、runner 和结果文件同步到公开仓库；
+- [ ] 完成 evidence-only、重复评测、人工一致性和对抗性实验；
+- [ ] 整理典型失败案例；
+- [ ] 完成最终评测和 2 分钟以内的 demo。
+
+## 7. Frontend implementation
+
+Added: 2026-09-10 on branch `feat/interactive-fridge-frontend`.
+
+- Built an interactive fridge recipe UI (React + TypeScript + Vite) with the supplied hand-drawn illustrations.
+- Added a thin FastAPI adapter under `src/creative_recipe/web/` to expose the existing pipeline and models over HTTP.
+- The adapter returns the canonical CIE v3 contract: six dimensions with canonical weights, a direct six-dimension weighted total, and the six-stage Innovation Trace.
+- Frontend consumes only the canonical contract; it does not recalculate totals or reintroduce Stage-A/Stage-B naming.
+- Verified offline in demo mode via browser automation at 1440×900 and 1024×768; no broken images, no console errors, no horizontal overflow.
+- Asset audit: 65 ingredient PNGs and 8 scene PNGs all decode and load; ingredient cutouts retain alpha.

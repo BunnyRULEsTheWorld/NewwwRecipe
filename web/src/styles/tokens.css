@@ -1,0 +1,73 @@
+/**
+ * Design tokens — warm Japanese children's picture book.
+ *
+ * Warm ivory paper, coloured-pencil outlines, light watercolour fills. Sage green, pale mint,
+ * soft coral and natural wood. No glossy gradients, no SaaS dashboard chrome.
+ */
+:root {
+  /* Paper & ink */
+  --paper: #fdf7ea;
+  --paper-warm: #f8efdc;
+  --paper-deep: #f2e5cd;
+  --card: #fffdf7;
+  --ink: #3f3a33;
+  --ink-soft: #6b6259;
+  --ink-faint: #948a80;
+  --pencil: #5b5348;
+
+  /* Accents */
+  --sage: #7f9f6f;
+  --sage-deep: #5d7d52;
+  --mint: #cfe6d6;
+  --mint-soft: #e6f3e8;
+  --coral: #e08a6d;
+  --coral-soft: #fbe2d6;
+  --wood: #c8996a;
+  --wood-deep: #a87b4f;
+  --butter: #f2d79b;
+  --sky: #cfe2ea;
+
+  /* Semantic */
+  --focus: #2f6f4f;
+  --danger: #b4564a;
+  --danger-soft: #f8e3df;
+
+  /* Structure */
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 2px 6px rgba(93, 78, 58, 0.07), 0 10px 24px rgba(93, 78, 58, 0.07);
+  --shadow-lift: 0 4px 10px rgba(93, 78, 58, 0.1), 0 16px 34px rgba(93, 78, 58, 0.12);
+  --ring: 0 0 0 3px rgba(47, 111, 79, 0.35);
+
+  --outline-w: 2px;
+
+  /* Type */
+  --font-body: 'Nunito', 'Quicksand', 'Segoe UI', 'Hiragino Maru Gothic ProN', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.8125rem; /* 13px */
+  --fs-sm: 0.9375rem; /* 15px */
+  --fs-md: 1.0625rem; /* 17px */
+  --fs-lg: 1.375rem; /* 22px */
+  --fs-xl: 1.875rem; /* 30px */
+  --fs-2xl: 2.75rem; /* 44px */
+  --fs-3xl: 3.5rem; /* 56px */
+
+  /* Layout */
+  --page-max: 1400px;
+  --gutter: clamp(16px, 2.4vw, 40px);
+}
+
+/* Global reduced-motion guard. Components also honour the JS media query for JS-driven motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "rubric": "cie_v3 (proposed, not in src/)",
+  "dimensions": {
+    "culinary_knowledge_grounding": {
+      "label": "Culinary Knowledge Grounding",
+      "weight": 0.15
+    },
+    "existing_culinary_precedent": {
+      "label": "Existing Culinary Precedent Analysis",
+      "weight": 0.15
+    },
+    "innovation_delta_quality": {
+      "label": "Innovation Delta Quality and Magnitude",
+      "weight": 0.25
+    },
+    "mechanistic_plausibility": {
+      "label": "Mechanistic Plausibility",
+      "weight": 0.2
+    },
+    "innovation_value_exploration": {
+      "label": "Innovation Value / Exploration",
+      "weight": 0.15
+    },
+    "realization_quality": {
+      "label": "Realization Quality",
+      "weight": 0.1
+    }
+  },
+  "expected_ranking": [
+    "C",
+    "B",
+    "A"
+  ],
+  "actual_ranking": [
+    "C",
+    "B",
+    "A"
+  ],
+  "pass": true,
+  "cases": [
+    {
+      "case_id": "A",
+      "level": "Low Innovation",
+      "concept_name": "番茄芝士焗鸡 (Tomato-Cheese Baked Chicken)",
+      "scores": {
+        "culinary_knowledge_grounding": {
+          "reason": "准确说明番茄酸度平衡芝士脂肪、芝士美拉德与umami、鸡肉蛋白等教科书机制，但仅复述已知常识，未用知识支撑任何创新结构。",
+          "score": 6
+        },
+        "existing_culinary_precedent": {
+          "reason": "明确指出接近chicken parmigiana、caprese等经典组合，说明无新增变化，未编造前所未有的故事。",
+          "score": 8
+        },
+        "innovation_delta_quality": {
+          "reason": "无角色迁移/技法/风味结构改变，仅为经典重组，变化幅度1，未改变体验，Grounding≥5故不触发上限但本身极低。",
+          "score": 1
+        },
+        "mechanistic_plausibility": {
+          "reason": "机制描述符合风味化学与烹饪经验，但仅佐证经典组合，对'创新'无新依据。",
+          "score": 6
+        },
+        "innovation_value_exploration": {
+          "reason": "未提出新体验目标，无更好味觉/口感/利用价值，仅重复经典。",
+          "score": 1
+        },
+        "realization_quality": {
+          "reason": "若落地为常规焗烤，步骤合理可执行，但无针对创新点的实现设计。",
+          "score": 5
+        }
+      },
+      "innovation_delta_analysis": {
+        "after_state": "番茄+芝士焗鸡（常规组合）",
+        "before_state": "chicken parmigiana等番茄芝士鸡料理",
+        "existing_precedent": "chicken parmigiana / caprese",
+        "innovation_type": "None",
+        "magnitude_score": 1,
+        "value_gain": "无新增价值，仅家常美味"
+      },
+      "weighted_total": 4.2
+    },
+    {
+      "case_id": "B",
+      "level": "Medium Innovation",
+      "concept_name": "Cafe Pollo Melt (咖啡鸡肉焗)",
+      "scores": {
+        "culinary_knowledge_grounding": {
+          "reason": "正确识别咖啡肉类 savory 先例，解释收汁浓缩与芝士 broil 融化的物理机制（蒸发浓缩、热软化），理解技法支撑创新。",
+          "score": 7
+        },
+        "existing_culinary_precedent": {
+          "reason": "明确列举咖啡肋排、咖啡腌肉、咖啡卤汁等先例，指出本概念框架仍是 melt/焗，非全新结构，未编造首创故事。",
+          "score": 7
+        },
+        "innovation_delta_quality": {
+          "reason": "变化为咖啡 role shift 至 glaze + reduction 技法桥接，幅度小（4/10），但机制清晰、体验有微新；非随机堆叠，属适度新颖+强支撑。",
+          "score": 6
+        },
+        "mechanistic_plausibility": {
+          "reason": "收汁蒸发浓缩附着、芝士热融均有物理烹饪机制与既有咖啡肉料理证据支持，非无据猜测。",
+          "score": 7
+        },
+        "innovation_value_exploration": {
+          "reason": "假设 bitter-savory-comfort 新感官组合，较标准焗有体验增益，非为怪而异。",
+          "score": 6
+        },
+        "realization_quality": {
+          "reason": "收汁8-10min、刷涂、broil 控时步骤清楚，风险（苦/焦）有标注，可执行。",
+          "score": 7
+        }
+      },
+      "innovation_delta_analysis": {
+        "after_state": "鸡肉涂咖啡收汁 glaze 再覆熔芝士焗，bitter-savory-comfort 组合",
+        "before_state": "标准鸡肉芝士焗（无咖啡元素）",
+        "existing_precedent": "咖啡烤肉/咖啡卤汁 + 鸡肉芝士焗",
+        "innovation_type": "Ingredient Role Shift / Technique Innovation",
+        "magnitude_score": 4,
+        "value_gain": "咖啡烘焙香迁移至肉类，形成苦鲜舒适用新感官体验"
+      },
+      "weighted_total": 6.6
+    },
+    {
+      "case_id": "C",
+      "level": "High Innovation",
+      "concept_name": "咖啡盐渍烟熏鸡 (Coffee-Cured Smoke-Roasted Chicken)",
+      "scores": {
+        "culinary_knowledge_grounding": {
+          "reason": "准确引用咖啡腌肉(NYT bacon)、樟茶鸭、盐渍机制；解释melanoidins与美拉德共享、酚类与脂肪结合、盐变性保水，非表面描述。",
+          "score": 9
+        },
+        "existing_culinary_precedent": {
+          "reason": "明确比对咖啡腌培根、樟茶鸭、盐曲；指出本方案为两者机制组合而非首创，未编造从未存在故事。",
+          "score": 9
+        },
+        "innovation_delta_quality": {
+          "reason": "三类有效变化：角色迁移(咖啡变腌渍剂)、技法组合(咖啡腌+茶熏)、风味架构三层；幅度适中(7)且机制强，真正改变体验。",
+          "score": 8
+        },
+        "mechanistic_plausibility": {
+          "reason": "有culinary evidence(咖啡腌培根、樟茶鸭)与化学机制(melanoidins/美拉德、guaiacol结合脂肪、盐保水)支持，非无据猜测。",
+          "score": 9
+        },
+        "innovation_value_exploration": {
+          "reason": "带来新savory体验(咖啡炭火感)、风味入基质而非表面、利用咖啡与茶成熟技法提升表达价值。",
+          "score": 8
+        },
+        "realization_quality": {
+          "reason": "流程清晰(腌渍+慢熏)，列明过咸/焦化/苦的风险与低温慢熏、液控粉控对策，可执行。",
+          "score": 8
+        }
+      },
+      "innovation_delta_analysis": {
+        "after_state": "咖啡腌渍+茶熏烤鸡：三层风味(umami+咖啡烘焙香入蛋白+烟熏酚类)，似咖啡炭火炙烤而无液态咖啡",
+        "before_state": "咖啡仅作表面glaze/饮品；熏烤用单一茶或木；风味停留表面",
+        "existing_precedent": "咖啡腌培根 / 樟茶鸭",
+        "innovation_type": "Ingredient Role Shift / Technique Innovation / Flavor Architecture Innovation",
+        "magnitude_score": 7,
+        "value_gain": "咖啡香深入蛋白基质，创造新型savory烟熏体验，非简单浇汁"
+      },
+      "weighted_total": 8.5
+    }
+  ]
+}

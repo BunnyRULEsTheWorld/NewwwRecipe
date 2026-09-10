@@ -1,0 +1,59 @@
+{
+  "source_example": "mochicken_bake_demo.json",
+  "rubric": "cie_v2 (proposed, not in src/)",
+  "dimensions": {
+    "culinary_knowledge_grounding": {
+      "label": "Culinary Knowledge Grounding",
+      "weight": 0.15
+    },
+    "innovation_delta_quality": {
+      "label": "Innovation Delta Quality",
+      "weight": 0.25
+    },
+    "mechanistic_plausibility": {
+      "label": "Mechanistic Plausibility",
+      "weight": 0.2
+    },
+    "creative_exploration_value": {
+      "label": "Creative Exploration Value",
+      "weight": 0.15
+    },
+    "culinary_realisability": {
+      "label": "Culinary Realizability",
+      "weight": 0.15
+    },
+    "communication_quality": {
+      "label": "Communication Quality",
+      "weight": 0.1
+    }
+  },
+  "scores": {
+    "culinary_knowledge_grounding": {
+      "reason": "Recipe correctly relies on chicken's mild absorbency, coffee's reduction to syrup (coats spoon), and cheese's melt-to-crust behavior under overhead heat; no false claims about ingredient roles.",
+      "score": 8
+    },
+    "innovation_delta_quality": {
+      "reason": "Genuine technique-bridge: reduces coffee to a savory glaze for chicken (not just using coffee as drink or rub) and layers melted cheese for bitter-savory-comfort; exceeds trivial protein swap but uses familiar melt format.",
+      "score": 7
+    },
+    "mechanistic_plausibility": {
+      "reason": "Mechanisms are physically sound: coffee simmered 8–10 min to syrupy reduction (water evaporation, concentration), glaze adhesion by brushing, cheese melted via broil (thermal softening/fat rendering); no impossible chemistry claimed.",
+      "score": 9
+    },
+    "creative_exploration_value": {
+      "reason": "Combines coffee-culture beverage reduction, protein cookery, and cheese-melt technique into an open-faced sandwich frame; explores bitter-to-comfort bridge but stays within one hot-melt presentation with no cross-cuisine or alternate technique spread.",
+      "score": 6
+    },
+    "culinary_realisability": {
+      "reason": "Uses only skillet, saucepan, oven/broiler; steps are sequenced without contradiction (sear to 74°C, reduce 120ml to ~2tbsp, broil 2–3 min); ordinary home cook can execute with listed items.",
+      "score": 9
+    },
+    "communication_quality": {
+      "reason": "Dish name 'Cafe Pollo Melt' clearly signals coffee+chicken+melt; creative explanation states the bridge logic (breakfast coffee culture × comfort melt, bitter-savory-comfort) and cites the hypothesis that reduction+cheese creates a novel bite, not just steps.",
+      "score": 8
+    }
+  },
+  "weighted_total": 7.8,
+  "innovation_delta_verdict": "PARTIAL",
+  "innovation_delta_analysis": "The recipe is not merely swapping chicken for beef in a melt; it applies a coffee-reduction glaze technique to poultry and pairs bitter-savory syrup with a melted cheese crust, creating a new sensory combination and a concrete bridge between coffee culture and comfort food. However, the technique (reduce, brush, melt) is standard and the frame remains a basic melt, so it is a partial rather than radical innovation."
+}

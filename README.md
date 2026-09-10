@@ -103,6 +103,99 @@ CIE 再从六个维度打分：
 菜谱 + 做法 + 创意解释 + 风险提示
 ```
 
+## 交互式冰箱前端
+
+项目现在包含一个可运行的网页前端，用来完整体验“冰箱里有什么”的创意菜谱流程。
+
+### 技术栈
+
+- React + TypeScript + Vite
+- 手绘水彩/儿童绘本视觉风格
+- FastAPI 薄适配器复用现有 `creative_recipe` pipeline
+- `localStorage` 保存收藏
+
+### 前端目录
+
+- `web/` — React 源码与 Vite 配置；
+- `src/creative_recipe/web/` — FastAPI 适配器（`app.py`、`service.py`、`ingredient_catalog.py`）；
+- `ingredient/` — 65 张透明 PNG 食材插图；
+- `fronted asset/` — 场景插图：厨房背景、冰箱三态、空篮子、搅拌碗、食谱书、收藏盒。
+
+### 前置条件
+
+- Python 3.11+
+- Node.js 20+ / npm 9+
+- Windows 开发（不需要 Docker）
+
+### 安装
+
+```bash
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+cd web
+npm install
+```
+
+### 启动开发服务器
+
+#### 方式一：两条命令
+
+**终端 1 — 后端**
+
+```cmd
+cd C:\path\to\NewwwRecipe
+set PYTHONPATH=src
+.venv\Scripts\python.exe -m uvicorn creative_recipe.web.app:app --host 127.0.0.1 --port 8000 --log-level warning
+```
+
+**终端 2 — 前端**
+
+```cmd
+cd C:\path\to\NewwwRecipe\web
+npm run dev
+```
+
+然后打开 http://127.0.0.1:5173/。
+
+#### 方式二：小启动器（单窗口）
+
+```cmd
+python scripts\dev_server.py
+```
+
+该启动器会同时拉起后端与前端，并按 `Ctrl+C` 一并结束。
+
+### Demo 模式与真实模型
+
+未填写 API key 时，后端自动使用仓库内置 `DemoProvider` 进入 Demo 模式，可在离线环境完整浏览 UI。页面右上角会显示 “Demo mode” 徽标。
+
+要使用真实模型：
+
+```bash
+copy .env.example .env
+```
+
+然后在 `.env` 中填写 `HY3_API_KEY`、`HY3_BASE_URL` 等配置。真实密钥只保存在本地 `.env`，不会提交。
+
+### API 端点
+
+- `GET /api/health` — 健康检查，返回食材/场景资源数量与 demo 状态；
+- `GET /api/ingredients` — 65 种食材清单；
+- `POST /api/recipes/generate` — 返回菜谱、canonical CIE v3 六维评分、Innovation Trace、加权总分与元数据。
+
+### CIE v3 合同
+
+接口与前端严格使用 canonical 六维：
+
+1. `culinary_knowledge_grounding` — 15%
+2. `existing_culinary_precedent_analysis` — 15%
+3. `innovation_delta_quality` — 25%
+4. `mechanistic_plausibility` — 20%
+5. `innovation_value` — 15%
+6. `realization_quality` — 10%
+
+总分由后端直接加权计算；前端不还原旧 Stage-A/Stage-B 75/25 公式。`stage_a_score`/`stage_b_score` 仅作为诊断字段返回，不在 UI 中用作主总分。
+
 ## 仓库结构
 
 ```text
@@ -126,8 +219,11 @@ CIE 再从六个维度打分：
 ## 环境
 
 - Python 3.11+
-- Hy3 API access
+- Node.js 20+ / npm 9+（用于前端）
+- Hy3 API access（真实模型调用时）
 - OpenAI-compatible Python SDK
+
+### Python 依赖
 
 ```bash
 python -m venv .venv
@@ -139,6 +235,13 @@ copy .env.example .env
 
 然后在本地 `.env` 中填写 API Key。真实密钥不会提交到仓库。
 
+### 前端依赖
+
+```bash
+cd web
+npm install
+```
+
 ## 文档
 
 - [当前项目状态](PROJECT_STATE.md)
@@ -149,11 +252,11 @@ copy .env.example .env
 
 ## 最终提交前的工作
 
-- 把完整 benchmark、runner 和结果文件同步到公开仓库；
-- 完成 evidence-only、重复评测、人工一致性和对抗性实验；
-- 整理典型失败案例；
-- 接通 NewwwRecipe 的生成、评价和 UI 流程；
-- 完成最终评测和 2 分钟以内的 demo。
+- [x] 接通 NewwwRecipe 的生成、评价和 UI 流程（交互式冰箱前端）；
+- [ ] 把完整 benchmark、runner 和结果文件同步到公开仓库；
+- [ ] 完成 evidence-only、重复评测、人工一致性和对抗性实验；
+- [ ] 整理典型失败案例；
+- [ ] 完成最终评测和 2 分钟以内的 demo。
 
 ## API Key
 
