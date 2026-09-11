@@ -1,0 +1,31 @@
+{
+  "experiment_signature": "28609bf1a8afd7044223f714388078065dde2a7f6a5010a0ca5621e78f579a7b",
+  "model": "hy3",
+  "dataset": {
+    "path": "data/cie_culinary_bench.jsonl",
+    "version": "e19af338f0c8fae5",
+    "sha256": "e19af338f0c8fae53ff026aab9176257a3b9236d79fc600a6fad794e89755d2f"
+  },
+  "rubric": {
+    "path": "schema/scoring_rubric.json",
+    "version": "unknown",
+    "sha256": "60bb7b7428c1351def19670e8a9c00500b247abbee7cf02fea53f058a37e210d"
+  },
+  "prompt_template_version": "v1.1.0",
+  "track": "closed_evidence",
+  "id_anonymization": {
+    "enabled": false,
+    "version": "v0_exposed"
+  },
+  "temperature": 0.2,
+  "reasoning_effort": "no_think",
+  "started_at": null,
+  "completed_at": null,
+  "completed_units": 33,
+  "failed_units": 0,
+  "experiment_complete": true,
+  "runner": "benchmark_pipeline.py v1.2 (baseline: real-ID exposed)",
+  "id_anonymized": false,
+  "deprecated": true,
+  "deprecation_reason": "Leaky: real dataset IDs (e.g. CIE-A04) were exposed in prompts, leaking the Adversarial label; do NOT cite as canonical benchmark result. Use results/closed_evidence_anonymous_v1/."
+}

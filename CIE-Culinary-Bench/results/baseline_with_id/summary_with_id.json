@@ -1,0 +1,166 @@
+{
+  "rows_total": 33,
+  "rows_parsed": 33,
+  "rows_failed": 0,
+  "parse_success_rate": 1.0,
+  "api_failure_count": 0,
+  "retry_count": 0,
+  "classification": {
+    "n": 30,
+    "accuracy": 0.8333333333333334,
+    "macro_f1": 0.7657952069716775,
+    "per_class_recall": {
+      "Conventional": 1.0,
+      "Surface Innovation": 1.0,
+      "Incremental Innovation": 0.8,
+      "Structural Innovation": 1.0,
+      "Transformative Innovation": 0.0,
+      "Adversarial Trap": 1.0
+    },
+    "confusion_matrix": {
+      "categories": [
+        "Conventional",
+        "Surface Innovation",
+        "Incremental Innovation",
+        "Structural Innovation",
+        "Transformative Innovation",
+        "Adversarial Trap"
+      ],
+      "matrix": {
+        "Conventional": {
+          "Conventional": 6,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Surface Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 4,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Incremental Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 4,
+          "Structural Innovation": 1,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Structural Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 6,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Transformative Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 4,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Adversarial Trap": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 5
+        }
+      }
+    },
+    "adversarial_trap_accuracy": 1.0,
+    "cie025_structural_or_transformative_rate": 0.0
+  },
+  "scoring": {
+    "dimensions": {
+      "culinary_knowledge_grounding": {
+        "n": 30,
+        "mae": 0.8666666666666667,
+        "within_1_accuracy": 0.9,
+        "exact_accuracy": 0.26666666666666666,
+        "spearman": -0.226834699289608,
+        "qwk": -0.17903930131004353
+      },
+      "existing_culinary_precedent_analysis": {
+        "n": 30,
+        "mae": 0.9,
+        "within_1_accuracy": 0.7,
+        "exact_accuracy": 0.4,
+        "spearman": -0.24959226008892244,
+        "qwk": -0.11940298507462699
+      },
+      "innovation_delta_quality": {
+        "n": 30,
+        "mae": 0.26666666666666666,
+        "within_1_accuracy": 1.0,
+        "exact_accuracy": 0.7333333333333333,
+        "spearman": 0.9403437730365541,
+        "qwk": 0.9137931034482759
+      },
+      "mechanistic_plausibility": {
+        "n": 30,
+        "mae": 0.7333333333333333,
+        "within_1_accuracy": 0.9666666666666667,
+        "exact_accuracy": 0.3,
+        "spearman": 0.6247341190775919,
+        "qwk": 0.4285714285714286
+      },
+      "innovation_value": {
+        "n": 30,
+        "mae": 0.6666666666666666,
+        "within_1_accuracy": 1.0,
+        "exact_accuracy": 0.3333333333333333,
+        "spearman": 0.8571431542666468,
+        "qwk": 0.7956403269754768
+      },
+      "realization_quality": {
+        "n": 30,
+        "mae": 0.7,
+        "within_1_accuracy": 0.9,
+        "exact_accuracy": 0.43333333333333335,
+        "spearman": 0.7490719053471512,
+        "qwk": 0.743801652892562
+      }
+    },
+    "mean_spearman": 0.44914433205823556,
+    "min_spearman": -0.24959226008892244,
+    "max_spearman": 0.9403437730365541,
+    "mean_mae": 0.6888888888888888
+  },
+  "ranking": {
+    "n": 3,
+    "pairwise_accuracy": 0.8666666666666667,
+    "mean_spearman": 0.7666666666666666,
+    "mean_kendall_tau_a": 0.7333333333333334
+  },
+  "config": {
+    "model": "hy3",
+    "temperature": 0.2,
+    "reasoning_effort": "no_think",
+    "track": "closed_evidence",
+    "id_anonymized": false,
+    "runs": 1,
+    "dry_run": false,
+    "judge_client": "creative_recipe.Hy3LLMClient",
+    "rubric": "schema/scoring_rubric.json (1-5, six dimensions)",
+    "runner": "benchmark_pipeline.py v1.1.1 (incremental + resume + retry)",
+    "id_anonymization_version": "v0_exposed",
+    "experiment_signature": "28609bf1a8afd7044223f714388078065dde2a7f6a5010a0ca5621e78f579a7b"
+  },
+  "dataset": {
+    "path": "C:\\Users\\SUNYIXI\\Desktop\\NewwwRecipe!!!\\creative-recipe-ai\\CIE-Culinary-Bench\\data\\cie_culinary_bench.jsonl",
+    "n_cases": 30,
+    "n_ranking_sets": 3
+  },
+  "deprecated": true,
+  "deprecation_reason": "Leaky: real dataset IDs (e.g. CIE-A04) were exposed in prompts, leaking the Adversarial label; do NOT cite as canonical benchmark result. Use results/closed_evidence_anonymous_v1/."
+}

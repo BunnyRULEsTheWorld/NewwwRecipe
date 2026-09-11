@@ -1,0 +1,81 @@
+{
+  "version": "1.1",
+  "notes": "每组 gold 分数互不相同，避免未定义 tie-break。正式 prompt 不包含 gold_scores/gold_ordering。",
+  "sets": [
+    {
+      "id": "RANK-IV-01",
+      "dimension": "innovation_value",
+      "case_ids": [
+        "CIE-A04",
+        "CIE-025",
+        "CIE-018",
+        "CIE-008",
+        "CIE-015"
+      ],
+      "gold_scores": {
+        "CIE-A04": 1,
+        "CIE-025": 2,
+        "CIE-018": 3,
+        "CIE-008": 4,
+        "CIE-015": 5
+      },
+      "gold_ordering": [
+        "CIE-015",
+        "CIE-008",
+        "CIE-018",
+        "CIE-025",
+        "CIE-A04"
+      ]
+    },
+    {
+      "id": "RANK-RQ-01",
+      "dimension": "realization_quality",
+      "case_ids": [
+        "CIE-009",
+        "CIE-001",
+        "CIE-025",
+        "CIE-010",
+        "CIE-023"
+      ],
+      "gold_scores": {
+        "CIE-009": 1,
+        "CIE-001": 2,
+        "CIE-025": 3,
+        "CIE-010": 4,
+        "CIE-023": 5
+      },
+      "gold_ordering": [
+        "CIE-023",
+        "CIE-010",
+        "CIE-025",
+        "CIE-001",
+        "CIE-009"
+      ]
+    },
+    {
+      "id": "RANK-IDQ-01",
+      "dimension": "innovation_delta_quality",
+      "case_ids": [
+        "CIE-023",
+        "CIE-025",
+        "CIE-018",
+        "CIE-010",
+        "CIE-015"
+      ],
+      "gold_scores": {
+        "CIE-023": 1,
+        "CIE-025": 2,
+        "CIE-018": 3,
+        "CIE-010": 4,
+        "CIE-015": 5
+      },
+      "gold_ordering": [
+        "CIE-015",
+        "CIE-010",
+        "CIE-018",
+        "CIE-025",
+        "CIE-023"
+      ]
+    }
+  ]
+}

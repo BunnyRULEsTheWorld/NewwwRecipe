@@ -1,0 +1,551 @@
+[
+  {
+    "id": "CIE001-S1",
+    "title": "腾讯视频《一饭封神2》第1期上",
+    "url": "https://v.qq.com/x/cover/mzc00200lk7yd24/u4102e6bi22.html",
+    "source_type": "primary_program",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE001-S2",
+    "title": "新浪：客家冲击波创新豆腐花",
+    "url": "https://www.sina.cn/news/detail/5326461532902683.html",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE001-S3",
+    "title": "新浪：节目特色菜品梳理",
+    "url": "https://k.sina.cn/article_7879923120_1d5ae15b006801knie.html?from=food",
+    "source_type": "tertiary_summary",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE002-S1",
+    "title": "腾讯新闻：海蟹炒米粉",
+    "url": "https://view.inews.qq.com/a/20260803V04PV400",
+    "source_type": "primary_program_clip",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE002-S2",
+    "title": "Chef Will Leung：五种海蟹炒米粉",
+    "url": "https://www.instagram.com/reel/DYkPZiXjdmS/",
+    "source_type": "creator_social",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE003-S1",
+    "title": "WeTV《一饭封神2》第1期中",
+    "url": "https://www.youtube.com/watch?v=NCzpW71SFwQ",
+    "source_type": "primary_program",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE004-S1",
+    "title": "猫眼：黄油鸡卷与川式鱼香汁",
+    "url": "https://i.maoyan.com/asgard/news/18322413",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE004-S2",
+    "title": "凤凰网美食：选手与原版黄油鸡卷",
+    "url": "https://foodnwine.ifeng.com/c/8v6KM6rfcdo",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE004-S3",
+    "title": "知乎：黄油鸡卷2.0宫保拆解",
+    "url": "https://zhuanlan.zhihu.com/p/2067278336682993363",
+    "source_type": "commentary",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE005-S1",
+    "title": "WeTV《一饭封神2》第2期上",
+    "url": "https://www.youtube.com/watch?v=vm4bjle0m6o",
+    "source_type": "primary_program",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE006-S1",
+    "title": "凤凰网美食：金枪鱼拿破仑失误与淘汰",
+    "url": "https://foodnwine.ifeng.com/c/8vGMMDXEStB",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE006-S2",
+    "title": "腾讯新闻：金枪鱼拿破仑设备替换",
+    "url": "https://view.inews.qq.com/a/20260731A09A4400",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE007-S1",
+    "title": "WeTV《一饭封神2》第1期下",
+    "url": "https://www.youtube.com/watch?v=nEqHVQFsuZ0",
+    "source_type": "primary_program",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE008-S1",
+    "title": "羊城晚报：香茅脆皮叉烧2.0",
+    "url": "https://news.qq.com/rain/a/20260730A0BDZ000",
+    "source_type": "reputable_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE008-S2",
+    "title": "腾讯新闻：曹嗣全脆皮叉烧切片",
+    "url": "https://view.inews.qq.com/a/20260729V05VXG00",
+    "source_type": "primary_program_clip",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE009-S1",
+    "title": "Le Colvert 官方：Pressed Duck",
+    "url": "https://lecolverthk.com/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE009-S2",
+    "title": "SCMP：Le Colvert 压鸭与 Guillaume Sejourne",
+    "url": "https://www.scmp.com/lifestyle/food-drink/article/3313308/how-hong-kong-french-bistro-making-macabre-fine-dining-dish-more-approachable",
+    "source_type": "reputable_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE009-S3",
+    "title": "MICHELIN Guide：Le Colvert",
+    "url": "https://guide.michelin.com/us/en/hong-kong-region/hong-kong/restaurant/le-colvert-1243327",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE010-S1",
+    "title": "Noma Projects：Garum—Got to Have the Funk",
+    "url": "https://nomaprojects.com/blogs/journal/garum-got-to-have-the-funk",
+    "source_type": "creator_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE010-S2",
+    "title": "Noma Projects：The Lab Dispatch—Garum",
+    "url": "https://nomaprojects.com/blogs/journal/the-lab-dispatch-garum",
+    "source_type": "creator_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE011-S1",
+    "title": "Noma Projects：Mushroom Garum",
+    "url": "https://nomaprojects.com/products/mushroom-garum",
+    "source_type": "creator_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE011-S2",
+    "title": "Noma Projects：About Garums",
+    "url": "https://nomaprojects.com/blogs/journal/about-garums",
+    "source_type": "creator_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE012-S1",
+    "title": "Noma：Past, Present and Future",
+    "url": "https://noma.dk/a-very-short-film-about-the-past-present-and-future-of-noma/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE012-S2",
+    "title": "Noma：Reservations and seasonal sourcing",
+    "url": "https://noma.dk/reservations/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE012-S3",
+    "title": "MICHELIN Guide：Noma",
+    "url": "https://guide.michelin.com/us/en/article/travel/noma-copenhagen-two-michelin-stars",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE013-S1",
+    "title": "World's 50 Best：Disfrutar iconic dishes",
+    "url": "https://www.theworlds50best.com/stories/News/the-most-iconic-dishes-at-disfrutar.html",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE013-S2",
+    "title": "Disfrutar official",
+    "url": "https://www.disfrutarbarcelona.com/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE013-S3",
+    "title": "Sosa：Gazpacho Sandwich",
+    "url": "https://www.sosa.cat/en/recipes/gazpacho-sandwich/",
+    "source_type": "culinary_technical",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE014-S1",
+    "title": "Condé Nast Traveler：Disfrutar review",
+    "url": "https://www.cntraveler.com/restaurants/barcelona/disfrutar",
+    "source_type": "reputable_review",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE014-S2",
+    "title": "Business Traveller：Panchino review",
+    "url": "https://www.businesstraveller.com/news/disfrutar-barcelona-restaurant-review/",
+    "source_type": "reputable_review",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE014-S3",
+    "title": "World's 50 Best：Disfrutar Best of the Best",
+    "url": "https://www.theworlds50best.com/restaurants/best-in-the-world/awards/best-of-the-best/disfrutar.html",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE015-S1",
+    "title": "The Bazaar：Liquid Olives",
+    "url": "https://www.thebazaar.com/news-item/bazaar-classics-liquid-olives/",
+    "source_type": "chef_restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE015-S2",
+    "title": "José Andrés：spherification and liquid olive",
+    "url": "https://joseandres.substack.com/p/you-can-do-magic-in-your-kitchen",
+    "source_type": "chef_primary",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE015-S3",
+    "title": "NBC：José Andrés Liquid Olive",
+    "url": "https://www.nbc.com/nbc-insider/yes-chef-jose-andres-liquid-olive-spherification",
+    "source_type": "secondary_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE016-S1",
+    "title": "Albert Adrià：Texturas and spherical ravioli",
+    "url": "https://albertadria.com/en/id/texturas-albert-y-ferran-adria/",
+    "source_type": "creator_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE016-S2",
+    "title": "Berkeley Haas：Ferran Adrià culinary innovation",
+    "url": "https://newsroom.haas.berkeley.edu/world-renown-spanish-chef-ferran-adria-whets-mba-appetites-gastronomic-innovation/",
+    "source_type": "academic_institution",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE016-S3",
+    "title": "The Guardian：spherical ravioli of peas",
+    "url": "https://www.theguardian.com/lifeandstyle/2011/oct/01/ferran-adria-el-bulli-family-meal",
+    "source_type": "reputable_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE017-S1",
+    "title": "Alchemist：Holistic Cuisine",
+    "url": "https://alchemist.dk/holistic-cuisine/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE017-S2",
+    "title": "Alchemist：The Experience",
+    "url": "https://alchemist.dk/the-alchemist-experience/",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE017-S3",
+    "title": "MICHELIN Guide：Alchemist",
+    "url": "https://guide.michelin.com/us/en/capital-region/copenhagen/restaurant/alchemist",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE017-S4",
+    "title": "World's 50 Best：Alchemist",
+    "url": "https://www.theworlds50best.com/restaurants/best-in-the-world/the-list/alchemist.html",
+    "source_type": "expert_guide",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE018-S1",
+    "title": "Serious Eats：Coffee-Charred Flank Steak",
+    "url": "https://www.seriouseats.com/the-secret-ingredient-coffee-charred-flank-steak-meat-recipe",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE018-S2",
+    "title": "Serious Eats：Coffee and Chipotle-Rubbed Steak",
+    "url": "https://www.seriouseats.com/coffee-and-chipotle-rubbed-steak-kabobs-with-stout-molasses-pan-sauce-recipe",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE018-S3",
+    "title": "Food & Wine：Chef-approved coffee steak rubs",
+    "url": "https://www.foodandwine.com/3-ingredient-steak-rubs-12004113",
+    "source_type": "chef_review",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE019-S1",
+    "title": "Tea Journey：Smoking Foods with Tea",
+    "url": "https://teajourney.pub/culinary-smoking-foods-tea/",
+    "source_type": "culinary_technical",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE019-S2",
+    "title": "Taste：Smoke Your Vegetables",
+    "url": "https://tastecooking.com/smoke-your-vegetables/",
+    "source_type": "culinary_review",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE020-S1",
+    "title": "The Woks of Life：Hakka Stuffed Tofu",
+    "url": "https://thewoksoflife.com/stuffed-tofu-hakka-style/",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE020-S2",
+    "title": "Great British Chefs：Hakka Stuffed Tofu",
+    "url": "https://www.greatbritishchefs.com/recipes/hakka-stuffed-tofu-recipe",
+    "source_type": "chef_platform",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE021-S1",
+    "title": "The Guardian：How to cook mapo tofu",
+    "url": "https://www.theguardian.com/food/2020/jan/22/how-to-cook-the-perfect-mapo-tofu-recipe-felicity-cloake",
+    "source_type": "reputable_culinary",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE021-S2",
+    "title": "Harper's Bazaar India：Mapo tofu history and chef comment",
+    "url": "https://www.harpersbazaar.in/travel-food/story/how-mapo-tofu-became-the-fiery-global-star-of-sichuan-cuisine-564426-2022-09-16",
+    "source_type": "chef_commentary",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE022-S1",
+    "title": "Serious Eats：Gong Bao Ji Ding",
+    "url": "https://www.seriouseats.com/gong-bao-ji-ding-sichuan-kung-pow-chicken-recipe",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE022-S2",
+    "title": "Red House Spice：Kung Pao Chicken",
+    "url": "https://redhousespice.com/kung-pao-chicken/",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE023-S1",
+    "title": "La Cucina Italiana：Classic Carbonara",
+    "url": "https://www.lacucinaitaliana.com/italian-food/how-to-cook/how-to-make-original-carbonara",
+    "source_type": "culinary_authority",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE023-S2",
+    "title": "El País：Carbonara tradition and technique",
+    "url": "https://elpais.com/gastronomia/2026-04-23/asi-se-hace-la-receta-mas-amada-y-maltratada-de-la-cocina-italiana-errores-e-ingredientes-prohibidos-de-la-pasta-carbonara.html",
+    "source_type": "reputable_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE024-S1",
+    "title": "Smithsonian：Hamburger global history",
+    "url": "https://www.si.edu/object/hamburger-global-history-andrew-f-smith%3Asiris_sil_908377",
+    "source_type": "museum_bibliography",
+    "tier": "P2",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE024-S2",
+    "title": "Serious Eats：Classic Smashed Burgers",
+    "url": "https://www.seriouseats.com/classic-smashed-burgers-recipe",
+    "source_type": "tested_recipe",
+    "tier": "P4",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE024-S3",
+    "title": "Smithsonian Magazine：Hamburger History",
+    "url": "https://www.smithsonianmag.com/arts-culture/hamburger-history-59279160/",
+    "source_type": "museum_media",
+    "tier": "P3",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE025-S1",
+    "title": "Nusr-Et 官方：The Iconic Saltbae Experience",
+    "url": "https://www.nusr-et.com.tr/en",
+    "source_type": "restaurant_official",
+    "tier": "P1",
+    "published": "未统一记录",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE025-S2",
+    "title": "The Standard：Jimi Famurewa reviews Nusr-Et",
+    "url": "https://www.standard.co.uk/going-out/restaurants/salt-bae-london-restaurant-review-nusr-et-steakhouse-london-b959539.html",
+    "source_type": "reputable_review",
+    "tier": "P3",
+    "published": "2021-10-08",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE025-S3",
+    "title": "The Guardian：Nusr-Et London gold-covered steak and later menu removal",
+    "url": "https://www.theguardian.com/business/2024/feb/19/salt-bae-restaurant-steak-heating-nusr-et-steakhouse-profits",
+    "source_type": "reputable_media",
+    "tier": "P3",
+    "published": "2024-02-19",
+    "accessed": "2026-08-26"
+  },
+  {
+    "id": "CIE025-S4",
+    "title": "EFSA Journal：Scientific Opinion on gold (E 175) as a food additive",
+    "url": "https://doi.org/10.2903/j.efsa.2016.4362",
+    "source_type": "academic_institution",
+    "tier": "P2",
+    "published": "2016-01-20",
+    "accessed": "2026-08-26"
+  }
+]

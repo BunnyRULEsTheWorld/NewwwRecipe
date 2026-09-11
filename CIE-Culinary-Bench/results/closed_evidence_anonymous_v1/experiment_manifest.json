@@ -1,0 +1,37 @@
+{
+  "experiment_signature": "c6748060722a762c07537ac9c828efd05f65e4d9a67e8ffb03c4f49bdf8d0a52",
+  "model": "hy3",
+  "dataset": {
+    "path": "C:\\Users\\SUNYIXI\\Desktop\\NewwwRecipe!!!\\creative-recipe-ai\\CIE-Culinary-Bench\\data\\cie_culinary_bench.jsonl",
+    "version": "e19af338f0c8fae5",
+    "sha256": "e19af338f0c8fae53ff026aab9176257a3b9236d79fc600a6fad794e89755d2f"
+  },
+  "rubric": {
+    "path": "C:\\Users\\SUNYIXI\\Desktop\\NewwwRecipe!!!\\creative-recipe-ai\\CIE-Culinary-Bench\\schema\\scoring_rubric.json",
+    "version": "1.1",
+    "sha256": "60bb7b7428c1351def19670e8a9c00500b247abbee7cf02fea53f058a37e210d"
+  },
+  "prompt_template_version": "v1.1.0",
+  "track": "closed_evidence",
+  "id_anonymization": {
+    "enabled": true,
+    "version": "v1"
+  },
+  "temperature": 0.2,
+  "reasoning_effort": "no_think",
+  "started_at": "2026-08-26T14:18:03+0800",
+  "completed_at": "2026-08-26T14:34:46+0800",
+  "completed_units": 33,
+  "failed_units": 0,
+  "experiment_complete": true,
+  "runner": "benchmark_pipeline.py v1.2 (experiment_signature + true resume + conn-abort)",
+  "evaluation_type": "trace_conditioned",
+  "track_note": "RUNTIME PROVENANCE vs MEASUREMENT CONSTRUCT. track='closed_evidence' is the LEGACY runtime input-view identifier: that exact string participated in the experiment_signature hash at execution time, so it is frozen here for reproducibility and is NOT edited. After the semantic annotation leakage audit (docs/protocol_audit_v1.md), the measurement construct of this same experiment is re-interpreted as trace_conditioned: the judge received the full innovation_trace as released, which is itself part of the human gold annotation and carries evaluator conclusions (strength present in 30/30 samples, plus verdict-bearing prose in chemical_or_culinary_basis and existing_culinary_context.relationship). Therefore: track/config provenance != evaluation construct name. The 73.3% / macro-F1 0.675 measure alignment with a supplied human reasoning chain, NOT evidence-only innovation evaluation, and must not be cited as the benchmark evidence_only result.",
+  "track_provenance": {
+    "runtime_track_identifier": "closed_evidence",
+    "frozen_reason": "participates in experiment_signature; must not be edited",
+    "measurement_construct": "trace_conditioned",
+    "reinterpreted_by": "docs/protocol_audit_v1.md",
+    "rule": "track/config provenance != evaluation construct name"
+  }
+}

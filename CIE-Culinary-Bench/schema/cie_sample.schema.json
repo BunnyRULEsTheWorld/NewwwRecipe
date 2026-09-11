@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/cie-culinary-bench/v1.1/cie_sample.schema.json",
+  "title": "CIE-Culinary-Bench Sample v1.1",
+  "type": "object",
+  "required": [
+    "id",
+    "metadata",
+    "culinary_context",
+    "dish_information",
+    "innovation_trace",
+    "human_evaluation_signal",
+    "cie_annotation",
+    "benchmark_tags"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CIE-(?:A)?[0-9]{2,3}$"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "source",
+        "creator",
+        "data_split"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object",
+          "required": [
+            "type",
+            "name",
+            "url",
+            "date"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "competition",
+                "restaurant",
+                "literature",
+                "artificial"
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            }
+          }
+        },
+        "creator": {
+          "type": "object",
+          "required": [
+            "chef",
+            "restaurant"
+          ],
+          "properties": {
+            "chef": {
+              "type": "string"
+            },
+            "restaurant": {
+              "type": "string"
+            }
+          }
+        },
+        "data_split": {
+          "enum": [
+            "competition_set",
+            "expert_set",
+            "baseline_set",
+            "adversarial_set"
+          ]
+        }
+      }
+    },
+    "culinary_context": {
+      "type": "object",
+      "required": [
+        "traditional_reference",
+        "innovation_space"
+      ],
+      "properties": {
+        "traditional_reference": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "core_principle"
+            ]
+          }
+        },
+        "innovation_space": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dish_information": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "ingredients",
+        "techniques"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 20
+        },
+        "ingredients": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "culinary_role",
+              "physical_property"
+            ]
+          }
+        },
+        "techniques": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "purpose",
+              "expected_effect"
+            ]
+          }
+        }
+      }
+    },
+    "innovation_trace": {
+      "type": "object",
+      "required": [
+        "existing_culinary_context",
+        "ingredient_and_technique_knowledge",
+        "innovation_delta",
+        "mechanistic_justification",
+        "creative_hypothesis",
+        "risk_and_constraint"
+      ],
+      "properties": {
+        "existing_culinary_context": {
+          "type": "object",
+          "required": [
+            "precedents",
+            "relationship"
+          ]
+        },
+        "ingredient_and_technique_knowledge": {
+          "type": "object",
+          "required": [
+            "ingredient_knowledge",
+            "technique_knowledge"
+          ]
+        },
+        "innovation_delta": {
+          "type": "object",
+          "required": [
+            "before",
+            "after",
+            "change_type",
+            "magnitude"
+          ],
+          "properties": {
+            "before": {
+              "type": "string"
+            },
+            "after": {
+              "type": "string"
+            },
+            "change_type": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "magnitude": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5
+            }
+          }
+        },
+        "mechanistic_justification": {
+          "type": "object",
+          "required": [
+            "flavor_mechanism",
+            "texture_mechanism",
+            "chemical_or_culinary_basis",
+            "strength"
+          ]
+        },
+        "creative_hypothesis": {
+          "type": "string"
+        },
+        "risk_and_constraint": {
+          "type": "object",
+          "required": [
+            "risk",
+            "tradeoff",
+            "failure_condition"
+          ]
+        }
+      }
+    },
+    "human_evaluation_signal": {
+      "type": "object",
+      "required": [
+        "evaluation_type",
+        "positive_signal",
+        "negative_signal",
+        "judge_comment",
+        "final_result"
+      ],
+      "properties": {
+        "evaluation_type": {
+          "enum": [
+            "judge_score",
+            "expert_review",
+            "public_feedback"
+          ]
+        },
+        "final_result": {
+          "enum": [
+            "winner",
+            "eliminated",
+            "praised",
+            "criticized"
+          ]
+        }
+      }
+    },
+    "cie_annotation": {
+      "type": "object",
+      "required": [
+        "innovation_category",
+        "failure_mode",
+        "scores",
+        "gold_reasoning"
+      ],
+      "properties": {
+        "innovation_category": {
+          "enum": [
+            "Conventional",
+            "Surface Innovation",
+            "Incremental Innovation",
+            "Structural Innovation",
+            "Transformative Innovation",
+            "Adversarial Trap"
+          ]
+        },
+        "failure_mode": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scores": {
+          "type": "object",
+          "required": [
+            "culinary_knowledge_grounding",
+            "existing_culinary_precedent_analysis",
+            "innovation_delta_quality",
+            "mechanistic_plausibility",
+            "innovation_value",
+            "realization_quality"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "culinary_knowledge_grounding": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "existing_culinary_precedent_analysis": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "innovation_delta_quality": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "mechanistic_plausibility": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "innovation_value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "realization_quality": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        },
+        "gold_reasoning": {
+          "type": "string",
+          "minLength": 40
+        }
+      }
+    },
+    "benchmark_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

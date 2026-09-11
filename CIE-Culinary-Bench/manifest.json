@@ -1,0 +1,176 @@
+{
+  "name": "CIE-Culinary-Bench",
+  "version": "1.1",
+  "generated": "2026-08-26",
+  "case_count": 30,
+  "source_count": 61,
+  "files": {
+    ".env.example": {
+      "bytes": 124,
+      "sha256": "a9370d648db6792c2bcd27b803fd042406dcbc726333439bbc8dca1bb266f2cc"
+    },
+    "README.md": {
+      "bytes": 3713,
+      "sha256": "b0150af5f08199e9bb0e25baa0ba087357a9f99a94de65802b13c06245a015eb"
+    },
+    "data/cie_culinary_bench.json": {
+      "bytes": 216512,
+      "sha256": "6940698004c01f7dc006726a927bd67a4b362964f72408ffc33eef5bdfd97342"
+    },
+    "data/cie_culinary_bench.jsonl": {
+      "bytes": 177395,
+      "sha256": "e19af338f0c8fae53ff026aab9176257a3b9236d79fc600a6fad794e89755d2f"
+    },
+    "docs/annotation_guideline.md": {
+      "bytes": 4431,
+      "sha256": "053d699b554cd9eddd2dff0b99e912d4c72f6900d4fd4a7b2a35a7512e95aa11"
+    },
+    "docs/dataset_card.md": {
+      "bytes": 2729,
+      "sha256": "609f0ad2addf122984875b8521e919e5a74d002d92c31e7c61f53dfeb337aec1"
+    },
+    "docs/fabrication_disclosure.md": {
+      "bytes": 2657,
+      "sha256": "e5bf638866c880dda4eeb1bf45963118b52fb65433cdcc675132d52cbde5edf7"
+    },
+    "docs/project_submission_checklist.md": {
+      "bytes": 1617,
+      "sha256": "b34bcb9165f2e2f31b58d310a41f8020d3c724727d682c877401f63ba1889123"
+    },
+    "docs/quality_report.md": {
+      "bytes": 2436,
+      "sha256": "c70851cf30680dff2d3745721a5b0f9b8c7e485744b1a6792b987656c221fe5f"
+    },
+    "docs/scoring_rubric.md": {
+      "bytes": 2509,
+      "sha256": "fece7be8f3873850147a840ab101efafd984387d12a8d3457d5f7ece9b4af666"
+    },
+    "docs/source_registry.json": {
+      "bytes": 17701,
+      "sha256": "2325aea47a71f43f8503de19aff53d49aba288baf27fdadc455c4a4b15d67634"
+    },
+    "docs/source_registry.md": {
+      "bytes": 11433,
+      "sha256": "d2b77a9d5a4add5242fdd75ac514ad812bfd2016730ce236c41002ea839b29c5"
+    },
+    "docs/task_definition.md": {
+      "bytes": 3220,
+      "sha256": "ee6ab1c36f587fe3d4d5530acfa0395c5bf35bd7565eceb751564283141ae8e3"
+    },
+    "requirements.txt": {
+      "bytes": 75,
+      "sha256": "b3e393a682d5dc95aa520b67dbb2cab2bf6a1518820c7cd0300cdb4ffccee119"
+    },
+    "results/dry_run_requests.jsonl": {
+      "bytes": 1127454,
+      "sha256": "1329208dfe7a7e9a1b290b095a586939bdc42715f95d1edaf734116ac9177358"
+    },
+    "results/validation_status.md": {
+      "bytes": 553,
+      "sha256": "77e8f20992b8017095b8ba9c081eeeef7badb6567d350d46e59fc33e56e413e5"
+    },
+    "schema/cie_sample.schema.json": {
+      "bytes": 7909,
+      "sha256": "a0354502c6256ceb7940607294584e16a530124f46953b1ef8f814ba3a201f4f"
+    },
+    "schema/scoring_rubric.json": {
+      "bytes": 3014,
+      "sha256": "60bb7b7428c1351def19670e8a9c00500b247abbee7cf02fea53f058a37e210d"
+    },
+    "scripts/run_evaluation.py": {
+      "bytes": 7921,
+      "sha256": "987db10869c2278c216bec2bc9fff75b1bd6893083bf74ab8a5cff9754caebac"
+    },
+    "scripts/score_predictions.py": {
+      "bytes": 6999,
+      "sha256": "86cb7771adc959156c264151c7ad10edcde062be1e8780e11905887c42f2f120"
+    },
+    "scripts/validate_dataset.py": {
+      "bytes": 2438,
+      "sha256": "59cb89f03ae0d23312114f0baaecee31ab982aaffc9b2b9e775084166b3c1882"
+    },
+    "validation_cases/adversarial_prompts.json": {
+      "bytes": 1269,
+      "sha256": "93a40d2f9bb8bef4f30009faebcaca1027230b4620dead22a9d662e96b2f8f43"
+    },
+    "validation_cases/expected_ordering.json": {
+      "bytes": 1586,
+      "sha256": "c19b19a02d09eeacd6651cefcddb39150ac4b7b625f7fdc85577be2f51270e4d"
+    },
+    "validation_cases/good_medium_bad_cases.jsonl": {
+      "bytes": 3424,
+      "sha256": "fee79ee92961cb5c646c7354defdec4305019fc7a527f7c0c3d1351becd3e813"
+    },
+    "validation_cases/ranking_sets.json": {
+      "bytes": 1586,
+      "sha256": "c19b19a02d09eeacd6651cefcddb39150ac4b7b625f7fdc85577be2f51270e4d"
+    }
+  },
+  "freeze_note": "files{} is the immutable v1.1 packaging snapshot. Dataset, gold labels, rubric, schema and validation_cases hashes are verified unchanged. Files legitimately updated AFTER the freeze are recorded in post_freeze_changes below rather than by rewriting the snapshot.",
+  "post_freeze_changes": {
+    "updated": "2026-08-27",
+    "reason": "Results-directory and documentation status cleanup: root partial-run artifacts moved to results/deprecated_partial_run2/, validation_status.md rewritten to the real current state (previously said \"Empirical Hy3 run: NOT RUN\", now out of date), and README / submission checklist corrected to stop implying benchmark validation is complete.",
+    "files": [
+      {
+        "path": "README.md",
+        "frozen_sha256": "b0150af5f08199e9bb0e25baa0ba087357a9f99a94de65802b13c06245a015eb",
+        "current_sha256": "bd58b1700aaa66d98d0f9f453b869e274efe2613675c0130678a21bb6f2c7b51",
+        "current_bytes": 6466
+      },
+      {
+        "path": "docs/project_submission_checklist.md",
+        "frozen_sha256": "b34bcb9165f2e2f31b58d310a41f8020d3c724727d682c877401f63ba1889123",
+        "current_sha256": "3d8b9efccd084f59eee9a7227a68b3772193e7ac749c328734c88dc3659caa55",
+        "current_bytes": 3825
+      },
+      {
+        "path": "results/validation_status.md",
+        "frozen_sha256": "77e8f20992b8017095b8ba9c081eeeef7badb6567d350d46e59fc33e56e413e5",
+        "current_sha256": "d6e43c24d8ababf038d86a8f1c8be3a725e4ab561c7fcbd6a9aafa3cd149336b",
+        "current_bytes": 4304
+      }
+    ],
+    "no_api_calls": true,
+    "dataset_gold_rubric_modified": false
+  },
+  "empirical_runs": {
+    "canonical": {
+      "path": "results/closed_evidence_anonymous_v1/",
+      "status": "COMPLETE 33/33",
+      "runs": 1,
+      "runtime_track": "closed_evidence",
+      "measurement_construct": "trace_conditioned",
+      "experiment_signature": "c6748060722a762c07537ac9c828efd05f65e4d9a67e8ffb03c4f49bdf8d0a52",
+      "citable": true,
+      "citation_caveat": "Must be cited as trace_conditioned, runs=1. NOT an evidence_only result."
+    },
+    "deprecated": [
+      {
+        "path": "results/baseline_with_id/",
+        "status": "DEPRECATED",
+        "reason": "real dataset IDs exposed in prompts (leaky by construction)",
+        "citable": false
+      },
+      {
+        "path": "results/deprecated_partial_run2/",
+        "status": "DEPRECATED",
+        "reason": "16/33 succeeded, 17 APIConnectionError; provenance / migration history only",
+        "citable": false
+      }
+    ],
+    "packaging_artifact": {
+      "path": "results/dry_run_requests.jsonl",
+      "note": "v1.1 frozen prompt-construction dry run; hash recorded in files{}; left in place"
+    }
+  },
+  "validation_state": {
+    "formal_benchmark_validation": "INCOMPLETE",
+    "trace_conditioned_anonymous_run": "COMPLETE (33/33, runs=1)",
+    "evidence_only_run": "NOT RUN",
+    "repeat_consistency_ge3": "NOT RUN",
+    "good_medium_bad_empirical": "NOT RUN",
+    "human_evidence_aware_realization_quality": "NOT RUN",
+    "authority": "results/validation_status.md",
+    "audit": "docs/protocol_audit_v1.md"
+  }
+}

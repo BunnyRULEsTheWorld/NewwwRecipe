@@ -1,0 +1,185 @@
+{
+  "rows_total": 33,
+  "rows_parsed": 33,
+  "rows_failed": 0,
+  "parse_success_rate": 1.0,
+  "api_failure_count": 0,
+  "retry_count": 0,
+  "classification": {
+    "n": 30,
+    "accuracy": 0.7333333333333333,
+    "macro_f1": 0.6752136752136751,
+    "per_class_recall": {
+      "Conventional": 1.0,
+      "Surface Innovation": 1.0,
+      "Incremental Innovation": 0.8,
+      "Structural Innovation": 0.5,
+      "Transformative Innovation": 0.0,
+      "Adversarial Trap": 1.0
+    },
+    "confusion_matrix": {
+      "categories": [
+        "Conventional",
+        "Surface Innovation",
+        "Incremental Innovation",
+        "Structural Innovation",
+        "Transformative Innovation",
+        "Adversarial Trap"
+      ],
+      "matrix": {
+        "Conventional": {
+          "Conventional": 6,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Surface Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 4,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Incremental Innovation": {
+          "Conventional": 1,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 4,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Structural Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 3,
+          "Structural Innovation": 3,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Transformative Innovation": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 4,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 0
+        },
+        "Adversarial Trap": {
+          "Conventional": 0,
+          "Surface Innovation": 0,
+          "Incremental Innovation": 0,
+          "Structural Innovation": 0,
+          "Transformative Innovation": 0,
+          "Adversarial Trap": 5
+        }
+      }
+    },
+    "adversarial_trap_accuracy": 1.0,
+    "cie025_structural_or_transformative_rate": 0.0
+  },
+  "scoring": {
+    "dimensions": {
+      "culinary_knowledge_grounding": {
+        "n": 30,
+        "mae": 0.7,
+        "within_1_accuracy": 0.9,
+        "exact_accuracy": 0.4,
+        "spearman": 0.1480170167727542,
+        "qwk": 0.1544885177453028
+      },
+      "existing_culinary_precedent_analysis": {
+        "n": 30,
+        "mae": 1.0,
+        "within_1_accuracy": 0.7333333333333333,
+        "exact_accuracy": 0.26666666666666666,
+        "spearman": 0.046797919279266874,
+        "qwk": 0.045643153526971014
+      },
+      "innovation_delta_quality": {
+        "n": 30,
+        "mae": 0.23333333333333334,
+        "within_1_accuracy": 1.0,
+        "exact_accuracy": 0.7666666666666667,
+        "spearman": 0.9538660589651248,
+        "qwk": 0.9244060475161987
+      },
+      "mechanistic_plausibility": {
+        "n": 30,
+        "mae": 0.6666666666666666,
+        "within_1_accuracy": 0.9333333333333333,
+        "exact_accuracy": 0.4,
+        "spearman": 0.6092269601682675,
+        "qwk": 0.4545454545454546
+      },
+      "innovation_value": {
+        "n": 30,
+        "mae": 0.6333333333333333,
+        "within_1_accuracy": 0.9666666666666667,
+        "exact_accuracy": 0.4,
+        "spearman": 0.8767857142857143,
+        "qwk": 0.787305874409183
+      },
+      "realization_quality": {
+        "n": 30,
+        "mae": 0.7333333333333333,
+        "within_1_accuracy": 0.9333333333333333,
+        "exact_accuracy": 0.36666666666666664,
+        "spearman": 0.7846179479235456,
+        "qwk": 0.7435897435897436
+      }
+    },
+    "mean_spearman": 0.5698852695657789,
+    "min_spearman": 0.046797919279266874,
+    "max_spearman": 0.9538660589651248,
+    "mean_mae": 0.6611111111111111
+  },
+  "ranking": {
+    "n": 3,
+    "pairwise_accuracy": 0.8666666666666667,
+    "mean_spearman": 0.6666666666666666,
+    "mean_kendall_tau_a": 0.7333333333333334
+  },
+  "experiment_complete": true,
+  "partial": false,
+  "aborted": false,
+  "config": {
+    "model": "hy3",
+    "temperature": 0.2,
+    "reasoning_effort": "no_think",
+    "track": "closed_evidence",
+    "rubric": "schema/scoring_rubric.json (1-5, six dimensions)",
+    "rubric_sha256": "60bb7b7428c1351def19670e8a9c00500b247abbee7cf02fea53f058a37e210d",
+    "dataset_sha256": "e19af338f0c8fae53ff026aab9176257a3b9236d79fc600a6fad794e89755d2f",
+    "prompt_template_version": "v1.1.0",
+    "id_anonymization_version": "v1",
+    "id_anonymized": true,
+    "experiment_signature": "c6748060722a762c07537ac9c828efd05f65e4d9a67e8ffb03c4f49bdf8d0a52",
+    "runs": 1,
+    "dry_run": false,
+    "judge_client": "creative_recipe.Hy3LLMClient",
+    "runner": "benchmark_pipeline.py v1.2 (experiment_signature + true resume + conn-abort)"
+  },
+  "dataset": {
+    "path": "C:\\Users\\SUNYIXI\\Desktop\\NewwwRecipe!!!\\creative-recipe-ai\\CIE-Culinary-Bench\\data\\cie_culinary_bench.jsonl",
+    "n_cases": 30,
+    "n_ranking_sets": 3
+  },
+  "resume": {
+    "previously_completed": 16,
+    "rerun_this_session": 17,
+    "note": "16 units hash-verified migrated from results/deprecated_partial_run2/predictions.jsonl (originally results/predictions.jsonl before the 2026-08-27 directory cleanup; anonymized closed_evidence, NO re-API-call); 17 units re-run via API in this session. 33/33 total."
+  },
+  "evaluation_type": "trace_conditioned",
+  "not_evidence_only": true,
+  "caution": "RUNTIME PROVENANCE vs MEASUREMENT CONSTRUCT. track='closed_evidence' is the LEGACY runtime input-view identifier: that exact string participated in the experiment_signature hash at execution time, so it is frozen here for reproducibility and is NOT edited. After the semantic annotation leakage audit (docs/protocol_audit_v1.md), the measurement construct of this same experiment is re-interpreted as trace_conditioned: the judge received the full innovation_trace as released, which is itself part of the human gold annotation and carries evaluator conclusions (strength present in 30/30 samples, plus verdict-bearing prose in chemical_or_culinary_basis and existing_culinary_context.relationship). Therefore: track/config provenance != evaluation construct name. The 73.3% / macro-F1 0.675 measure alignment with a supplied human reasoning chain, NOT evidence-only innovation evaluation, and must not be cited as the benchmark evidence_only result.",
+  "track_provenance": {
+    "runtime_track_identifier": "closed_evidence",
+    "frozen_reason": "participates in experiment_signature; must not be edited",
+    "measurement_construct": "trace_conditioned",
+    "reinterpreted_by": "docs/protocol_audit_v1.md",
+    "rule": "track/config provenance != evaluation construct name"
+  }
+}

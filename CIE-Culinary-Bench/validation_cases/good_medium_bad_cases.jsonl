@@ -1,0 +1,12 @@
+{"case_id": "CIE-001", "quality": "good", "mock_model_assessment": "刀工使豆腐形成可展开细丝，但若原型的核心价值仍是豆腐吸附汤汁，技术没有改善入口、味道层次或服务稳定性，就只能算表层创新。应把执行证据与复杂度分开。", "expected_properties": ["names precedent", "separates complexity from value", "mentions failure condition"]}
+{"case_id": "CIE-001", "quality": "medium", "mock_model_assessment": "刀工很复杂，外形新颖，但味道是否改善不确定，因此是增量创新。", "expected_properties": ["detects uncertainty", "category likely one level too high", "mechanism thin"]}
+{"case_id": "CIE-001", "quality": "bad", "mock_model_assessment": "刀数极多且视觉震撼，所以是变革性创新。", "expected_properties": ["technique inflation", "novelty bias", "ignores human signal"]}
+{"case_id": "CIE-010", "quality": "good", "mock_model_assessment": "关键不是把鱼换成肉，而是把 garum 的蛋白水解逻辑迁移到肉类修边料，创造稳定鲜味调味液并服务副产物利用；价值取决于盐度、温度和安全控制。", "expected_properties": ["role transformation", "mechanism", "constraints"]}
+{"case_id": "CIE-010", "quality": "medium", "mock_model_assessment": "肉 garum 是古法发酵的新材料版本，具有创新性。", "expected_properties": ["correct direction", "missing process and value evidence"]}
+{"case_id": "CIE-010", "quality": "bad", "mock_model_assessment": "Noma 做的菜一定是最高等级变革性创新。", "expected_properties": ["authority bias", "no delta", "no falsifiability"]}
+{"case_id": "CIE-A03", "quality": "good", "mock_model_assessment": "柿子酸甜/果胶与蟹鲜甜可能存在局部桥梁，但‘相克必毒’不是可靠判断。当前方案缺少品种、成熟度、加热和蛋白保护设计，因此整体仍是未验证 trap。", "expected_properties": ["rejects myth", "finds partial mechanism", "keeps adversarial label"]}
+{"case_id": "CIE-A03", "quality": "medium", "mock_model_assessment": "蟹和柿子可能涩且压住鲜味，风险较高。", "expected_properties": ["sensory risk", "missing conditional variables"]}
+{"case_id": "CIE-A03", "quality": "bad", "mock_model_assessment": "蟹和柿子一起吃必然中毒，所以完全没有料理分析必要。", "expected_properties": ["food myth", "absolute toxicology claim", "no culinary reasoning"]}
+{"case_id": "CIE-025", "quality": "good", "mock_model_assessment": "牛排本体仍靠油花、焦壳、熟度和静置成立；金箔与桌边动作主要改变视觉、身份符号和传播。删除金箔后核心味觉机制近乎不变，因此是表层创新，但不否认服务戏剧的商业体验价值。", "expected_properties": ["counterfactual removal", "separates steak from gold delta", "no price bias"]}
+{"case_id": "CIE-025", "quality": "medium", "mock_model_assessment": "金箔没有明显味道，主要是视觉创新，价格很高，因此创新价值有限。", "expected_properties": ["correct category direction", "mentions price too heavily", "limited evidence reasoning"]}
+{"case_id": "CIE-025", "quality": "bad", "mock_model_assessment": "24K 金箔、高级和牛与世界知名厨师共同重新定义了牛排，是变革性创新。", "expected_properties": ["luxury bias", "authority bias", "confuses spectacle with culinary mechanism"]}
