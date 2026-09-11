@@ -1,22 +1,32 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { ArrowRight, Heart, Sparkles } from 'lucide-react'
+import { Heart, Sparkles } from 'lucide-react'
 import { fetchHealth } from './api/client'
-import { Basket } from './components/Basket'
 import { CookingMode } from './components/CookingMode'
 import { ErrorPanel } from './components/ErrorPanel'
 import { FavoritesView } from './components/FavoritesView'
 import { Fridge, type FridgeFrame } from './components/Fridge'
 import { IngredientShelf } from './components/IngredientShelf'
 import { LoadingScene } from './components/LoadingScene'
+import { Pagination } from './components/Pagination'
 import { PreferencesPanel } from './components/PreferencesPanel'
 import { RecipeResult } from './components/RecipeResult'
+import { SelectionControls } from './components/SelectionControls'
 import { DEFAULT_PREFERENCES, type GenerateResponse, type Preferences, type SavedRecipe } from './types'
 import { SCENE } from './data/ingredients'
 import { favoriteKey, useFavorites } from './hooks/useFavorites'
 import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion'
+import { useIngredientFilter } from './hooks/useIngredientFilter'
 import { useRecipeGeneration } from './hooks/useRecipeGeneration'
 
-type Stage = 'landing' | 'select' | 'loading' | 'result' | 'cooking' | 'favorites' | 'error'
+type Stage =
+  | 'landing'
+  | 'select'
+  | 'preferences'
+  | 'loading'
+  | 'result'
+  | 'cooking'
+  | 'favorites'
+  | 'error'
 
 const AJAR_MS = 380
 const OPEN_MS = 620
@@ -31,6 +41,7 @@ export default function App() {
   const [viewingFavorite, setViewingFavorite] = useState<GenerateResponse | null>(null)
   const [demoMode, setDemoMode] = useState(false)
 
+  const filter = useIngredientFilter()
   const generation = useRecipeGeneration()
   const favorites = useFavorites()
   const timers = useRef<number[]>([])
@@ -72,6 +83,9 @@ export default function App() {
   }, [])
 
   const clearSelection = useCallback(() => setSelectedIds([]), [])
+
+  const selectedCount = selectedIds.length
+  const continueDisabled = selectedCount < 2
 
   // --- generation -------------------------------------------------------------------
   const runGeneration = useCallback(
@@ -127,6 +141,19 @@ export default function App() {
     setStage('select')
   }, [generation])
 
+  const goToPreferences = useCallback(() => {
+    if (selectedCount >= 2) setStage('preferences')
+  }, [selectedCount])
+
+  const backToIngredients = useCallback(() => setStage('select'), [])
+
+  const backToLanding = useCallback(() => {
+    setFrame('closed')
+    setStage('landing')
+  }, [])
+
+  const sceneStage = stage === 'landing' ? 'landing' : stage === 'preferences' ? 'preferences' : 'select'
+
   return (
     <div className="app">
       <header className="app-header">
@@ -137,22 +164,22 @@ export default function App() {
         <div className="app-header__spacer" />
         <div className="header-actions">
           {demoMode && (
-            <span className="demo-badge" data-testid="demo-badge">
+            <span className="demo-badge" data-testid="demo-badge" title="Running without a live model">
               <Sparkles aria-hidden="true" />
-              Demo mode
+              Demo
             </span>
           )}
           <button type="button" className="btn btn--quiet" onClick={() => setStage('favorites')}>
             <Heart className="btn__icon" aria-hidden="true" />
-            Saved<span className="sr-only"> recipes</span> ({favorites.favorites.length})
+            Favorites · {favorites.favorites.length}
           </button>
         </div>
       </header>
 
       <main className="app-main">
-        {(stage === 'landing' || stage === 'select') && (
+        {(stage === 'landing' || stage === 'select' || stage === 'preferences') && (
           <section
-            className={`scene ${stage === 'select' ? 'scene--select' : 'scene--landing'}`}
+            className={`scene scene--${sceneStage}`}
             style={{ '--scene-kitchen': SCENE.kitchenBackground } as CSSProperties}
           >
             <div className="scene__aside">
@@ -163,49 +190,51 @@ export default function App() {
                     What do <em>we</em> have?
                   </h1>
                   <p className="landing__lede">
-                    Pick what’s in your kitchen. We’ll turn it into something unexpectedly
-                    delicious.
+                    Open the fridge and pick what’s inside. We’ll turn it into something
+                    unexpectedly delicious.
                   </p>
                   <p className="landing__hint">
-                    <ArrowRight aria-hidden="true" />
-                    Tap the fridge to open it
+                    <Sparkles aria-hidden="true" />
+                    Open the fridge to begin
                   </p>
                 </div>
+              ) : stage === 'select' ? (
+                <SelectionControls
+                  filter={filter}
+                  selectedIds={selectedIds}
+                  onRemove={removeIngredient}
+                  onClearAll={clearSelection}
+                  onContinue={goToPreferences}
+                  onBack={backToLanding}
+                  continueDisabled={continueDisabled}
+                />
               ) : (
-                <div className="select__panel">
-                  <Basket
-                    selectedIds={selectedIds}
-                    onRemove={removeIngredient}
-                    onClearAll={clearSelection}
-                  />
+                <div className="prefs__panel" data-testid="preferences-panel">
+                  <h1 className="prefs__heading">Almost there</h1>
+                  <p className="prefs__lede">
+                    {selectedCount} ingredient{selectedCount === 1 ? '' : 's'} chosen — tweak the
+                    vibe, then make magic.
+                  </p>
                   <PreferencesPanel value={preferences} onChange={setPreferences} />
-                  <div className="select__actions">
+                  <div className="prefs__actions">
                     <button
                       type="button"
-                      className="btn btn--primary"
-                      disabled={selectedIds.length < 2}
+                      className="btn btn--ghost"
+                      onClick={backToIngredients}
+                      data-testid="back-to-ingredients"
+                    >
+                      Back to ingredients
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn--primary btn--block"
                       onClick={() => runGeneration()}
                       data-testid="make-magic"
                     >
                       <Sparkles className="btn__icon" aria-hidden="true" />
                       Make Magic
                     </button>
-                    <button
-                      type="button"
-                      className="btn btn--ghost"
-                      onClick={() => {
-                        setFrame('closed')
-                        setStage('landing')
-                      }}
-                    >
-                      Close the fridge
-                    </button>
                   </div>
-                  <p className="select__note">
-                    {selectedIds.length < 2
-                      ? 'Pick at least two ingredients to start cooking.'
-                      : `${selectedIds.length} ingredients selected — preferences are optional.`}
-                  </p>
                 </div>
               )}
             </div>
@@ -216,10 +245,15 @@ export default function App() {
                 interactive={stage === 'landing'}
                 onActivate={openFridge}
               >
-                {stage === 'select' && (
-                  <IngredientShelf selectedIds={selectedIds} onToggle={toggleIngredient} />
+                {stage !== 'landing' && (
+                  <IngredientShelf
+                    items={filter.items}
+                    selectedIds={selectedIds}
+                    onToggle={toggleIngredient}
+                  />
                 )}
               </Fridge>
+              {(stage === 'select' || stage === 'preferences') && <Pagination filter={filter} />}
             </div>
           </section>
         )}

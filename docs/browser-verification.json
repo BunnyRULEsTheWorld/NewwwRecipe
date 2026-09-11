@@ -1,124 +1,32 @@
 {
-  "generatedAt": "2026-09-10T14:02:05.847Z",
+  "generatedAt": "2026-09-11T06:48:00.000Z",
+  "note": "Visual verification of the open-fridge ingredient-selection reconstruction. The backend was not running, so only landing, selection, and preference states were exercised; /api/health failures are expected.",
+  "screenshots": [
+    "docs/screenshots/landing-1440x900.png",
+    "docs/screenshots/fridge-open-1440x900.png",
+    "docs/screenshots/preferences-1440x900.png",
+    "docs/screenshots/fridge-open-1024x768.png"
+  ],
   "results": [
     {
       "viewport": "1440x900",
-      "tag": "",
       "landingTitle": "What do we have?",
       "fridgeButtonVisible": true,
       "closedActive": true,
-      "landing": {
-        "images": 3,
-        "broken": [],
-        "overflow": 0
-      },
       "openActive": true,
-      "fridgeJump": {
-        "closed": {
-          "x": 702,
-          "y": 203,
-          "w": 660,
-          "h": 660
-        },
-        "open": {
-          "x": 702,
-          "y": 203,
-          "w": 660,
-          "h": 660
-        }
-      },
       "shelfVisible": true,
-      "tilesOnFirstPage": 12,
       "basket": "2 ingredients picked",
-      "makeMagicEnabled": true,
-      "selection": {
-        "images": 18,
-        "broken": [],
-        "overflow": 0
-      },
-      "loadingMessage": "Finding flavor bridges…",
-      "errored": 0,
-      "recipeTitle": "Coffee-Braised Chicken with Melted Cheese Crust",
-      "cieTotal": "4.25",
-      "cieDimensions": 6,
-      "traceStages": 6,
-      "riskNote": 1,
-      "result": {
-        "images": 3,
-        "broken": [],
-        "overflow": 0
-      },
-      "step1": "Step 1 of 3",
-      "step2": "Step 2 of 3",
-      "cooking": {
-        "images": 0,
-        "broken": [],
-        "overflow": 0
-      },
-      "favoritesCount": 1,
-      "consoleErrors": [],
+      "preferencesVisible": true,
       "failedRequests": [
-        "http://127.0.0.1:5173/api/health :: net::ERR_ABORTED"
+        "http://127.0.0.1:5176/api/health :: net::ERR_CONNECTION_REFUSED"
       ]
     },
     {
       "viewport": "1024x768",
-      "tag": "-1024",
-      "landingTitle": "What do we have?",
-      "fridgeButtonVisible": true,
-      "closedActive": true,
-      "landing": {
-        "images": 3,
-        "broken": [],
-        "overflow": 0
-      },
       "openActive": true,
-      "fridgeJump": {
-        "closed": {
-          "x": 228,
-          "y": 360,
-          "w": 568,
-          "h": 568
-        },
-        "open": {
-          "x": 228,
-          "y": 676,
-          "w": 568,
-          "h": 568
-        }
-      },
       "shelfVisible": true,
-      "tilesOnFirstPage": 12,
-      "basket": "2 ingredients picked",
-      "makeMagicEnabled": true,
-      "selection": {
-        "images": 18,
-        "broken": [],
-        "overflow": 0
-      },
-      "loadingMessage": "Finding flavor bridges…",
-      "errored": 0,
-      "recipeTitle": "Coffee-Braised Chicken with Melted Cheese Crust",
-      "cieTotal": "4.25",
-      "cieDimensions": 6,
-      "traceStages": 6,
-      "riskNote": 1,
-      "result": {
-        "images": 3,
-        "broken": [],
-        "overflow": 0
-      },
-      "step1": "Step 1 of 3",
-      "step2": "Step 2 of 3",
-      "cooking": {
-        "images": 0,
-        "broken": [],
-        "overflow": 0
-      },
-      "favoritesCount": 1,
-      "consoleErrors": [],
       "failedRequests": [
-        "http://127.0.0.1:5173/api/health :: net::ERR_ABORTED"
+        "http://127.0.0.1:5176/api/health :: net::ERR_CONNECTION_REFUSED"
       ]
     }
   ]

@@ -1,61 +1,39 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react'
-import {
-  CATEGORIES,
-  INGREDIENTS,
-  ingredientUrl,
-  matchesQuery,
-  type Ingredient,
-  type IngredientCategory,
-} from '../data/ingredients'
-
-/** 3 columns x 4 shelf bands = 12 ingredients per page. */
-export const PAGE_SIZE = 12
+import { useEffect, useMemo, useRef } from 'react'
+import { ingredientUrl, type Ingredient } from '../data/ingredients'
 
 interface IngredientShelfProps {
+  items: Ingredient[]
   selectedIds: string[]
   onToggle: (id: string) => void
 }
 
-export function IngredientShelf({ selectedIds, onToggle }: IngredientShelfProps) {
-  const [category, setCategory] = useState<IngredientCategory>('vegetables')
-  const [query, setQuery] = useState('')
-  const [page, setPage] = useState(0)
+/**
+ * Ingredient grid rendered inside the open refrigerator.
+ *
+ * The parent Fridge component provides a percentage-based overlay that matches
+ * the illustrated cavity, so ingredients appear to sit on the four drawn
+ * shelves. The grid is 3 columns × 4 rows = 12 items per page.
+ */
+export function IngredientShelf({ items, selectedIds, onToggle }: IngredientShelfProps) {
+  const selected = useMemo(() => new Set(selectedIds), [selectedIds])
   const gridRef = useRef<HTMLDivElement>(null)
 
-  const selected = useMemo(() => new Set(selectedIds), [selectedIds])
-
-  // Search runs across the whole pantry; picking a tab clears the query.
-  const searching = query.trim().length > 0
-  const visible = useMemo(() => {
-    if (searching) return INGREDIENTS.filter((i) => matchesQuery(i, query))
-    return INGREDIENTS.filter((i) => i.category === category)
-  }, [category, query, searching])
-
-  const pageCount = Math.max(1, Math.ceil(visible.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount - 1)
-  const items = visible.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE)
-
+  // When the page changes, move focus to the first tile so keyboard users stay
+  // oriented without losing their place in the document.
   useEffect(() => {
-    // Reset pagination whenever the result set changes.
-    setPage(0)
-  }, [category, query])
+    const grid = gridRef.current
+    if (!grid) return
+    const first = grid.querySelector<HTMLButtonElement>('button.shelf__tile')
+    first?.focus({ preventScroll: true })
+  }, [items])
 
-  const counts = useMemo(() => {
-    const map = new Map<IngredientCategory, number>()
-    for (const c of CATEGORIES) {
-      map.set(c.id, INGREDIENTS.filter((i) => i.category === c.id).length)
-    }
-    return map
-  }, [])
-
-  /** Arrow-key roving focus across the shelf grid. */
+  /** Arrow-key roving focus across the 3×4 shelf grid. */
   const onGridKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const keys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp']
     if (!keys.includes(event.key)) return
     const grid = gridRef.current
     if (!grid) return
-    const tiles = Array.from(grid.querySelectorAll<HTMLButtonElement>('button.tile'))
+    const tiles = Array.from(grid.querySelectorAll<HTMLButtonElement>('button.shelf__tile'))
     if (tiles.length === 0) return
     const current = tiles.indexOf(document.activeElement as HTMLButtonElement)
     if (current < 0) return
@@ -69,86 +47,32 @@ export function IngredientShelf({ selectedIds, onToggle }: IngredientShelfProps)
     tiles[next]?.focus()
   }
 
+  const rows = useMemo(() => {
+    const out: Ingredient[][] = [[], [], [], []]
+    for (let i = 0; i < items.length; i++) {
+      out[Math.floor(i / 3)].push(items[i])
+    }
+    return out
+  }, [items])
+
   return (
-    <div className="shelf">
-      <div className="shelf__toolbar">
-        <div className="tabs" role="tablist" aria-label="Ingredient categories">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              role="tab"
-              className="tab"
-              aria-selected={!searching && category === c.id}
-              onClick={() => {
-                setCategory(c.id)
-                setQuery('')
-              }}
-            >
-              {c.label}
-              <span className="tab__count">{counts.get(c.id) ?? 0}</span>
-            </button>
-          ))}
-        </div>
-        <div className="search">
-          <Search aria-hidden="true" />
-          <input
-            type="search"
-            value={query}
-            placeholder="Search ingredients"
-            aria-label="Search ingredients by name"
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-        {searching && (
-          <button type="button" className="btn btn--quiet btn--ghost" onClick={() => setQuery('')}>
-            <X className="btn__icon" aria-hidden="true" />
-            Clear
-          </button>
-        )}
-      </div>
-
-      <div className="shelf__grid" ref={gridRef} onKeyDown={onGridKeyDown}>
-        {items.length === 0 ? (
-          <p className="shelf__empty">
-            Nothing matches “{query}”. Try another word, or pick a category above.
-          </p>
-        ) : (
-          items.map((item) => (
-            <IngredientTile
-              key={item.id}
-              ingredient={item}
-              selected={selected.has(item.id)}
-              onToggle={onToggle}
-            />
-          ))
-        )}
-      </div>
-
-      <div className="pager">
-        <button
-          type="button"
-          className="pager__btn"
-          aria-label="Previous page"
-          disabled={safePage === 0}
-          onClick={() => setPage((p) => Math.max(0, Math.min(p, pageCount - 1) - 1))}
-        >
-          <ChevronLeft aria-hidden="true" />
-        </button>
-        <span aria-live="polite">
-          Page {safePage + 1} of {pageCount}
-          {searching ? ` · ${visible.length} match${visible.length === 1 ? '' : 'es'}` : ''}
-        </span>
-        <button
-          type="button"
-          className="pager__btn"
-          aria-label="Next page"
-          disabled={safePage >= pageCount - 1}
-          onClick={() => setPage((p) => Math.min(pageCount - 1, Math.min(p, pageCount - 1) + 1))}
-        >
-          <ChevronRight aria-hidden="true" />
-        </button>
-      </div>
+    <div className="shelf" ref={gridRef} onKeyDown={onGridKeyDown}>
+      {items.length === 0 ? (
+        <p className="shelf__empty">Nothing matches your search.</p>
+      ) : (
+        rows.map((row, rowIndex) => (
+          <div key={rowIndex} className="shelf__row" role="group" aria-label={`Shelf ${rowIndex + 1}`}>
+            {row.map((item) => (
+              <IngredientTile
+                key={item.id}
+                ingredient={item}
+                selected={selected.has(item.id)}
+                onToggle={onToggle}
+              />
+            ))}
+          </div>
+        ))
+      )}
     </div>
   )
 }
@@ -163,24 +87,25 @@ function IngredientTile({ ingredient, selected, onToggle }: TileProps) {
   return (
     <button
       type="button"
-      className="tile"
+      className={`shelf__tile${selected ? ' is-selected' : ''}`}
       data-testid={`tile-${ingredient.id}`}
       aria-pressed={selected}
       onClick={() => onToggle(ingredient.id)}
     >
-      <img
-        className="tile__img"
-        src={ingredientUrl(ingredient)}
-        alt={`${ingredient.displayName} illustration`}
-        loading="lazy"
-        draggable={false}
-      />
-      <span className="tile__name">{ingredient.displayName}</span>
-      {selected && (
-        <span className="tile__check" aria-hidden="true">
-          <CheckIcon />
-        </span>
-      )}
+      <span className="shelf__tile-art">
+        <img
+          src={ingredientUrl(ingredient)}
+          alt={`${ingredient.displayName} illustration`}
+          loading="lazy"
+          draggable={false}
+        />
+        {selected && (
+          <span className="shelf__tile-check" aria-hidden="true">
+            <CheckIcon />
+          </span>
+        )}
+      </span>
+      <span className="shelf__tile-name">{ingredient.displayName}</span>
       <span className="sr-only">
         {selected ? `${ingredient.displayName}, selected` : ingredient.displayName}
       </span>

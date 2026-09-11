@@ -67,13 +67,34 @@ export function fetchHealth(signal?: AbortSignal): Promise<HealthResponse> {
   return requestJson<HealthResponse>('/health', signal ? { signal } : undefined)
 }
 
+/**
+ * Compose the two frontend preference fields into the single `constraints` string the backend
+ * transport model expects. The backend `Preferences` schema is `extra="forbid"`, so we must not
+ * send `allergies`/`craving` keys — only `constraints`.
+ */
+function toWirePreferences(prefs: GenerateRequest['preferences']) {
+  const parts = [prefs.allergies.trim(), prefs.craving.trim()].filter(Boolean)
+  return {
+    cuisine: prefs.cuisine,
+    flavor: prefs.flavor,
+    time: prefs.time,
+    constraints: parts.join(' · '),
+  }
+}
+
 export function generateRecipe(
   body: GenerateRequest,
   signal?: AbortSignal,
 ): Promise<GenerateResponse> {
+  const wire = {
+    ingredients: body.ingredients,
+    preferences: toWirePreferences(body.preferences),
+    ...(body.avoid && body.avoid.length ? { avoid: body.avoid } : {}),
+    ...(body.demo !== undefined ? { demo: body.demo } : {}),
+  }
   return requestJson<GenerateResponse>('/recipes/generate', {
     method: 'POST',
-    body: JSON.stringify(body),
+    body: JSON.stringify(wire),
     ...(signal ? { signal } : {}),
   })
 }

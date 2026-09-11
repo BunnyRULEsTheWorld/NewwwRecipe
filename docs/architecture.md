@@ -22,6 +22,12 @@ Input Ingredients
 
 The interactive fridge UI is a thin layer over the existing backend. No recipe-generation, scoring or ranking logic was duplicated in the frontend.
 
+The ingredient-selection experience follows an "open fridge" metaphor with three progressive states:
+
+1. **Landing** — the closed refrigerator dominates the view and is the single interactive control.
+2. **Ingredient selection** — the fridge opens; controls (search, categories, basket, pagination) live outside the fridge while ingredient cutouts are picked from inside the open refrigerator.
+3. **Preferences** — once at least two ingredients are chosen, a compact preference panel appears (cuisine, flavor, cooking time, allergies, craving) before generating the recipe.
+
 ```text
 React + TypeScript (web/src)
   -> Vite dev proxy / FastAPI static-files mount

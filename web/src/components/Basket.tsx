@@ -7,7 +7,12 @@ interface BasketProps {
   onClearAll: () => void
 }
 
-/** Selected-ingredient basket anchored next to `basket_empty.png`. */
+/**
+ * Compact selected-ingredient summary.
+ *
+ * The empty state uses `basket_empty.png` at a restrained size. Selected items
+ * show a thumbnail and full name, with a clear remove control.
+ */
 export function Basket({ selectedIds, onRemove, onClearAll }: BasketProps) {
   const items = selectedIds
     .map((id) => findIngredient(id))
@@ -16,50 +21,56 @@ export function Basket({ selectedIds, onRemove, onClearAll }: BasketProps) {
   const count = items.length
 
   return (
-    <section className="card" aria-labelledby="basket-title">
-      <h2 className="card__title" id="basket-title">
+    <section className="basket-summary" aria-labelledby="basket-title">
+      <div className="basket-summary__head">
         <ShoppingBasket aria-hidden="true" />
-        Your basket
-      </h2>
-      <div className="basket">
-        <figure className="basket__figure">
-          <img src={SCENE.basket} alt="An empty market basket" />
-        </figure>
-        <div className="basket__body">
-          <p className="basket__count" data-testid="basket-count">
-            {count === 0
-              ? 'Nothing picked yet'
-              : `${count} ingredient${count === 1 ? '' : 's'} picked`}
-          </p>
-          {count === 0 ? (
-            <p className="basket__empty">Tap what you have — pick at least two to cook.</p>
-          ) : (
-            <ul className="basket__chips">
-              {items.map((item) => (
-                <li key={item.id}>
-                  <span className="chip">
-                    <img src={ingredientUrl(item)} alt="" aria-hidden="true" />
-                    {item.displayName}
-                    <button
-                      type="button"
-                      className="chip__remove"
-                      aria-label={`Remove ${item.displayName}`}
-                      onClick={() => onRemove(item.id)}
-                    >
-                      <X aria-hidden="true" />
-                    </button>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-          {count > 0 && (
-            <button type="button" className="btn btn--quiet btn--ghost" onClick={onClearAll}>
-              Clear all
-            </button>
-          )}
-        </div>
+        <span id="basket-title">Your basket</span>
       </div>
+
+      {count === 0 ? (
+        <div className="basket-summary__empty">
+          <figure className="basket-summary__figure">
+            <img src={SCENE.basket} alt="" aria-hidden="true" />
+          </figure>
+          <div className="basket-summary__body">
+            <p className="basket-summary__count" data-testid="basket-count">
+              Nothing picked yet
+            </p>
+            <p className="basket-summary__hint">
+              Choose what you have — pick at least two ingredients.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="basket-summary__body">
+          <p className="basket-summary__count" data-testid="basket-count">
+            {count} ingredient{count === 1 ? '' : 's'} picked
+          </p>
+          <ul className="basket-summary__chips" aria-label="Selected ingredients">
+            {items.map((item) => (
+              <li key={item.id} className="basket-summary__chip">
+                <img src={ingredientUrl(item)} alt="" aria-hidden="true" />
+                <span className="basket-summary__chip-name">{item.displayName}</span>
+                <button
+                  type="button"
+                  className="basket-summary__remove"
+                  aria-label={`Remove ${item.displayName}`}
+                  onClick={() => onRemove(item.id)}
+                >
+                  <X aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="btn btn--quiet btn--ghost"
+            onClick={onClearAll}
+          >
+            Clear all
+          </button>
+        </div>
+      )}
     </section>
   )
 }

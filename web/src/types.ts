@@ -17,14 +17,18 @@ export interface Preferences {
   cuisine: CuisineDirection
   flavor: FlavorPreference
   time: TimePreference
-  constraints: string
+  /** Dietary needs or allergies (free text). */
+  allergies: string
+  /** Mood / craving notes (free text). */
+  craving: string
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
   cuisine: 'fusion',
   flavor: 'balanced',
   time: 'any',
-  constraints: '',
+  allergies: '',
+  craving: '',
 }
 
 /** The six canonical CIE v3 dimension keys, ordered by descending weight. */

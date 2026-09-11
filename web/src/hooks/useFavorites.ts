@@ -44,9 +44,15 @@ export function favoriteKey(
   ingredientIds: string[],
   preferences: Preferences,
 ): string {
-  return [title.trim().toLowerCase(), [...ingredientIds].sort().join('+'), preferences.cuisine, preferences.flavor, preferences.time, preferences.constraints.trim().toLowerCase()].join(
-    '|',
-  )
+  return [
+    title.trim().toLowerCase(),
+    [...ingredientIds].sort().join('+'),
+    preferences.cuisine,
+    preferences.flavor,
+    preferences.time,
+    preferences.allergies.trim().toLowerCase(),
+    preferences.craving.trim().toLowerCase(),
+  ].join('|')
 }
 
 export interface UseFavorites {

@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
@@ -7,15 +7,20 @@ import { forceReducedMotion, installApiMock, makeResponse, type CapturedRequest 
 
 let captured: CapturedRequest[] = []
 
+/** Open the fridge and land on the ingredient-selection (open-fridge) stage. */
 async function openFridge(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByTestId('fridge-button'))
   await screen.findByTestId('basket-count')
 }
 
+/** Pick an ingredient by searching for it, then clicking its tile. */
 async function pickIngredient(user: ReturnType<typeof userEvent.setup>, query: string, id: string) {
+  // Apply the complete query in a single change event. Typing char-by-char with
+  // user-event re-renders the field as soon as the "Clear search" button appears
+  // (query becomes non-empty), which detaches the controlled input node mid-type
+  // in jsdom and truncates the value to its first character.
   const input = screen.getByLabelText('Search ingredients by name')
-  await user.clear(input)
-  await user.type(input, query)
+  fireEvent.change(input, { target: { value: query } })
   const tile = await screen.findByTestId(`tile-${id}`)
   await user.click(tile)
 }
@@ -36,6 +41,8 @@ describe('landing and fridge', () => {
     expect(document.querySelector('.fridge-frame--closed')).toHaveClass('is-active')
     expect(document.querySelector('.fridge-frame--open')).not.toHaveClass('is-active')
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('What do we have?')
+    // Selection controls only appear after the fridge is opened.
+    expect(screen.queryByLabelText('Search ingredients by name')).not.toBeInTheDocument()
     expect(screen.queryByTestId('basket-count')).not.toBeInTheDocument()
   })
 
@@ -49,21 +56,34 @@ describe('landing and fridge', () => {
     await waitFor(() => {
       expect(document.querySelector('.fridge-frame--open')).toHaveClass('is-active')
     })
+    // The closed frame is no longer the visible base.
     expect(document.querySelector('.fridge-frame--closed')).not.toHaveClass('is-active')
+    // Selection controls are now rendered.
+    expect(screen.getByLabelText('Search ingredients by name')).toBeInTheDocument()
     expect(screen.getByTestId('basket-count')).toHaveTextContent('Nothing picked yet')
+  })
+
+  it('does not show preference controls during ingredient selection', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await openFridge(user)
+
+    expect(screen.queryByRole('radio')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('preferences-panel')).not.toBeInTheDocument()
   })
 })
 
 describe('ingredient selection', () => {
-  it('shows categories, supports search, and toggles selection', async () => {
+  it('shows categories, supports global search, and toggles selection', async () => {
     const user = userEvent.setup()
     installApiMock({ captured })
     render(<App />)
     await openFridge(user)
 
     // Default category is Vegetables and the shelf is paginated (12 per page).
-    expect(screen.getByRole('tab', { name: /Vegetables/ })).toHaveAttribute(
-      'aria-selected',
+    expect(screen.getByRole('button', { name: /Vegetables/ })).toHaveAttribute(
+      'aria-pressed',
       'true',
     )
     expect(screen.getByTestId('tile-carrot')).toBeInTheDocument()
@@ -74,7 +94,7 @@ describe('ingredient selection', () => {
     expect(screen.getByTestId('tile-chicken')).toHaveAttribute('aria-pressed', 'true')
 
     // Selection survives a category change.
-    await user.click(screen.getByRole('tab', { name: /Protein/ }))
+    await user.click(screen.getByRole('button', { name: /Protein/ }))
     expect(screen.getByTestId('tile-chicken')).toHaveAttribute('aria-pressed', 'true')
 
     // Toggling off works.
@@ -82,20 +102,30 @@ describe('ingredient selection', () => {
     expect(screen.getByTestId('tile-chicken')).toHaveAttribute('aria-pressed', 'false')
   })
 
-  it('keeps Make Magic disabled until two ingredients are picked', async () => {
+  it('exposes complete ingredient names rather than abbreviations', async () => {
     const user = userEvent.setup()
     installApiMock({ captured })
     render(<App />)
     await openFridge(user)
 
-    const makeMagic = screen.getByTestId('make-magic')
-    expect(makeMagic).toBeDisabled()
+    await pickIngredient(user, 'napa', 'napa_cabbage')
+    expect(screen.getByTestId('tile-napa_cabbage')).toHaveTextContent('Napa Cabbage')
+  })
+
+  it('keeps Continue disabled until two ingredients are picked', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await openFridge(user)
+
+    const continueButton = screen.getByTestId('continue-button')
+    expect(continueButton).toBeDisabled()
 
     await pickIngredient(user, 'chicken', 'chicken')
-    expect(screen.getByTestId('make-magic')).toBeDisabled()
+    expect(continueButton).toBeDisabled()
 
     await pickIngredient(user, 'coffee', 'coffee')
-    await waitFor(() => expect(screen.getByTestId('make-magic')).toBeEnabled())
+    await waitFor(() => expect(continueButton).toBeEnabled())
     expect(screen.getByTestId('basket-count')).toHaveTextContent('2 ingredients picked')
   })
 
@@ -115,6 +145,116 @@ describe('ingredient selection', () => {
     await user.click(screen.getByRole('button', { name: 'Clear all' }))
     expect(screen.getByTestId('basket-count')).toHaveTextContent('Nothing picked yet')
   })
+
+  it('survives pagination and category changes', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await openFridge(user)
+
+    await pickIngredient(user, 'chicken', 'chicken')
+    await pickIngredient(user, 'coffee', 'coffee')
+
+    // Both picks are recorded regardless of the active filter.
+    expect(screen.getByTestId('basket-count')).toHaveTextContent('2 ingredients picked')
+
+    // Switching category clears the search and shows that category's page 1.
+    // The selection survives the category change even though Coffee (a Pantry
+    // item) is no longer on screen — it stays reflected in the basket.
+    await user.click(screen.getByRole('button', { name: /Protein/ }))
+    expect(screen.getByTestId('tile-chicken')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('tile-bacon')).toBeInTheDocument()
+    const basket = screen.getByLabelText('Selected ingredients')
+    expect(within(basket).getByText('Chicken')).toBeInTheDocument()
+    expect(within(basket).getByText('Coffee')).toBeInTheDocument()
+  })
+
+  it('search resets pagination to page 1', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await openFridge(user)
+
+    await user.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(screen.getByText(/Page 2 of 3/)).toBeInTheDocument()
+
+    const input = screen.getByLabelText('Search ingredients by name')
+    fireEvent.change(input, { target: { value: 'chicken' } })
+    // Searching is global and resets to page 1.
+    expect(screen.getByText(/Page 1 of 1/)).toBeInTheDocument()
+    expect(screen.getByTestId('tile-chicken')).toBeInTheDocument()
+  })
+})
+
+describe('preferences step', () => {
+  async function selectTwoAndContinue(user: ReturnType<typeof userEvent.setup>) {
+    await openFridge(user)
+    await pickIngredient(user, 'chicken', 'chicken')
+    await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
+  }
+
+  it('Continue opens a compact preference step with Back and Make Magic', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await selectTwoAndContinue(user)
+
+    expect(screen.getByTestId('back-to-ingredients')).toBeInTheDocument()
+    expect(screen.getByTestId('make-magic')).toBeInTheDocument()
+    // Cuisine / flavor / time options are present.
+    expect(screen.getByRole('radio', { name: 'Surprise me' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Spicy' })).toBeInTheDocument()
+  })
+
+  it('Back to ingredients preserves selections and preference values', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await selectTwoAndContinue(user)
+
+    await user.click(screen.getByRole('radio', { name: 'Spicy' }))
+    await user.click(screen.getByRole('button', { name: 'Back to ingredients' }))
+
+    // We're back on the selection stage with the same two picks preserved.
+    expect(screen.getByTestId('basket-count')).toHaveTextContent('2 ingredients picked')
+    // Selection persists in the basket regardless of the active filter — Chicken
+    // (Protein) and Coffee (Pantry) live in different categories, so they are not
+    // both on screen at once, but both remain selected.
+    const basket = screen.getByLabelText('Selected ingredients')
+    expect(within(basket).getByText('Chicken')).toBeInTheDocument()
+    expect(within(basket).getByText('Coffee')).toBeInTheDocument()
+  })
+
+  it('Make Magic submits the existing generation request', async () => {
+    const user = userEvent.setup()
+    installApiMock({ captured })
+    render(<App />)
+    await selectTwoAndContinue(user)
+
+    await user.click(screen.getByRole('radio', { name: 'Spicy' }))
+    await user.click(screen.getByRole('radio', { name: 'Under 20 min' }))
+    const allergies = screen.getByLabelText('Dietary needs or allergies')
+    await user.type(allergies, 'nut allergy')
+    const craving = screen.getByLabelText('What are you craving?')
+    await user.type(craving, 'cozy')
+
+    await user.click(screen.getByTestId('make-magic'))
+
+    expect(captured).toHaveLength(1)
+    const body = captured[0].body as {
+      ingredients: string[]
+      preferences: { cuisine: string; flavor: string; time: string; constraints: string }
+    }
+    expect(body.ingredients).toEqual(['chicken', 'coffee'])
+    expect(body.preferences.cuisine).toBe('fusion')
+    expect(body.preferences.flavor).toBe('spicy')
+    expect(body.preferences.time).toBe('under-20')
+    // The two free-text fields are composed into the backend `constraints` string.
+    expect(body.preferences.constraints).toContain('nut allergy')
+    expect(body.preferences.constraints).toContain('cozy')
+  })
 })
 
 describe('generation flow', () => {
@@ -123,20 +263,19 @@ describe('generation flow', () => {
     installApiMock({ captured, generate: makeResponse() })
     render(<App />)
     await openFridge(user)
-
     await pickIngredient(user, 'chicken', 'chicken')
     await pickIngredient(user, 'coffee', 'coffee')
 
-    // Change a preference away from the default so propagation is observable.
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
     await user.click(screen.getByRole('radio', { name: 'Spicy' }))
     await user.click(screen.getByRole('radio', { name: 'Under 20 min' }))
-
     await user.click(screen.getByTestId('make-magic'))
 
     expect(captured).toHaveLength(1)
     const body = captured[0].body as {
       ingredients: string[]
-      preferences: { cuisine: string; flavor: string; time: string; constraints: string }
+      preferences: { cuisine: string; flavor: string; time: string }
     }
     expect(body.ingredients).toEqual(['chicken', 'coffee'])
     expect(body.preferences.cuisine).toBe('fusion')
@@ -167,6 +306,8 @@ describe('generation flow', () => {
     await openFridge(user)
     await pickIngredient(user, 'chicken', 'chicken')
     await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
     await user.click(screen.getByTestId('make-magic'))
 
     expect(screen.getByText('Making a little kitchen magic…')).toBeInTheDocument()
@@ -192,6 +333,8 @@ describe('generation flow', () => {
     await openFridge(user)
     await pickIngredient(user, 'chicken', 'chicken')
     await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
     await user.click(screen.getByTestId('make-magic'))
 
     const alert = await screen.findByRole('alert')
@@ -207,6 +350,8 @@ describe('recipe result', () => {
     await openFridge(user)
     await pickIngredient(user, 'chicken', 'chicken')
     await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
     await user.click(screen.getByTestId('make-magic'))
     await screen.findByTestId('cie-panel')
   }
@@ -280,6 +425,8 @@ describe('favorites', () => {
     await openFridge(user)
     await pickIngredient(user, 'chicken', 'chicken')
     await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
     await user.click(screen.getByTestId('make-magic'))
     await screen.findByTestId('cie-panel')
 
@@ -287,14 +434,14 @@ describe('favorites', () => {
     expect(screen.getByTestId('save-recipe')).toBeDisabled()
     expect(screen.getByTestId('save-recipe')).toHaveTextContent('Saved')
 
-    await user.click(screen.getByRole('button', { name: /Saved recipes \(1\)/ }))
+    await user.click(screen.getByRole('button', { name: /Favorites/ }))
     expect(await screen.findByText('Coffee-Braised Chicken with Melted Cheese Crust')).toBeInTheDocument()
     expect(screen.queryByTestId('favorites-empty')).not.toBeInTheDocument()
 
     // Persists across a full remount.
     first.unmount()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: /Saved recipes \(1\)/ }))
+    await user.click(screen.getByRole('button', { name: /Favorites/ }))
     expect(await screen.findByText('Coffee-Braised Chicken with Melted Cheese Crust')).toBeInTheDocument()
 
     // Remove with confirmation.
@@ -311,7 +458,7 @@ describe('favorites', () => {
     installApiMock({ captured })
     render(<App />)
 
-    await user.click(screen.getByRole('button', { name: /Saved recipes \(0\)/ }))
+    await user.click(screen.getByRole('button', { name: /Favorites/ }))
     const empty = await screen.findByTestId('favorites-empty')
     expect(empty).toHaveTextContent('No saved recipes yet.')
     expect(empty).toHaveTextContent('Your future favorites will live here.')

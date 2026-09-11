@@ -33,20 +33,21 @@ interface PreferencesPanelProps {
   onChange: (next: Preferences) => void
 }
 
-/** Compact, friendly preference entry — deliberately not a long form. */
+/**
+ * Compact preference entry — deliberately not a long form. Two free-text fields are kept separate
+ * (allergies vs. craving) and surfaced to the backend as a single `constraints` string.
+ */
 export function PreferencesPanel({ value, onChange }: PreferencesPanelProps) {
   return (
-    <section className="card" aria-labelledby="prefs-title">
-      <h2 className="card__title" id="prefs-title">
+    <section className="prefs" aria-labelledby="prefs-title">
+      <h2 className="prefs__title" id="prefs-title">
         <SlidersHorizontal aria-hidden="true" />
         A few preferences
       </h2>
 
-      <div className="prefs__group">
-        <div className="prefs__legend" id="cuisine-label">
-          Cuisine direction
-        </div>
-        <div className="options" role="radiogroup" aria-labelledby="cuisine-label">
+      <fieldset className="prefs__group">
+        <legend className="prefs__legend">Cuisine direction</legend>
+        <div className="options options--wrap" role="radiogroup" aria-labelledby="prefs-title">
           {CUISINE.map((o) => (
             <button
               key={o.value}
@@ -60,13 +61,11 @@ export function PreferencesPanel({ value, onChange }: PreferencesPanelProps) {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
-      <div className="prefs__group">
-        <div className="prefs__legend" id="flavor-label">
-          Flavor
-        </div>
-        <div className="options" role="radiogroup" aria-labelledby="flavor-label">
+      <fieldset className="prefs__group">
+        <legend className="prefs__legend">Flavor</legend>
+        <div className="options options--wrap" role="radiogroup" aria-labelledby="prefs-title">
           {FLAVOR.map((o) => (
             <button
               key={o.value}
@@ -80,13 +79,11 @@ export function PreferencesPanel({ value, onChange }: PreferencesPanelProps) {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
-      <div className="prefs__group">
-        <div className="prefs__legend" id="time-label">
-          Cooking time
-        </div>
-        <div className="options" role="radiogroup" aria-labelledby="time-label">
+      <fieldset className="prefs__group">
+        <legend className="prefs__legend">Cooking time</legend>
+        <div className="options options--wrap" role="radiogroup" aria-labelledby="prefs-title">
           {TIME.map((o) => (
             <button
               key={o.value}
@@ -100,21 +97,37 @@ export function PreferencesPanel({ value, onChange }: PreferencesPanelProps) {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
-      <div className="prefs__group">
-        <label className="prefs__legend" htmlFor="constraints">
-          Anything else?
-        </label>
+      <fieldset className="prefs__group">
+        <legend className="prefs__legend">Dietary needs or allergies</legend>
         <textarea
-          id="constraints"
+          id="prefs-allergies"
           className="prefs__text"
-          placeholder="Allergies, dietary needs, mood…"
-          value={value.constraints}
+          aria-label="Dietary needs or allergies"
+          placeholder="Vegetarian, nut allergy, lactose-free…"
+          value={value.allergies}
           maxLength={400}
-          onChange={(e) => onChange({ ...value, constraints: e.target.value })}
+          onChange={(e) => onChange({ ...value, allergies: e.target.value })}
         />
-      </div>
+      </fieldset>
+
+      <fieldset className="prefs__group">
+        <legend className="prefs__legend">What are you craving?</legend>
+        <textarea
+          id="prefs-craving"
+          className="prefs__text"
+          aria-label="What are you craving?"
+          placeholder="Something cozy, light, adventurous…"
+          value={value.craving}
+          maxLength={400}
+          onChange={(e) => onChange({ ...value, craving: e.target.value })}
+        />
+      </fieldset>
+
+      <p className="prefs__safety">
+        Please verify ingredients carefully if you have a severe allergy.
+      </p>
     </section>
   )
 }
