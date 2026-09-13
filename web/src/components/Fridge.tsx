@@ -29,7 +29,7 @@ export function Fridge({ frame, interactive, onActivate, children }: FridgeProps
   const interiorVisible = frame === 'open' || frame === 'ajar'
 
   const frames = (
-    <>
+    <div className="fridge__frame">
       <img
         className={frameClass('closed', frame)}
         src={SCENE.fridgeClosed}
@@ -54,7 +54,7 @@ export function Fridge({ frame, interactive, onActivate, children }: FridgeProps
       >
         {children}
       </div>
-    </>
+    </div>
   )
 
   if (!interactive) {

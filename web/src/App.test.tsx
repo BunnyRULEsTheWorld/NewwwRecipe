@@ -463,4 +463,36 @@ describe('favorites', () => {
     expect(empty).toHaveTextContent('No saved recipes yet.')
     expect(empty).toHaveTextContent('Your future favorites will live here.')
   })
+
+  describe('shelf coordinate system is reused across stages', () => {
+    it('keeps the same four-shelf mapping when switching to preferences', async () => {
+      const user = userEvent.setup()
+      installApiMock({ captured })
+      render(<App />)
+      await openFridge(user)
+      await pickIngredient(user, 'chicken', 'chicken')
+      await pickIngredient(user, 'coffee', 'coffee')
+      // Clear any search so the default 12-per-page shelf mapping is what we check.
+      fireEvent.change(screen.getByLabelText('Search ingredients by name'), { target: { value: '' } })
+      await user.click(screen.getByTestId('continue-button'))
+      await screen.findByTestId('preferences-panel')
+
+      // The fridge must not resize or swap its coordinate system for preferences.
+      const rows = screen.getAllByTestId(/^shelf-row-/)
+      expect(rows).toHaveLength(4)
+      expect(rows.map((r) => r.getAttribute('data-shelf')).sort()).toEqual([
+        '1',
+        '2',
+        '3',
+        '4',
+      ])
+
+      const tiles = document.querySelectorAll('.shelf__tile')
+      expect(tiles.length).toBe(12)
+      for (const tile of tiles) {
+        // Every visible ingredient is still tied to exactly one shelf row.
+        expect(tile.closest('.shelf__row')).not.toBeNull()
+      }
+    })
+  })
 })

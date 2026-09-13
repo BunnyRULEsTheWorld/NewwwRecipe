@@ -61,7 +61,14 @@ export function IngredientShelf({ items, selectedIds, onToggle }: IngredientShel
         <p className="shelf__empty">Nothing matches your search.</p>
       ) : (
         rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="shelf__row" role="group" aria-label={`Shelf ${rowIndex + 1}`}>
+          <div
+            key={rowIndex}
+            className="shelf__row"
+            role="group"
+            aria-label={`Shelf ${rowIndex + 1}`}
+            data-shelf={rowIndex + 1}
+            data-testid={`shelf-row-${rowIndex + 1}`}
+          >
             {row.map((item) => (
               <IngredientTile
                 key={item.id}

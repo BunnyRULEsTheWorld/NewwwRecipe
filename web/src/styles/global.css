@@ -332,14 +332,17 @@ button {
   min-width: 0;
 }
 
-/* All three frames share one bottom-centre anchor so the sequence never jumps. */
+/* Sized to the square frame so the glow pool and hit area track the artwork
+   exactly. The square .fridge__frame inside defines the real box. */
 .fridge-button {
   position: relative;
-  width: 100%;
-  height: 100%;
+  display: block;
+  width: var(--fridge-size);
+  max-width: 100%;
   padding: 0;
   background: none;
   border: 0;
+  line-height: 0;
   cursor: pointer;
 }
 
@@ -349,13 +352,10 @@ button {
 
 .fridge-frame {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: bottom center;
-  transform: translateX(-50%) scale(1);
+  object-fit: fill;
   opacity: 0;
   transition:
     opacity 260ms ease,
@@ -365,15 +365,15 @@ button {
 
 .fridge-frame.is-active {
   opacity: 1;
-  transform: translateX(-50%) scale(1);
+  transform: scale(1);
 }
 
 .fridge-frame--closed.is-active {
-  transform: translateX(-50%) scale(1);
+  transform: scale(1);
 }
 
 .fridge-frame--ajar.is-active {
-  transform: translateX(-50%) scale(1.015);
+  transform: scale(1.015);
 }
 
 .fridge-button:not(.is-open)::after {
@@ -404,7 +404,7 @@ button {
 
 .fridge-button:not(.is-open):hover .fridge-frame--closed.is-active,
 .fridge-button:not(.is-open):focus-visible .fridge-frame--closed.is-active {
-  transform: translateX(-50%) scale(1.03);
+  transform: scale(1.03);
 }
 
 .fridge-button:not(.is-open):hover {
@@ -428,16 +428,31 @@ button {
   }
 }
 
-/* The ingredient overlay is clipped to the illustrated cavity of fridge_open_empty.png.
-   Calibrated from the 1536x1536 source: cavity x 0.07->0.93, y 0.09->0.89; the four shelf
-   bands sit at image-y 0.226 / 0.343 / 0.518 / 0.712 (-> 17.2% / 31.7% / 53.5% / 77.5% of the
-   interior box). Everything inside is hidden until the fridge is open. */
+/* Square 1:1 stage that the rendered frames and the ingredient overlay share.
+   All three source PNGs are 1536x1536, so a square box + object-fit:fill maps
+   image pixels 1:1 onto the overlay's percentage coordinate system (no
+   letterboxing, no distortion). Shelf anchors below were measured from the
+   actual fridge_open_empty.png, expressed as full-image percentages:
+     cavity x: 9% -> 91%   shelf boards (image-y): 36.20 / 51.69 / 69.27 / 85.16 %
+   See the alignment fix commit for the measurement method. */
+.fridge__frame {
+  --cavity-left: 9%;
+  --cavity-right: 9%;
+  --shelf-1-y: 36.20%;
+  --shelf-2-y: 51.69%;
+  --shelf-3-y: 69.27%;
+  --shelf-4-y: 85.16%;
+  --shelf-gap: 1.4%;
+  --tile-art-h: calc(var(--fridge-size) * 0.10);
+  --tile-name-fs: calc(var(--fridge-size) * 0.018);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
 .fridge__interior {
   position: absolute;
-  top: 9%;
-  bottom: 11%;
-  left: 7%;
-  right: 7%;
+  inset: 0;
   z-index: 3;
   opacity: 0;
   visibility: hidden;
@@ -752,51 +767,53 @@ button {
 
 .shelf__row {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--cavity-left);
+  right: var(--cavity-right);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   gap: clamp(6px, 1.6vw, 20px);
-  transform: translateY(-50%);
+  transform: none;
 }
 
-/* Four rows aligned to the four drawn shelf bands of fridge_open_empty.png. */
+/* Each row is bottom-anchored to its physical shelf board (measured from the
+   PNG) plus a small gap, so ingredients rest ON the shelf rather than floating
+   in the middle of a compartment. No vertical centring. */
 .shelf__row:nth-child(1) {
-  top: 17.2%;
+  bottom: calc(100% - var(--shelf-1-y) + var(--shelf-gap));
 }
 .shelf__row:nth-child(2) {
-  top: 31.7%;
+  bottom: calc(100% - var(--shelf-2-y) + var(--shelf-gap));
 }
 .shelf__row:nth-child(3) {
-  top: 53.5%;
+  bottom: calc(100% - var(--shelf-3-y) + var(--shelf-gap));
 }
 .shelf__row:nth-child(4) {
-  top: 77.5%;
+  bottom: calc(100% - var(--shelf-4-y) + var(--shelf-gap));
 }
 
 .shelf__tile {
   position: relative;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
-  width: clamp(60px, 9vw, 104px);
-  padding: 4px;
+  gap: 2px;
+  width: clamp(54px, calc(var(--fridge-size) * 0.22), 112px);
+  padding: 2px;
   background: transparent;
   border: 0;
   border-radius: 14px;
   cursor: pointer;
+  /* Geometry is identical selected or not — only colour/ring/inner-scale change. */
   transition:
-    transform 0.16s ease,
     background 0.16s ease,
     box-shadow 0.16s ease;
 }
 
 .shelf__tile:hover {
   background: rgba(255, 253, 247, 0.85);
-  transform: translateY(-3px);
 }
 
 .shelf__tile:focus-visible {
@@ -807,10 +824,10 @@ button {
 .shelf__tile.is-selected {
   background: var(--mint-soft);
   box-shadow: 0 3px 10px rgba(93, 125, 82, 0.3);
-  transform: translateY(-4px);
 }
 
-/* A clear selected ring so selection never relies on colour alone. */
+/* A clear selected ring so selection never relies on colour alone.
+   inset:0 + border-box keeps the layout box unchanged. */
 .shelf__tile.is-selected::after {
   content: '';
   position: absolute;
@@ -820,33 +837,43 @@ button {
   pointer-events: none;
 }
 
+/* Subtle inner scale only — the tile's outer box never moves or resizes. */
+.shelf__tile.is-selected .shelf__tile-art img {
+  transform: scale(1.04);
+}
+
 .shelf__tile-art {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: clamp(44px, 6.4vw, 74px);
+  height: var(--tile-art-h);
   width: 100%;
 }
 
 .shelf__tile-art img {
   max-width: 100%;
-  max-height: 100%;
   width: auto;
-  height: auto;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 2px 2px rgba(60, 50, 40, 0.18));
   pointer-events: none;
+  transition: transform 0.16s ease;
 }
 
+/* Fixed label region so 1- and 2-line names share a baseline. */
 .shelf__tile-name {
-  font-size: clamp(10px, 1vw, 12.5px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  font-size: var(--tile-name-fs);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--ink);
   text-align: center;
   max-width: 100%;
-  /* Up to two centred lines — clipped, never truncated with an ellipsis. */
-  max-height: 2.3em;
+  height: calc(var(--tile-name-fs) * 2.2);
+  max-height: calc(var(--tile-name-fs) * 2.2);
   overflow: hidden;
   text-overflow: clip;
 }
