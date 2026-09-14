@@ -71,7 +71,13 @@ class CieFakeProvider(FakeProvider):
                     {"name": "chicken", "quantity": "400g", "note": None},
                     {"name": "cheese", "quantity": "100g", "note": "grated"},
                 ],
-                "steps": ["sear", "braise 30 min", "broil under cheese"],
+                "steps": [
+                    "Pat the chicken dry and season with salt and pepper.",
+                    "Sear the chicken in a hot pan over medium-high heat for 2 minutes per side.",
+                    "Add the coffee and braise gently for 30 minutes until the centre reaches 74 C / 165 F.",
+                    "Sprinkle the cheese over the chicken and broil 2 minutes until bubbling.",
+                    "Rest 3 minutes, then serve with a drizzle of chili oil.",
+                ],
                 "creative_explanation": "coffee replaces stock; cheese cuts bitterness",
             }
         if "Creative Innovation Evaluation" in sys:

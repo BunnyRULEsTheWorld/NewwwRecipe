@@ -115,9 +115,11 @@ class E2EFakeProvider(FakeProvider):
                     {"name": "black pepper", "quantity": "to taste", "note": None},
                 ],
                 "steps": [
-                    "Prep the given ingredients.",
-                    f"Apply the idea (preserving the creative hypothesis): {concept['core_idea']}",
-                    "Cook until done; rest and serve.",
+                    "Cut the chicken into 3 cm cubes and toss with salt, black pepper, and the finely ground coffee rub.",
+                    "Tuck a small piece of cheese into the center of each cube, then thread the cubes onto skewers.",
+                    "Preheat a grill or grill pan to medium (about 200 C / 400 F).",
+                    "Grill the skewers 4-5 minutes per side, turning once, until browned and the thickest piece reaches 74 C / 165 F.",
+                    "Rest 2 minutes off the heat, then serve.",
                 ],
                 "creative_explanation": f"{concept['creative_angle']} (faithful to InnovationTrace: {concept['trace']['creative_hypothesis']})",
             }

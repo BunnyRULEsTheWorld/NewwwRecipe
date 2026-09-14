@@ -179,6 +179,17 @@ copy .env.example .env
 
 配置了真实密钥但生成调用失败时，后端会自动回退到离线 `DemoProvider`，页面右上角显示 “Demo fallback” 徽标并附带一条非阻塞提示；系统从不伪造 live 结果，也不会把失败静默当成成功。
 
+### 步骤质量可靠性
+
+后端在菜谱 realization 层内置了程序化步骤校验，避免模型返回占位 / 无效步骤被前端当成真实结果：
+
+- `validate_recipe_steps()` 校验步骤为 4–7 个非空字符串，拒绝 `"placeholder"` 及 `Prepare the ingredients`、`Cook until done`、`Season as needed`、`Serve and enjoy` 等占位句；
+- 整体必须包含显式动作动词，且至少包含一项可执行信息（时间 / 温度 / 火候 / 熟度）；
+- 若 Hy3 首次返回不合格步骤，后端会把具体校验错误作为反馈，进行**至多一次**定向重试；若仍不合格，则抛出 `StepValidationError`，由服务层进入**明确标注**的 Demo fallback，绝不静默接受占位步骤，也绝不把 fallback 标为 `Live · Hy3`；
+- 不改变现有 API / schema 字段结构，只对 prompt 与生成后处理做了加固。
+
+该逻辑有配套单元测试覆盖（合法 4–7 步、占位、空步、过少 / 过多、含糊 `Cook until done`、首次失败重试成功、两次均失败抛错）。
+
 ### API 端点
 
 - `GET /api/health` — 健康检查，返回食材/场景资源数量与 demo 状态；
@@ -255,10 +266,14 @@ npm install
 ## 最终提交前的工作
 
 - [x] 接通 NewwwRecipe 的生成、评价和 UI 流程（交互式冰箱前端）；
+- [x] 真实 Hy3 端到端验证（提供真实密钥时徽标显示 “Live · Hy3”，不伪造 live 结果）；
+- [x] 步骤质量可靠性修复：realization 层程序化步骤校验 + 单次定向重试，杜绝占位步骤；
+- [x] 录制正式 demo 视频（< 120 s，1440×900，已用 ffmpeg 验证）；
 - [ ] 把完整 benchmark、runner 和结果文件同步到公开仓库；
 - [ ] 完成 evidence-only、重复评测、人工一致性和对抗性实验；
-- [ ] 整理典型失败案例；
-- [ ] 完成最终评测和 2 分钟以内的 demo。
+- [ ] 整理典型失败案例。
+
+提交前检查清单见 [`docs/submission-checklist.md`](docs/submission-checklist.md)。
 
 ## API Key
 

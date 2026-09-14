@@ -26,8 +26,12 @@ class Hy3LLMClient(LLMProvider):
         base_url: str,
         model: str,
         *,
-        timeout: float = 60.0,
-        max_retries: int = 3,
+        # Hy3 (reasoning-class model) needs a generous timeout for the complex strict
+        # structured schemas used by ideation / realization / CIE — a 60s ceiling aborts
+        # real generations that legitimately take ~60-120s. This is connectivity config only;
+        # it does not change model behaviour, prompts, or any output contract.
+        timeout: float = 240.0,
+        max_retries: int = 2,
     ) -> None:
         self.model = model
         # api_key / base_url are supplied by the caller (Config), never hardcoded.

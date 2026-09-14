@@ -115,7 +115,13 @@ def _recipe(name="C1"):
     return Recipe(
         name=name,
         ingredients=[Ingredient(name="chicken")],
-        steps=["sear", "braise", "broil"],
+        steps=[
+            "Pat the chicken dry and season with salt and pepper.",
+            "Sear the chicken in a hot pan over medium-high heat for 2 minutes per side.",
+            "Add the coffee and braise gently for 30 minutes until the centre reaches 74 C / 165 F.",
+            "Sprinkle cheese over the chicken and broil 2 minutes until bubbling.",
+            "Rest 3 minutes, then serve.",
+        ],
         creative_explanation="coffee replaces stock",
         concept_name=name,
     )

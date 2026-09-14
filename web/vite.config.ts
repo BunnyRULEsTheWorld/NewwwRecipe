@@ -82,13 +82,15 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
     proxy: {
-      '/api': { target: BACKEND, changeOrigin: true },
+      // No proxy timeout: the /api/recipes/generate call can take several minutes for a real
+      // Hy3 (reasoning-class) generation, and a default 120s proxyTimeout would abort it.
+      '/api': { target: BACKEND, changeOrigin: true, timeout: 0, proxyTimeout: 0 },
     },
   },
   preview: {
     port: 4173,
     proxy: {
-      '/api': { target: BACKEND, changeOrigin: true },
+      '/api': { target: BACKEND, changeOrigin: true, timeout: 0, proxyTimeout: 0 },
     },
   },
   build: {
