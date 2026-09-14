@@ -268,7 +268,7 @@ npm install
 - [x] 接通 NewwwRecipe 的生成、评价和 UI 流程（交互式冰箱前端）；
 - [x] 真实 Hy3 端到端验证（提供真实密钥时徽标显示 “Live · Hy3”，不伪造 live 结果）；
 - [x] 步骤质量可靠性修复：realization 层程序化步骤校验 + 单次定向重试，杜绝占位步骤；
-- [x] 录制正式 demo 视频（< 120 s，1440×900，已用 ffmpeg 验证）；
+- [x] 录制正式 demo 视频（< 120 s，1440×900，已用 ffmpeg 验证）—— [`docs/demo/newwwrecipe-live-demo.mp4`](docs/demo/newwwrecipe-live-demo.mp4)（97 s，同一次真实 Hy3 素材重新剪辑，无伪造 Live）。
 - [ ] 把完整 benchmark、runner 和结果文件同步到公开仓库；
 - [ ] 完成 evidence-only、重复评测、人工一致性和对抗性实验；
 - [ ] 整理典型失败案例。

@@ -45,10 +45,12 @@
 ## 5. 正式 demo 视频
 
 - [x] 输出 `docs/demo/newwwrecipe-live-demo.mp4`。
-- [x] 时长 **105 s**（< 120 s 硬上限；目标 60–100 s 略超，可接受）。
-- [x] 分辨率 **1440×900**，h264（High），yuv420p，25 fps，约 **1.85 MB**（< 20 MB）。
-- [x] 真实请求 / 响应录制；中段以 “Generation wait shortened” 明确标注跳过长等待，**未伪造 live**。
-- [x] 用 `ffmpeg -i`（替代缺失的 ffprobe）验证通过：duration / resolution / decode / size 四项均达标。
+- [x] 从同一次真实 Hy3 录像（`provider=hy3`、`demo_mode=false`、`fallback_reason=null`）重新剪辑，未重新调用 Hy3，未混用 DemoProvider 素材。
+- [x] 时长 **97 s**（在 80–105 s 目标区间内，< 120 s 硬上限）。
+- [x] 分辨率 **1440×900**，h264（High），yuv420p，25 fps，约 **3.05 MB**（< 20 MB）。
+- [x] 结构：0–6 s Landing；6–12 s 冰箱开门；12–25 s 选材（Chicken / Coffee 含 freeze 停留）；25–36 s Preferences；36–44 s Loading + “Generation wait shortened”；44–76 s Result / CIE / Innovation Trace（同一次真实 Hy3 调用的 live screenshot 经 freeze + 轻微 zoom 延长）；76–94 s Cooking Mode；94–97 s 结束字幕。
+- [x] 用 `ffmpeg -i` 验证通过：duration / resolution / decode / size 四项均达标。
+- [ ] ⚠️ **已知限制**：原始真实录像在 Cooking Mode 中仅停留在 `Step 1 of 7`，未点击 Next 进入 Step 2；`save-recipe` 点击未在画面中产生可见的 Favorites 计数变化。本次剪辑**未伪造**这些动作，因此最终视频未展示多步烹饪导航与收藏操作。后续若额度恢复，可重新录制一次包含完整 Cooking Mode 导航与 Save/Favorites 的真实 Hy3 流程并替换。
 
 ## 6. 全量测试（Test suites）
 

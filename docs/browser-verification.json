@@ -7,6 +7,34 @@
     "backendUrl": "http://127.0.0.1:8000",
     "frontendUrl": "http://127.0.0.1:5173"
   },
+  "liveDemoVideo": {
+    "path": "docs/demo/newwwrecipe-live-demo.mp4",
+    "durationSeconds": 97,
+    "resolution": "1440x900",
+    "frameRate": 25,
+    "codec": "h264 (High)",
+    "pixelFormat": "yuv420p",
+    "fileSizeBytes": 3049094,
+    "verifiedVia": "ffmpeg -i (ffprobe unavailable)",
+    "source": "Genuine Hy3 live run: provider=hy3, demo_mode=false, fallback_reason=null, badge=Live · Hy3",
+    "reEditFromSource": "C:/tmp/pw/live-video/page@bec961a0f8041ab36cdae491a412af9a.webm",
+    "hy3CallsForThisVideo": 0,
+    "structure": {
+      "landing": "0–6 s",
+      "fridgeOpen": "6–12 s",
+      "ingredientSelection": "12–25 s",
+      "preferences": "25–36 s",
+      "loading": "36–44 s (including 3 s 'Generation wait shortened' title card)",
+      "resultCieTrace": "44–76 s",
+      "cookingMode": "76–94 s",
+      "ending": "94–97 s"
+    },
+    "caveats": [
+      "Result segment is extended via a freeze frame of the live screenshot (recipe-result-live-1440x900.png) from the same real Hy3 call; the original recording only showed the result page for a few seconds before clicking Start Cooking.",
+      "Cooking Mode only shows Step 1 of 7; the original recording did not click Next to reach Step 2.",
+      "Save/Favorites action with visible count change is not shown because the original recording did not produce a visible change."
+    ]
+  },
   "expectedGeometry": {
     "cavityLeft": "29%",
     "cavityRight": "71%",
