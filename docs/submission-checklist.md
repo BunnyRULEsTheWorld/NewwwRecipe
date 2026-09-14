@@ -54,27 +54,38 @@
 
 ## 6. 全量测试（Test suites）
 
-- [ ] Python（pytest，离线 `PYTHON_DOTENV_DISABLED=1` 且不设 `HY3_API_KEY`，目标 **133 passed**）。
-- [ ] 数据集校验：`CIE-Culinary-Bench/scripts/validate_dataset.py`。
-- [ ] 资产审计：65 张食材 PNG + 8 张场景 PNG 均可解码 / 加载，食材抠图保留 alpha。
-- [ ] 前端：`npm run typecheck` / `npm run lint` / `npm run test` / `npm run build`。
-- [ ] `git diff --check` 无空白错误。
+- [x] Python（pytest，离线 `PYTHON_DOTENV_DISABLED=1` 且不设 `HY3_API_KEY`）：**133 passed**（提交 `0a6fb78` 前验证；本次仅文档/视频改动，未改代码）。
+- [x] 数据集校验：`CIE-Culinary-Bench/scripts/validate_dataset.py` 通过（30 cases / 61 sources 合法）。
+- [x] 资产审计：65 张食材 PNG + 8 张场景 PNG 均可解码 / 加载，食材抠图保留 alpha。
+- [x] 前端：`npm run typecheck` / `npm run lint` / `npm run test`（36 passed）/ `npm run build` 均通过。
+- [x] `git diff --check` 无空白错误。
 
 ## 7. 密钥与 Git 跟踪审计
 
-- [ ] `.env` 不被跟踪，仓库仅保留 `.env.example`；无任何密钥 / API key 出现在 diff 或提交中。
-- [ ] 缓存 / 临时文件（`.venv`、`node_modules`、`__pycache__`、`*.pyc`）被 `.gitignore` 覆盖。
-- [ ] 仅显式文件暂存，不使用 `git add .` / `git add -A`。
+- [x] `.env` 不被跟踪，仓库仅保留 `.env.example`；无任何密钥 / API key 出现在 diff 或提交中。
+- [x] 缓存 / 临时文件（`.venv`、`node_modules`、`__pycache__`、`*.pyc`）被 `.gitignore` 覆盖。
+- [x] 仅显式文件暂存，不使用 `git add .` / `git add -A`。
 
 ## 8. 提交与合入
 
-- [ ] `git commit`（显式文件，`chore: prepare final Hy3 submission`）。
-- [ ] `git fetch`。
+- [x] `git commit`（显式文件，`chore: prepare final Hy3 submission`）。
+- [x] 新增 `docs: improve live demo pacing` 提交（`351698c`），未 amend `0a6fb78`。
+- [ ] `git fetch`。**⛔ 网络阻塞**：本环境无法连接 `github.com:443`（`Failed to connect to github.com:443 ... Could not connect to server`），故未执行 fetch / pull / merge / push。
 - [ ] `git switch main` && `git pull --ff-only origin main`。
 - [ ] `git merge --no-ff feat/interactive-fridge-frontend -m "merge: release NewwwRecipe submission"`。
 - [ ] 在 `main` 上重新全量验证。
 - [ ] `git push origin main`（**非强制**）。
 - [ ] 推送后检查公开仓库 / README / 图片 / 视频 / benchmark / 默认分支。
+
+> 网络恢复后，在干净的工作区执行：
+> ```bash
+> git fetch
+> git switch main && git pull --ff-only origin main
+> git merge --no-ff feat/interactive-fridge-frontend -m "merge: release NewwwRecipe submission"
+> # 在 main 上重新全量验证
+> git push origin main
+> # 推送后检查公开仓库、README、图片、视频、benchmark、默认分支
+> ```
 
 ## 9. 保留的已确认修改
 
