@@ -177,6 +177,8 @@ copy .env.example .env
 
 然后在 `.env` 中填写 `HY3_API_KEY`、`HY3_BASE_URL` 等配置。真实密钥只保存在本地 `.env`，不会提交。
 
+配置了真实密钥但生成调用失败时，后端会自动回退到离线 `DemoProvider`，页面右上角显示 “Demo fallback” 徽标并附带一条非阻塞提示；系统从不伪造 live 结果，也不会把失败静默当成成功。
+
 ### API 端点
 
 - `GET /api/health` — 健康检查，返回食材/场景资源数量与 demo 状态；

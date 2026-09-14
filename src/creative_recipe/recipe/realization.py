@@ -41,7 +41,16 @@ Rules:
 - Output TWO separate ingredient lists:
     "ingredients" : the hero ingredients from the concept (with quantities/notes)
     "seasonings"  : the seasonings / condiments / spices used (e.g. salt, pepper, spices, sauces)
-- Steps must be ordered, specific, and actionable (technique + time where useful).
+- Steps must be ordered, specific, and ACTIONABLE. Write 4-7 steps. Each step must contain at least
+  two of: an explicit action/technique, a named ingredient or tool, a time (e.g. "8-10 minutes"), a
+  temperature or heat level (e.g. "medium-high", "200 C / 400 F"), a doneness check, or a food-safety
+  standard.
+- For proteins, include an explicit safety doneness check (e.g. "cook until the thickest part reaches
+  74 C / 165 F" for poultry). Choose the safety standard that fits the actual main ingredient — do not
+  hard-code a single protein's rule onto every recipe.
+- FORBIDDEN placeholder steps (never use these alone as a step): "Prep the given ingredients.",
+  "Cook until done.", "Cook until done; rest and serve.", "Season as needed.", "Serve and enjoy.",
+  "Follow normal cooking procedure.", "Add the ingredients and cook.", "Finish and serve."
 - creative_explanation must explain the creativity in plain language, reference the InnovationTrace, and
   must NOT contradict the original creative_hypothesis.
 

@@ -26,7 +26,7 @@ interface RecipeResultProps {
 }
 
 const TIME_LABEL: Record<Preferences['time'], string> = {
-  any: 'Any duration',
+  any: 'Flexible',
   'under-20': 'Under 20 min',
   'under-40': 'Under 40 min',
   weekend: 'Weekend project',
@@ -123,7 +123,7 @@ export function RecipeResult({
               )}
               <span className="meta-pill">
                 <Clock aria-hidden="true" />
-                Asked for: {TIME_LABEL[preferences.time]}
+                Cooking time: {TIME_LABEL[preferences.time]}
               </span>
               <span className="meta-pill">
                 <Sparkles aria-hidden="true" />
@@ -132,15 +132,20 @@ export function RecipeResult({
             </div>
 
             {thumbnails.length > 0 && (
-              <div className="constellation" aria-label="Ingredients you picked">
-                {thumbnails.map((item) => (
-                  <img
-                    key={item.id}
-                    className="constellation__item"
-                    src={ingredientUrl(item)}
-                    alt={`${item.displayName} illustration`}
-                  />
-                ))}
+              <div className="constellation-wrap">
+                <h2 className="section__title constellation__title" data-testid="starting-ingredients">
+                  YOUR STARTING INGREDIENTS
+                </h2>
+                <div className="constellation" aria-label="Ingredients you picked">
+                  {thumbnails.map((item) => (
+                    <img
+                      key={item.id}
+                      className="constellation__item"
+                      src={ingredientUrl(item)}
+                      alt={`${item.displayName} illustration`}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
@@ -219,6 +224,12 @@ export function RecipeResult({
           {response.meta.demo_mode && (
             <p className="cie-note" style={{ marginTop: 16 }}>
               Generated offline with the repository DemoProvider — no live model was called.
+            </p>
+          )}
+
+          {response.meta.fallback_reason && (
+            <p className="cie-note cie-note--fallback" style={{ marginTop: 16 }} data-testid="fallback-note">
+              {response.meta.fallback_reason}
             </p>
           )}
         </aside>

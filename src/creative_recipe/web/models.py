@@ -274,6 +274,9 @@ class GenerationMeta(BaseModel):
     concept_count: int
     recipe_count: int
     rank: Optional[int] = None
+    #: Set only when a requested live (Hy3) generation failed and we gracefully
+    #: fell back to the offline DemoProvider. Absent/None means no fallback.
+    fallback_reason: Optional[str] = None
 
 
 class GenerateResponse(BaseModel):

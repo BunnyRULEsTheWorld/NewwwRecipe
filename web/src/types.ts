@@ -132,6 +132,8 @@ export interface GenerationMeta {
   concept_count: number
   recipe_count: number
   rank: number | null
+  /** Set only when a requested live (Hy3) generation failed and fell back to the offline DemoProvider. */
+  fallback_reason?: string | null
 }
 
 export interface GenerateResponse {

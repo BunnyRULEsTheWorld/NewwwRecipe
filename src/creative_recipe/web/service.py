@@ -214,14 +214,38 @@ def generate(req: GenerateRequest) -> GenerateResponse:
     ingredients = build_ingredients(req.ingredients)
     constraints = build_constraints(req.preferences, req.avoid)
 
-    result: PipelineResult = run_pipeline(
-        provider,
-        ingredients,
-        constraints=constraints,
-        num_concepts=NUM_CONCEPTS,
-        top_k_concepts=TOP_K_CONCEPTS,
-        top_k_final=TOP_K_FINAL,
-    )
+    fallback_reason: Optional[str] = None
+    try:
+        result: PipelineResult = run_pipeline(
+            provider,
+            ingredients,
+            constraints=constraints,
+            num_concepts=NUM_CONCEPTS,
+            top_k_concepts=TOP_K_CONCEPTS,
+            top_k_final=TOP_K_FINAL,
+        )
+    except Exception as exc:  # Real (Hy3) attempt failed — fall back, never fake success.
+        if not demo_mode:
+            provider, provider_name, model_name, demo_mode = (
+                DemoProvider(),
+                "demo",
+                "demo-fallback",
+                True,
+            )
+            fallback_reason = (
+                f"Live generation failed ({type(exc).__name__}: {exc}); "
+                "fell back to the offline DemoProvider."
+            )
+            result = run_pipeline(
+                provider,
+                ingredients,
+                constraints=constraints,
+                num_concepts=NUM_CONCEPTS,
+                top_k_concepts=TOP_K_CONCEPTS,
+                top_k_final=TOP_K_FINAL,
+            )
+        else:
+            raise
 
     recipe: Optional[Recipe] = result.best_recipe
     if recipe is None:
@@ -263,5 +287,6 @@ def generate(req: GenerateRequest) -> GenerateResponse:
             concept_count=len(result.concepts),
             recipe_count=len(result.recipes),
             rank=rank,
+            fallback_reason=fallback_reason,
         ),
     )

@@ -163,12 +163,37 @@ export default function App() {
         </div>
         <div className="app-header__spacer" />
         <div className="header-actions">
-          {demoMode && (
-            <span className="demo-badge" data-testid="demo-badge" title="Running without a live model">
-              <Sparkles aria-hidden="true" />
-              Demo
-            </span>
-          )}
+          {(() => {
+            const genMeta = generation.data?.meta
+            const mode: 'demo' | 'live' | 'fallback' = genMeta
+              ? genMeta.fallback_reason
+                ? 'fallback'
+                : genMeta.demo_mode
+                  ? 'demo'
+                  : 'live'
+              : demoMode
+                ? 'demo'
+                : 'live'
+            const label =
+              mode === 'fallback' ? 'Demo fallback' : mode === 'live' ? 'Live · Hy3' : 'Demo mode'
+            const title =
+              mode === 'fallback'
+                ? genMeta?.fallback_reason ?? 'Live generation failed; showing a demo result.'
+                : mode === 'live'
+                  ? 'Using the live Hy3 model'
+                  : 'Running without a live model'
+            return (
+              <span
+                className={`demo-badge demo-badge--${mode}`}
+                data-testid="demo-badge"
+                data-mode={mode}
+                title={title}
+              >
+                <Sparkles aria-hidden="true" />
+                {label}
+              </span>
+            )
+          })()}
           <button type="button" className="btn btn--quiet" onClick={() => setStage('favorites')}>
             <Heart className="btn__icon" aria-hidden="true" />
             Favorites · {favorites.favorites.length}
@@ -215,7 +240,9 @@ export default function App() {
                     {selectedCount} ingredient{selectedCount === 1 ? '' : 's'} chosen — tweak the
                     vibe, then make magic.
                   </p>
-                  <PreferencesPanel value={preferences} onChange={setPreferences} />
+                  <div className="prefs__scroll">
+                    <PreferencesPanel value={preferences} onChange={setPreferences} />
+                  </div>
                   <div className="prefs__actions">
                     <button
                       type="button"

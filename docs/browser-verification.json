@@ -1,55 +1,147 @@
 {
-  "generatedAt": "2026-09-11T07:27:02.000Z",
-  "note": "Live full-stack browser verification. FastAPI backend and Vite frontend were both running; the full user flow from landing through real POST /api/recipes/generate, result page, cooking mode, save, and favorites reopening was exercised successfully.",
+  "generatedAt": "2026-09-14T08:54:55.400Z",
+  "mode": "demo (no HY3 key configured; DemoProvider offline)",
   "configuration": {
-    "backendCommand": "PYTHONPATH=src python -m uvicorn creative_recipe.web.app:app --host 127.0.0.1 --port 8000 --log-level warning",
-    "frontendCommand": "npm run dev -- --host 127.0.0.1 --port 5173",
+    "backendCommand": "PYTHONPATH=src .venv/Scripts/python.exe -m uvicorn creative_recipe.web.app:app --host 127.0.0.1 --port 8000 --log-level warning",
+    "frontendCommand": "cd web && vite --host 127.0.0.1 --port 5173",
     "backendUrl": "http://127.0.0.1:8000",
     "frontendUrl": "http://127.0.0.1:5173"
+  },
+  "expectedGeometry": {
+    "cavityLeft": "29%",
+    "cavityRight": "71%",
+    "shelf1": "36.20%",
+    "shelf2": "51.69%",
+    "shelf3": "69.27%",
+    "shelf4": "85.16%"
   },
   "screenshots": [
     "docs/screenshots/landing-1440x900.png",
     "docs/screenshots/fridge-open-1440x900.png",
+    "docs/screenshots/fridge-open-1024x768.png",
     "docs/screenshots/preferences-1440x900.png",
-    "docs/screenshots/recipe-result-live-1440x900.png",
-    "docs/screenshots/fridge-open-1024x768.png"
+    "docs/screenshots/preferences-1024x768.png",
+    "docs/screenshots/recipe-result-demo-1440x900.png",
+    "docs/screenshots/recipe-result-demo-1024x768.png"
   ],
   "results": [
     {
       "viewport": "1440x900",
-      "landingFridgeButtonVisible": true,
-      "closedToAjarToOpenObserved": true,
-      "openFridgeShelfVisible": true,
-      "ingredientLabelsReadable": true,
-      "controlsOutsideFridge": true,
-      "preferencesVisibleOnlyAfterSelection": true,
-      "resultFromLivePost": true,
-      "recipeName": "Coffee-Braised Chicken with Melted Cheese Crust",
+      "tag": "",
+      "landingTitle": "What do we have?",
+      "fridgeButtonVisible": true,
+      "openFrameActive": true,
+      "shelfVisible": true,
+      "tilesOnFirstPage": 0,
+      "geom": {
+        "cavityLeft": "29%",
+        "cavityRight": "71%",
+        "shelf1": "36.20%",
+        "shelf2": "51.69%",
+        "shelf3": "69.27%",
+        "shelf4": "85.16%"
+      },
+      "basket": "2 ingredients picked",
+      "prefsCtaBackInView": true,
+      "prefsCtaMagicInView": true,
+      "prefsCtaBackBox": {
+        "x": 35,
+        "y": 730,
+        "w": 180,
+        "h": 50,
+        "inView": true
+      },
+      "prefsCtaMagicBox": {
+        "x": 35,
+        "y": 790,
+        "w": 450,
+        "h": 50,
+        "inView": true
+      },
+      "badgeBeforeGen": "Demo mode",
+      "errored": 0,
+      "recipeTitle": "Coffee-Braised Chicken with Melted Cheese Crust",
+      "badge": "Demo mode",
+      "badgeMode": "demo",
+      "cieTotal": "4.25",
       "cieDimensions": 6,
-      "cieTotalScore": "4.25 / 5",
       "traceStages": 6,
-      "ingredientsList": ["chicken", "coffee", "cheese"],
-      "stepsCount": 3,
-      "cookingAdvanced": "Step 1 of 3 -> Step 2 of 3",
-      "savedAndReopened": true,
+      "startingIngredientsLabel": "YOUR STARTING INGREDIENTS",
+      "constellationItems": 2,
+      "stepsCount": 6,
+      "demoNotePresent": true,
+      "riskNote": 1,
+      "result": {
+        "images": 3,
+        "broken": [],
+        "overflow": 0
+      },
       "horizontalOverflow": false,
-      "brokenImages": 0,
-      "consoleErrors": 0,
-      "pageErrors": 0,
-      "failedApiRequests": 0,
-      "abortedHealthFetches": 2
+      "step1": "Step 1 of 6",
+      "step2": "Step 2 of 6",
+      "consoleErrors": [],
+      "failedRequests": [
+        "http://127.0.0.1:5173/api/health :: net::ERR_ABORTED"
+      ]
     },
     {
       "viewport": "1024x768",
-      "openFridgeShelfVisible": true,
-      "controlsOutsideFridge": true,
-      "ingredientLabelsReadable": true,
-      "preferencesAbsentDuringSelection": true,
+      "tag": "-1024",
+      "landingTitle": "What do we have?",
+      "fridgeButtonVisible": true,
+      "openFrameActive": true,
+      "shelfVisible": true,
+      "tilesOnFirstPage": 0,
+      "geom": {
+        "cavityLeft": "29%",
+        "cavityRight": "71%",
+        "shelf1": "36.20%",
+        "shelf2": "51.69%",
+        "shelf3": "69.27%",
+        "shelf4": "85.16%"
+      },
+      "basket": "2 ingredients picked",
+      "prefsCtaBackInView": true,
+      "prefsCtaMagicInView": true,
+      "prefsCtaBackBox": {
+        "x": 25,
+        "y": 591,
+        "w": 180,
+        "h": 50,
+        "inView": true
+      },
+      "prefsCtaMagicBox": {
+        "x": 25,
+        "y": 652,
+        "w": 318,
+        "h": 50,
+        "inView": true
+      },
+      "badgeBeforeGen": "Demo mode",
+      "errored": 0,
+      "recipeTitle": "Coffee-Braised Chicken with Melted Cheese Crust",
+      "badge": "Demo mode",
+      "badgeMode": "demo",
+      "cieTotal": "4.25",
+      "cieDimensions": 6,
+      "traceStages": 6,
+      "startingIngredientsLabel": "YOUR STARTING INGREDIENTS",
+      "constellationItems": 2,
+      "stepsCount": 6,
+      "demoNotePresent": true,
+      "riskNote": 1,
+      "result": {
+        "images": 3,
+        "broken": [],
+        "overflow": 0
+      },
       "horizontalOverflow": false,
-      "brokenImages": 0,
-      "consoleErrors": 0,
-      "pageErrors": 0,
-      "failedApiRequests": 0
+      "step1": "Step 1 of 6",
+      "step2": "Step 2 of 6",
+      "consoleErrors": [],
+      "failedRequests": [
+        "http://127.0.0.1:5173/api/health :: net::ERR_ABORTED"
+      ]
     }
   ]
 }

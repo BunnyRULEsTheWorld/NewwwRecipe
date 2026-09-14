@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
-import { CIE_DIMENSION_KEYS } from './types'
+import { CIE_DIMENSION_KEYS, type GenerateResponse } from './types'
 import { forceReducedMotion, installApiMock, makeResponse, type CapturedRequest } from './test/fixture'
 
 let captured: CapturedRequest[] = []
@@ -402,17 +402,110 @@ describe('recipe result', () => {
     await renderResult(user)
 
     await user.click(screen.getByRole('button', { name: /Start Cooking/ }))
-    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 1 of 3')
-    expect(screen.getByTestId('cooking-step')).toHaveTextContent('Prep the given ingredients.')
+    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 1 of 6')
+    expect(screen.getByTestId('cooking-step')).toHaveTextContent(
+      'Pat the chicken dry, season it with salt and black pepper, and let it stand for 5 minutes.',
+    )
 
     await user.click(screen.getByRole('button', { name: /Next/ }))
-    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 2 of 3')
+    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 2 of 6')
 
     await user.click(screen.getByRole('button', { name: /Back/ }))
-    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 1 of 3')
+    expect(screen.getByTestId('step-counter')).toHaveTextContent('Step 1 of 6')
 
     await user.click(screen.getByRole('button', { name: /Exit cooking mode/ }))
     expect(await screen.findByTestId('cie-panel')).toBeInTheDocument()
+  })
+})
+
+describe('submission polish (Part F)', () => {
+  function makeLiveResponse(): GenerateResponse {
+    const base = makeResponse()
+    return { ...base, meta: { ...base.meta, demo_mode: false, provider: 'hy3', model: 'hy3-pro' } }
+  }
+  function makeFallbackResponse(): GenerateResponse {
+    const base = makeResponse()
+    return {
+      ...base,
+      meta: {
+        ...base.meta,
+        demo_mode: true,
+        provider: 'demo',
+        model: 'demo-fallback',
+        fallback_reason: 'Live generation failed (KeyError); fell back to the offline DemoProvider.',
+      },
+    }
+  }
+
+  async function gotoResult(user: ReturnType<typeof userEvent.setup>, generate: GenerateResponse) {
+    installApiMock({ captured, generate })
+    render(<App />)
+    await openFridge(user)
+    await pickIngredient(user, 'chicken', 'chicken')
+    await pickIngredient(user, 'coffee', 'coffee')
+    await user.click(screen.getByTestId('continue-button'))
+    await screen.findByTestId('preferences-panel')
+    await user.click(screen.getByTestId('make-magic'))
+    await screen.findByTestId('cie-panel')
+  }
+
+  it('shows the YOUR STARTING INGREDIENTS label with only the picked ingredients', async () => {
+    const user = userEvent.setup()
+    await gotoResult(user, makeResponse())
+    const heading = screen.getByTestId('starting-ingredients')
+    expect(heading).toHaveTextContent('YOUR STARTING INGREDIENTS')
+    // Only the two user-selected ingredients are shown — never a generated dish image.
+    const items = document.querySelectorAll('.constellation__item')
+    expect(items.length).toBe(2)
+    for (const img of Array.from(items)) {
+      const src = img.getAttribute('src') ?? ''
+      expect(src.startsWith('/ingredients/')).toBe(true)
+    }
+  })
+
+  it('renders 4-7 executable steps with no placeholder text', async () => {
+    const user = userEvent.setup()
+    await gotoResult(user, makeResponse())
+    const steps = Array.from(document.querySelectorAll('.step__text'))
+    expect(steps.length).toBeGreaterThanOrEqual(4)
+    expect(steps.length).toBeLessThanOrEqual(7)
+    for (const node of steps) {
+      const t = node.textContent ?? ''
+      expect(t.trim().length).toBeGreaterThan(0)
+      expect(t).not.toMatch(/prep the given|until done|cook until done|cook until ready/i)
+    }
+  })
+
+  it('shows the Demo mode badge for the offline demo response', async () => {
+    const user = userEvent.setup()
+    await gotoResult(user, makeResponse())
+    const badge = screen.getByTestId('demo-badge')
+    expect(badge).toHaveAttribute('data-mode', 'demo')
+    expect(badge).toHaveTextContent('Demo mode')
+    expect(
+      screen.getByText(/Generated offline with the repository DemoProvider/),
+    ).toBeInTheDocument()
+  })
+
+  it('shows Live · Hy3 badge for a real (non-demo) response', async () => {
+    const user = userEvent.setup()
+    await gotoResult(user, makeLiveResponse())
+    const badge = screen.getByTestId('demo-badge')
+    expect(badge).toHaveAttribute('data-mode', 'live')
+    expect(badge).toHaveTextContent('Live · Hy3')
+    expect(
+      screen.queryByText(/Generated offline with the repository DemoProvider/),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows Demo fallback badge and a non-blocking note when live fails', async () => {
+    const user = userEvent.setup()
+    await gotoResult(user, makeFallbackResponse())
+    const badge = screen.getByTestId('demo-badge')
+    expect(badge).toHaveAttribute('data-mode', 'fallback')
+    expect(badge).toHaveTextContent('Demo fallback')
+    const note = screen.getByTestId('fallback-note')
+    expect(note).toHaveTextContent(/fell back to the offline DemoProvider/i)
   })
 })
 

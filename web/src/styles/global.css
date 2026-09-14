@@ -134,6 +134,18 @@ button {
   height: 14px;
 }
 
+.demo-badge--live {
+  color: #1f5132;
+  background: #d8f0e0;
+  border-color: rgba(31, 81, 50, 0.4);
+}
+
+.demo-badge--fallback {
+  color: #7d4534;
+  background: var(--coral-soft);
+  border-color: rgba(224, 138, 109, 0.4);
+}
+
 .app-main {
   position: relative;
   flex: 1;
@@ -482,11 +494,24 @@ button {
 .select__panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
   max-height: calc(100vh - 150px);
   overflow-y: auto;
   padding-right: 6px;
+}
+
+/* Tighten the title -> search gap so the controls read as one compact column. */
+.select__header {
+  margin: 0;
+}
+
+.select__title {
+  margin: 0;
+}
+
+.select__lede {
+  margin: 6px 0 0;
 }
 
 .card {
@@ -639,17 +664,18 @@ button {
 .prefs__panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-height: calc(100vh - 150px);
-  overflow-y: auto;
-  padding-right: 6px;
+  height: calc(100vh - 150px);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .prefs__heading {
   font-size: var(--fs-xl);
   font-weight: 800;
   color: var(--ink);
+  margin: 0;
 }
 
 .prefs__lede {
@@ -658,11 +684,27 @@ button {
   color: var(--ink-soft);
 }
 
+/* The form scrolls; the action row stays pinned to the bottom of the panel so
+   Back / Make Magic are always visible on first screen at 1440x900 and 1024x768. */
+.prefs__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .prefs__actions {
+  flex: 0 0 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 4px;
+  padding-top: 10px;
+  background: var(--paper-warm);
+  border-top: var(--outline-w) solid rgba(93, 78, 58, 0.12);
 }
 
 /* --- preferences form --- */
@@ -763,7 +805,9 @@ button {
   border: var(--outline-w) solid rgba(93, 78, 58, 0.2);
   border-radius: var(--radius-sm);
   resize: vertical;
-  min-height: 56px;
+  min-height: 48px;
+  height: 56px;
+  max-height: 64px;
 }
 
 .prefs__text:focus-visible {
@@ -1226,6 +1270,19 @@ button {
   transform: translateY(4px) rotate(5deg);
 }
 
+.constellation-wrap {
+  margin-top: 4px;
+}
+
+.constellation__title {
+  margin: 0 0 6px;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+}
+
 .section {
   margin-top: 22px;
 }
@@ -1465,6 +1522,12 @@ button {
   color: var(--ink-soft);
   background: var(--mint-soft);
   border-radius: var(--radius-sm);
+}
+
+.cie-note--fallback {
+  color: #7d4534;
+  background: var(--coral-soft);
+  border: var(--outline-w) solid rgba(224, 138, 109, 0.4);
 }
 
 /* ----------------------------------------------------------------- trace */

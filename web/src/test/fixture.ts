@@ -29,9 +29,12 @@ export function makeResponse(title = 'Coffee-Braised Chicken with Melted Cheese 
         { name: 'black pepper', quantity: 'to taste', note: null },
       ],
       steps: [
-        'Prep the given ingredients.',
-        'Slow-braise the chicken in strong black coffee for 25 minutes.',
-        'Top with cheese and broil until bubbling, then rest and serve.',
+        'Pat the chicken dry, season it with salt and black pepper, and let it stand for 5 minutes.',
+        'Heat a small oven-safe skillet over medium-high heat, add a little oil, and sear the chicken about 2 minutes per side.',
+        'Lower the heat, add the brewed coffee gradually, cover, and simmer gently for 8-10 minutes.',
+        'Uncover, spoon the liquid over the chicken, and cook until the thickest part reaches 74 C / 165 F.',
+        'Sprinkle the cheese over the chicken and broil briefly for 1-2 minutes until melted and bubbling.',
+        'Rest for 3 minutes before serving.',
       ],
       creative_explanation:
         'Coffee replaces wine as the braising liquid, then a cheese crust finishes the dish.',
