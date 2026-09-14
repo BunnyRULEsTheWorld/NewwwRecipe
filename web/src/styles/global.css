@@ -428,31 +428,43 @@ button {
   }
 }
 
-/* Square 1:1 stage that the rendered frames and the ingredient overlay share.
-   All three source PNGs are 1536x1536, so a square box + object-fit:fill maps
-   image pixels 1:1 onto the overlay's percentage coordinate system (no
-   letterboxing, no distortion). Shelf anchors below were measured from the
-   actual fridge_open_empty.png, expressed as full-image percentages:
-     cavity x: 9% -> 91%   shelf boards (image-y): 36.20 / 51.69 / 69.27 / 85.16 %
-   See the alignment fix commit for the measurement method. */
+/* Two-layer coordinate model, measured from the actual 1536x1536
+   fridge_open_empty.png (see the cavity-constrain fix commit):
+     - Layer 1 (image space): .fridge__frame == the full 1536x1536 image.
+       --cavity-left-x / --cavity-right-x are the INNER edges of the two green
+       cabinet body walls that bound the central storage cavity. They are NOT
+       the fridge silhouette (which includes the open doors at ~9%..91%).
+       Measured: left inner edge x=445 (~28.97%), right inner edge x=1085
+       (~70.64%); the shelf boards terminate exactly at these x at every level.
+     - Layer 2 (cavity space): .fridge__interior is clipped to that central
+       cavity, and the 3-column grid lives inside it with a safe inset.
+   Shelf anchors are full-image Y percentages and stay unchanged:
+     36.20 / 51.69 / 69.27 / 85.16 %. */
 .fridge__frame {
-  --cavity-left: 9%;
-  --cavity-right: 9%;
+  --cavity-left-x: 29%;
+  --cavity-right-x: 71%;
+  --cavity-safe: 3%;
   --shelf-1-y: 36.20%;
   --shelf-2-y: 51.69%;
   --shelf-3-y: 69.27%;
   --shelf-4-y: 85.16%;
   --shelf-gap: 1.4%;
   --tile-art-h: calc(var(--fridge-size) * 0.10);
-  --tile-name-fs: calc(var(--fridge-size) * 0.018);
+  --tile-name-fs: calc(var(--fridge-size) * 0.020);
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
 }
 
+/* Layer 2: clipped to the central storage cavity only (between the two green
+   body walls). Top/bottom stay at the frame edges so the measured shelf Y
+   percentages remain valid; only left/right are narrowed to the cavity. */
 .fridge__interior {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: var(--cavity-left-x);
+  right: calc(100% - var(--cavity-right-x));
   z-index: 3;
   opacity: 0;
   visibility: hidden;
@@ -765,14 +777,17 @@ button {
   inset: 0;
 }
 
+/* Three columns live INSIDE the central cavity (the .fridge__interior is already
+   clipped to it). A safe inset keeps tiles off the green body walls; columns are
+   computed from the cavity's own width so they never span the whole fridge. */
 .shelf__row {
   position: absolute;
-  left: var(--cavity-left);
-  right: var(--cavity-right);
-  display: flex;
-  justify-content: center;
+  left: var(--cavity-safe);
+  right: var(--cavity-safe);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: flex-end;
-  gap: clamp(6px, 1.6vw, 20px);
+  gap: clamp(2px, 0.8vw, 12px);
   transform: none;
 }
 
@@ -800,7 +815,8 @@ button {
   align-items: center;
   justify-content: flex-end;
   gap: 2px;
-  width: clamp(54px, calc(var(--fridge-size) * 0.22), 112px);
+  width: 100%;
+  max-width: 100%;
   padding: 2px;
   background: transparent;
   border: 0;

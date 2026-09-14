@@ -65,23 +65,41 @@ describe('ingredient shelf — coordinate model', () => {
     expect(other).toHaveAttribute('aria-pressed', 'false')
   })
 
-  it('centralizes shelf positions in CSS custom properties (bottom-anchored, not old top bands)', () => {
+  it('centralizes shelf positions in CSS custom properties (cavity-constrained, bottom-anchored)', () => {
     const css = readFileSync(resolve(process.cwd(), 'src/styles/global.css'), 'utf8')
 
-    // Measured, full-image-percentage shelf anchors must be present.
-    expect(css).toContain('--cavity-left: 9%')
+    // Central cavity anchors: inner edges of the two green body walls, measured
+    // from the 1536x1536 PNG (NOT the whole-fridge silhouette / open doors).
+    expect(css).toContain('--cavity-left-x: 29%')
+    expect(css).toContain('--cavity-right-x: 71%')
+    expect(css).toContain('--cavity-safe: 3%')
+
+    // Shelf Y anchors are unchanged full-image percentages, still bottom-anchored.
     expect(css).toContain('--shelf-1-y: 36.20%')
     expect(css).toContain('--shelf-2-y: 51.69%')
     expect(css).toContain('--shelf-3-y: 69.27%')
     expect(css).toContain('--shelf-4-y: 85.16%')
-
-    // Rows must be bottom-anchored to those named anchors...
     expect(css).toContain('bottom: calc(100% - var(--shelf-1-y)')
     expect(css).toContain('bottom: calc(100% - var(--shelf-2-y)')
     expect(css).toContain('bottom: calc(100% - var(--shelf-3-y)')
     expect(css).toContain('bottom: calc(100% - var(--shelf-4-y)')
 
-    // ...and the old ad-hoc per-band top values must be gone from the shelf rows.
+    // The overlay interior is clipped to the central cavity, never the full frame.
+    expect(css).toContain('left: var(--cavity-left-x)')
+    expect(css).toContain('right: calc(100% - var(--cavity-right-x))')
+    // The old full-frame `inset: 0` clipping of the interior is gone.
+    const interiorBlock = css.split('.fridge__interior {')[1].split('}')[0]
+    expect(interiorBlock).not.toContain('inset: 0')
+
+    // Rows live inside the cavity as a 3-column grid with a safe inset.
+    const rowBlock = css.split('.shelf__row {')[1].split('}')[0]
+    expect(rowBlock).toContain('display: grid')
+    expect(rowBlock).toContain('grid-template-columns: repeat(3, minmax(0, 1fr))')
+    expect(rowBlock).toContain('left: var(--cavity-safe)')
+    expect(rowBlock).toContain('right: var(--cavity-safe)')
+
+    // The wrong whole-fridge cavity (incl. open doors) and old top bands are gone.
+    expect(css).not.toContain('--cavity-left: 9%')
     expect(css).not.toContain('top: 17.2%')
     expect(css).not.toContain('top: 31.7%')
     expect(css).not.toContain('top: 53.5%')
