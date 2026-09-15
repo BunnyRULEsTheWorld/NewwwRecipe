@@ -13,9 +13,11 @@ NewwwRecipe 是一个基于 Hy3 的创意菜谱生成与评估项目。
 - **CIE（Culinary Innovation Evaluation）**：给候选料理做结构化评价和排序；
 - **CIE-Culinary-Bench**：用来开发和验证 CIE 的评测数据集。
 
-> 项目当前唯一正式状态见 [`PROJECT_STATE.md`](PROJECT_STATE.md)。版本同步与 WorkBuddy 更新流程见 [`docs/versioning.md`](docs/versioning.md)。
+> 项目当前唯一正式状态见 [`PROJECT_STATE.md`](PROJECT_STATE.md)，版本同步规则见 [`docs/versioning.md`](docs/versioning.md)。
 
-目前工作量主要集中在 CIE 和 benchmark 上，应用侧会在评测流程稳定后接上。
+目前应用、CIE 评测框架和 benchmark 已经打通：从冰箱选材、补充偏好、调用 Hy3 生成候选，到 CIE 评分、Innovation Trace 展示和文字烹饪模式，都可以在同一套网页流程里完成。
+
+**[查看 97 秒真实 Hy3 Demo](docs/demo/newwwrecipe-live-demo.mp4)**
 
 ## CIE 怎么评
 
@@ -47,14 +49,17 @@ CIE 再从六个维度打分：
 
 ## 现在做到哪了
 
-截至 2026-08-31，已经完成一个可以实际运行的 benchmark MVP，并完成一次仓库状态重新整理。
+截至 2026-09-15，项目的应用、评测框架和 benchmark 已经作为一个完整版本提交到公开仓库。
 
-目前有：
+目前包括：
 
-- 30 个 case 的冻结数据集；
-- schema、gold annotation、rubric、provenance 和数据质量说明；
+- 可以直接运行的 React + FastAPI 交互式应用；
+- 真实 Hy3 调用、明确标注的 Demo 模式与失败回退；
+- canonical CIE v3 六阶段 Innovation Trace 和六维评分；
+- 30 个 case 的冻结数据集，以及 schema、gold annotation、rubric、provenance 和数据质量说明；
 - 可以调用真实 Hy3 的评测 runner；
 - 一次完整的 anonymous trace-conditioned 主实验；
+- 65 张食材插图、8 张场景素材和一段真实 Hy3 Demo 视频；
 - 对旧 baseline 和失败 run 的单独归档。
 
 当前主实验共有 33 条评测记录，33 条都成功完成并解析。
@@ -87,7 +92,7 @@ CIE 再从六个维度打分：
 
 应用场景是“冰箱里有什么”。用户可以选择或输入已有食材，再补充口味和简单约束。系统生成多个候选，用 CIE 排序后再展示结果，而不是直接返回第一次生成的菜谱。
 
-计划流程：
+实际流程：
 
 ```text
 用户输入食材 / 偏好
@@ -214,20 +219,22 @@ copy .env.example .env
 ```text
 .
 ├── README.md
-├── PROJECT_STATE.md          # 当前唯一正式项目基线
-├── AGENTS.md                 # WorkBuddy / 自动化修改规则
-├── .env.example
-├── .gitignore
+├── PROJECT_STATE.md          # 当前正式项目基线
+├── .env.example              # 环境变量模板，不含真实密钥
 ├── requirements.txt
-├── docs/                     # 项目方案、CIE、版本管理与实验记录
-├── src/                      # NewwwRecipe 与 CIE 实现
-├── data/                     # CIE-Culinary-Bench
-├── scripts/                  # benchmark / validation 脚本
-├── results/                  # 实验结果
-└── examples/                 # 典型 case 和 demo 输出
+├── src/                      # NewwwRecipe 后端、Hy3 接入与 CIE 实现
+├── web/                      # React + TypeScript 交互式前端
+├── ingredient/               # 65 张透明背景食材插图
+├── fronted asset/            # 8 张冰箱与厨房场景素材
+├── CIE-Culinary-Bench/       # 冻结 benchmark、schema、runner 与实验结果
+├── data/                     # 应用侧数据
+├── scripts/                  # 校验、审计与开发脚本
+├── results/                  # CIE 实验结果
+├── examples/                 # 典型 case 与示例输出
+└── docs/                     # 设计文档、验证记录、截图与 Demo 视频
 ```
 
-当前公开仓库仍在从本地开发目录同步：`src/`、`data/`、`scripts/`、`results/`、`examples/` 中部分真实实现和实验文件尚未完整进入 GitHub。缺失文件必须从实际产生实验结果的工作副本导入，不应凭记忆重新生成。
+当前公开仓库已经同步本次提交所需的应用代码、CIE v3、CIE-Culinary-Bench、前端素材、验证记录和 Demo 视频。后续实验会继续作为独立增量补充，不影响当前版本运行。
 
 ## 环境
 
@@ -269,7 +276,7 @@ npm install
 - [x] 真实 Hy3 端到端验证（提供真实密钥时徽标显示 “Live · Hy3”，不伪造 live 结果）；
 - [x] 步骤质量可靠性修复：realization 层程序化步骤校验 + 单次定向重试，杜绝占位步骤；
 - [x] 录制正式 demo 视频（< 120 s，1440×900，已用 ffmpeg 验证）—— [`docs/demo/newwwrecipe-live-demo.mp4`](docs/demo/newwwrecipe-live-demo.mp4)（97 s，同一次真实 Hy3 素材重新剪辑，无伪造 Live）。
-- [ ] 把完整 benchmark、runner 和结果文件同步到公开仓库；
+- [x] 把冻结 benchmark、runner 和现有实验结果同步到公开仓库；
 - [ ] 完成 evidence-only、重复评测、人工一致性和对抗性实验；
 - [ ] 整理典型失败案例。
 
