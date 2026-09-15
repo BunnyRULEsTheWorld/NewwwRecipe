@@ -1,7 +1,7 @@
 # NewwwRecipe 提交前检查清单（Submission Checklist）
 
-> 本清单用于 Release Hy3 提交前的逐条核对。每一项都需有可验证证据，禁止把“部分完成”写成“完成”。
-> 项目唯一正式基线见 [`PROJECT_STATE.md`](../PROJECT_STATE.md)，仓库同步规则见 [`AGENTS.md`](../AGENTS.md) 与 [`docs/versioning.md`](../docs/versioning.md)。
+> 本清单记录 NewwwRecipe 本次提交的实际完成情况。每一项都需有可验证证据，禁止把“部分完成”写成“完成”。
+> 项目正式基线见 [`PROJECT_STATE.md`](../PROJECT_STATE.md)，版本同步规则见 [`docs/versioning.md`](versioning.md)。
 
 ## 1. 步骤质量可靠性修复（Reliability fixes）
 
@@ -32,7 +32,7 @@
 - [x] CIE 六维评分（`cieDimCount=6`），加权总分 **3.55**。
 - [x] Innovation Trace 六阶段正常渲染（`TraceTimeline.tsx` 对 `trace.stages` 逐项渲染，六阶段均显示）。
 - [x] 风险提示非空（`riskNoteLen=243`）；无 console / page / failed-request / broken-image 错误。
-- [ ] 说明：验证脚本的 `traceStageCount` 统计因选择器 `[data-testid="trace-timeline"] > *` 只数到 2 个 wrapper（`h3` + `ol`），属脚本选择器缺陷；已读 `TraceTimeline.tsx` 源码确认六阶段均渲染，不影响“live 成功”结论。
+> 说明：验证脚本的 `traceStageCount` 选择器只统计到 `h3` 和 `ol` 两个外层节点；`TraceTimeline.tsx` 实际按 `trace.stages` 渲染六个 `.trace__item`，不影响真实调用和六阶段展示结果。
 
 ## 4. 真实结果截图（1440×900）
 
@@ -66,26 +66,16 @@
 - [x] 缓存 / 临时文件（`.venv`、`node_modules`、`__pycache__`、`*.pyc`）被 `.gitignore` 覆盖。
 - [x] 仅显式文件暂存，不使用 `git add .` / `git add -A`。
 
-## 8. 提交与合入
+## 8. 提交与发布
 
-- [x] `git commit`（显式文件，`chore: prepare final Hy3 submission`）。
-- [x] 新增 `docs: improve live demo pacing` 提交（`351698c`），未 amend `0a6fb78`。
-- [ ] `git fetch`。**⛔ 网络阻塞**：本环境无法连接 `github.com:443`（`Failed to connect to github.com:443 ... Could not connect to server`），故未执行 fetch / pull / merge / push。
-- [ ] `git switch main` && `git pull --ff-only origin main`。
-- [ ] `git merge --no-ff feat/interactive-fridge-frontend -m "merge: release NewwwRecipe submission"`。
-- [ ] 在 `main` 上重新全量验证。
-- [ ] `git push origin main`（**非强制**）。
-- [ ] 推送后检查公开仓库 / README / 图片 / 视频 / benchmark / 默认分支。
-
-> 网络恢复后，在干净的工作区执行：
-> ```bash
-> git fetch
-> git switch main && git pull --ff-only origin main
-> git merge --no-ff feat/interactive-fridge-frontend -m "merge: release NewwwRecipe submission"
-> # 在 main 上重新全量验证
-> git push origin main
-> # 推送后检查公开仓库、README、图片、视频、benchmark、默认分支
-> ```
+- [x] 完成 `chore: prepare final Hy3 submission` 提交（`0a6fb78`）。
+- [x] 完成 Demo 重新剪辑与文档更新（`351698c`、`bd4d9f6`），未 amend 既有提交。
+- [x] 通过 SSH 完成 `git fetch origin`，确认远端默认分支为 `main`。
+- [x] 确认 `origin/main` 与提交分支没有分叉，本地 `main` 以 fast-forward 方式更新至 `bd4d9f6`。
+- [x] 在发布内容上完成第 6 节所列全量测试、数据校验、资产审计和密钥审计。
+- [x] 成功执行 `git push origin main`：远端 `main` 从 `97a1656` 更新到 `bd4d9f6`。
+- [x] 推送后确认公开仓库中的 README、前后端代码、图片、Demo 视频和 `CIE-Culinary-Bench/` 均可访问。
+- [x] 本次文档状态修正发布到 `main`，不修改代码、视频、图片或 benchmark。
 
 ## 9. 保留的已确认修改
 
